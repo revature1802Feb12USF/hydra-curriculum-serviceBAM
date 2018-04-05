@@ -2,14 +2,25 @@ package com.revature.hydra.curriculum.pojos;
 
 import com.revature.hydra.curriculum.bean.Curriculum;
 
+/**
+ * non-persistent bean for MetaDTO.
+ * This is a data transfer object that contains data of a curriculum
+ */
 public class MetaDTO {
 
 	private Curriculum curriculum;
 
+	/**
+	 * no args constructor for MetaDTO.
+	 */
 	public MetaDTO(){
 		
 	}
 
+	/**
+	 * Creates a MetaDTO object that will contain a curriculum
+	 * @param curriculum
+	 */
 	public MetaDTO(Curriculum curriculum) {
 		super();
 		this.curriculum = curriculum;
@@ -25,7 +36,7 @@ public class MetaDTO {
 
 	@Override
 	public String toString() {
-		return "MetaDTO [curriculum=" + curriculum + "]";
+		return "MetaDTO [\n" + "(MetaDTO of Curriculum) \t curriculum =" + curriculum + "]";
 	}
 	
 }
