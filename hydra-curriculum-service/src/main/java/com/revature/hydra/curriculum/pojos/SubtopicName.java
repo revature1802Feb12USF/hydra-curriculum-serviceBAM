@@ -1,5 +1,9 @@
 package com.revature.hydra.curriculum.pojos;
 
+/**
+ * non-persistent bean for Subtopic Name
+ * This class contains data on the Subtopic Name..
+ */
 public class SubtopicName {
 
 	private Integer id;
@@ -10,10 +14,20 @@ public class SubtopicName {
 
 	private SubtopicType type;
 
+	/**
+	 * no arg constructor
+	 */
 	public SubtopicName() {
 		super();
 	}
 
+	/**
+	 * Creates a SubtopicName object with an integer ID, name, topic name, subtopic type
+	 * @param id
+	 * @param name
+	 * @param topic
+	 * @param type
+	 */
 	public SubtopicName(Integer id, String name, TopicName topic, SubtopicType type) {
 		super();
 		this.id = id;
@@ -22,6 +36,12 @@ public class SubtopicName {
 		this.type = type;
 	}
 
+	/**
+	 * Creates a SubtopicName object with a name, topic name, and subtopic type
+	 * @param name
+	 * @param topic
+	 * @param type
+	 */
 	public SubtopicName(String name, TopicName topic, SubtopicType type) {
 		super();
 		this.name = name;
@@ -63,7 +83,9 @@ public class SubtopicName {
 
 	@Override
 	public String toString() {
-		return "SubtopicName [id=" + id + ", name=" + name + ", topic=" + topic + "]";
+		return "SubtopicName [\n" + "(SubtopicName ID) \t id =" + id + ",\n"
+				+ "(SubtopicName name) \t name =" + name + ",\n"
+				+ "(SubtopicName topic) \t topic=" + topic + "]";
 	}
 
 }
