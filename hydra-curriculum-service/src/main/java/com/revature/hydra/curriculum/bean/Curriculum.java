@@ -2,12 +2,9 @@ package com.revature.hydra.curriculum.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,7 +18,7 @@ public class Curriculum {
 	@Column(name = "Curriculum_Id")
 	@SequenceGenerator(name = "Curriculum_ID_SEQ", sequenceName = "Curriculum_ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Curriculum_ID_SEQ")
-	private Integer id;
+	private Integer curriculumId;
 	
 	@Column(name= "Curriculum_name")
 	@NotEmpty(message = "Curriculum name cannot be empty")
@@ -43,6 +40,7 @@ public class Curriculum {
 	@Column(name = "Curriculum_Number_Of_Weeks")
 	private int curriculumNumberOfWeeks;
 	
+	//should probably be a boolean
 	@Column(name = "Curriculum_Is_Master")
 	private int isMaster;
 	
@@ -53,7 +51,7 @@ public class Curriculum {
 	public Curriculum(Integer id, String curriculumName, int curriculumVersion, Integer curriculumCreator,
 			Integer curriculumModifier, String curriculumDateCreated, int curriculumNumberOfWeeks, int isMaster) {
 		super();
-		this.id = id;
+		this.curriculumId = id;
 		this.curriculumName = curriculumName;
 		this.curriculumVersion = curriculumVersion;
 		this.curriculumCreator = curriculumCreator;
@@ -63,12 +61,12 @@ public class Curriculum {
 		this.isMaster = isMaster;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getCurriculumId() {
+		return curriculumId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCurriculumId(Integer id) {
+		this.curriculumId = id;
 	}
 
 	public String getCurriculumName() {
@@ -129,7 +127,7 @@ public class Curriculum {
 
 	@Override
 	public String toString() {
-		return "Curriculum [id=" + id + ", curriculumName=" + curriculumName + ", curriculumVersion="
+		return "Curriculum [id=" + curriculumId + ", curriculumName=" + curriculumName + ", curriculumVersion="
 				+ curriculumVersion + ", curriculumCreator=" + curriculumCreator + ", curriculumModifier="
 				+ curriculumModifier + ", curriculumDateCreated=" + curriculumDateCreated + ", curriculumNumberOfWeeks="
 				+ curriculumNumberOfWeeks + ", isMaster=" + isMaster + "]";
@@ -137,16 +135,17 @@ public class Curriculum {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		//make prime, PRIME
+		final int PRIME = 31;
 		int result = 1;
-		result = prime * result + ((curriculumCreator == null) ? 0 : curriculumCreator.hashCode());
-		result = prime * result + ((curriculumDateCreated == null) ? 0 : curriculumDateCreated.hashCode());
-		result = prime * result + ((curriculumModifier == null) ? 0 : curriculumModifier.hashCode());
-		result = prime * result + ((curriculumName == null) ? 0 : curriculumName.hashCode());
-		result = prime * result + curriculumNumberOfWeeks;
-		result = prime * result + curriculumVersion;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + isMaster;
+		result = PRIME * result + ((curriculumCreator == null) ? 0 : curriculumCreator.hashCode());
+		result = PRIME * result + ((curriculumDateCreated == null) ? 0 : curriculumDateCreated.hashCode());
+		result = PRIME * result + ((curriculumModifier == null) ? 0 : curriculumModifier.hashCode());
+		result = PRIME * result + ((curriculumName == null) ? 0 : curriculumName.hashCode());
+		result = PRIME * result + curriculumNumberOfWeeks;
+		result = PRIME * result + curriculumVersion;
+		result = PRIME * result + ((curriculumId == null) ? 0 : curriculumId.hashCode());
+		result = PRIME * result + isMaster;
 		return result;
 	}
 
@@ -183,10 +182,10 @@ public class Curriculum {
 			return false;
 		if (curriculumVersion != other.curriculumVersion)
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (curriculumId == null) {
+			if (other.curriculumId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!curriculumId.equals(other.curriculumId))
 			return false;
 		if (isMaster != other.isMaster)
 			return false;

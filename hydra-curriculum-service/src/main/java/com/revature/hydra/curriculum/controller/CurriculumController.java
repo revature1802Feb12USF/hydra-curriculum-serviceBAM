@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.hydra.curriculum.bean.Curriculum;
 import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
 import com.revature.hydra.curriculum.pojos.BadRequestException;
-import com.revature.hydra.curriculum.pojos.BamUser;
 import com.revature.hydra.curriculum.pojos.Batch;
 import com.revature.hydra.curriculum.pojos.CurriculumSubtopicDTO;
 import com.revature.hydra.curriculum.pojos.DaysDTO;
@@ -52,7 +50,8 @@ public class CurriculumController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
+	
+	// TODO DALEK IT
 	// @HystrixCommand(fallbackMethod = "cachedTopic")
 	// @GetMapping("/getTopic")
 	// public Topic getTopic() {
@@ -72,11 +71,13 @@ public class CurriculumController {
 
 	@Autowired
 	CurriculumSubtopicService curriculumSubtopicService;
-
+	
+	// TODO DALEK IT
 	public CurriculumService get() {
 		return curriculumService;
 	}
 
+	// TODO WHAT
 	/***
 	 * @author Nam Mai Method is needed for injecting mocked services for unit test
 	 */
@@ -114,16 +115,17 @@ public class CurriculumController {
 	 * @throws BadRequestException
 	 * @throws NoContentException
 	 */
-	@SuppressWarnings("unused")
-	@GetMapping(value = "getcurriculum/{cId}")
+//	@SuppressWarnings("unused") // TODO ERASE ME (Suppress Warning annotation)
+	@GetMapping(value = "getcurriculum/{cId}") // TODO FIX ENDPOINT
 	public Curriculum getCurriculumById(@PathVariable int cId) throws BadRequestException, NoContentException {
-		Curriculum result = new Curriculum();
+		Curriculum result = new Curriculum(); // TODO REMOVE ALLOCATION
 		try {
 			result = curriculumService.getCuricullumById(cId);
-		} catch (NullPointerException e) {
+		} catch (NullPointerException e) { // TODO REMOVE POINTLESS TRY-CATCH
 			throw new BadRequestException("Request Failed");
 		}
-
+		
+		
 		if (result != null) {
 			return result;
 		} else {
@@ -131,6 +133,9 @@ public class CurriculumController {
 		}
 	}
 
+	
+	
+	
 	/**
 	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
 	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin)
@@ -150,11 +155,12 @@ public class CurriculumController {
 
 		try {
 			c = curriculumService.getCuricullumById(cId);
-			c.setId(cId);
+			c.setCurriculumId(cId); // TODO REDUNDANT
 		} catch (NullPointerException e) {
 			throw new BadRequestException("Request Failed");
 		}
-
+		
+		// TODO Rearrange into try-catch block
 		List<CurriculumSubtopic> result = curriculumSubtopicService.getCurriculumSubtopicForCurriculum(c);
 		if (result != null && !result.isEmpty()) {
 			return result;
@@ -162,7 +168,10 @@ public class CurriculumController {
 			throw new NoContentException("No schedules by Curriculum Id: " + cId + " were found");
 		}
 	}
-
+	
+	
+	
+	// TODO FIX AUTHORS, 1 AUTHOR PER @AUTHOR IN JAVADOCS
 	/**
 	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
 	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getTopicPool:
@@ -174,8 +183,8 @@ public class CurriculumController {
 	@HystrixCommand(fallbackMethod = "getSubtopicNames")
 	@GetMapping("topicpool")
 	public List<SubtopicName> getTopicPool() throws NoContentException {
-		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {
-		};
+		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
+		
 		List<SubtopicName> result = this.restTemplate.exchange(
 				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
 		if (result != null) {
@@ -185,10 +194,14 @@ public class CurriculumController {
 		}
 	}
 	
+	// Hystrix fallback method for getTopicPool
 	public List<SubtopicName> getSubtopicNames() {
 		return new ArrayList<SubtopicName>();
 	}
 
+	
+	
+	
 	/**
 	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
 	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getSubtopicPool:
@@ -211,10 +224,13 @@ public class CurriculumController {
 		}
 	}
 	
+	// Linked to by a Hystrix Command for getSubtopicPool
 	public List<Subtopic> getSubtopics() {
 		return new ArrayList<Subtopic>();
 	}
 
+	
+	// TODO PARAMETER
 	/**
 	 * @author Carter Taylor (1712-Steve), Stephen Negron (1801-Trevin), Rafael
 	 *         Sanchez (1801-Trevin)
@@ -242,7 +258,9 @@ public class CurriculumController {
 		curriculum.setCurriculumNumberOfWeeks(c.getMeta().getCurriculum().getCurriculumNumberOfWeeks());
 		curriculum.setCurriculumVersion(c.getMeta().getCurriculum().getCurriculumVersion());
 		curriculum.setIsMaster(c.getMeta().getCurriculum().getIsMaster());
-
+		
+		//curriculum = c.getMeta().getCurriculum();
+		
 		if (curriculum.getIsMaster() == 1) {
 			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getCurriculumName());
 			Curriculum prevMaster = null;
@@ -251,20 +269,37 @@ public class CurriculumController {
 				if (curriculumList.get(i).getIsMaster() == 1)
 					prevMaster = curriculumList.get(i);
 			}
+			
+			
 			if (prevMaster != null) {
 				prevMaster.setIsMaster(0);
 				curriculumService.save(prevMaster);
 			}
+			
+			
+			// Alternative
+//			Optional<Curriculum> prevMaster = curriculumList.stream().reduce((a, b) -> {
+//				return b.getIsMaster() == 1 ? b : a;
+//			});
+//			
+//			if(prevMaster.isPresent()) {
+//				Curriculum curr = prevMaster.get();
+//				curr.setIsMaster(0);
+//				curriculumService.save(curr);
+//			}
+			
+			
 		}
-
+		
+		
 		Curriculum addedCurr = curriculumService.save(curriculum);
 
 		int numWeeks = c.getWeeks().length;
-		for (int i = 0; i < numWeeks; i++) {
-			DaysDTO[] days = c.getWeeks()[i].getDays();
-			for (int j = 0; j < days.length; j++) {
+		for (int i = 0; i < numWeeks; i++) { // for each week
+			DaysDTO[] days = c.getWeeks()[i].getDays(); 
+			for (int j = 0; j < days.length; j++) { // for each day
 				Integer[] subtopic = days[j].getSubtopics();
-				for (int k = 0; k < subtopic.length; k++) {
+				for (int k = 0; k < subtopic.length; k++) { // for each sub-topic
 					CurriculumSubtopic cs = new CurriculumSubtopic();
 					cs.setCurriculum(curriculum);
 					cs.setCurriculumSubtopicNameId(subtopic[k]);
@@ -276,7 +311,9 @@ public class CurriculumController {
 		}
 		return addedCurr;
 	}
-
+	
+	
+	// TODO Rework code for efficiency (offload to db)
 	/**
 	 * @author Jordan DeLong Carter Taylor (1712-Steve), Stephen Negron
 	 *         (1801-Trevin), Rafael Sanchez (1801-Trevin)
@@ -335,6 +372,8 @@ public class CurriculumController {
 	 *         already synced
 	 * @throws CustomException
 	 */
+	
+	// TODO Rework ERRTHANG
 	@SuppressWarnings("unchecked")
 	@HystrixCommand(fallbackMethod = "emptyMethod")
 	@ResponseStatus(value = HttpStatus.RESET_CONTENT)
@@ -354,7 +393,7 @@ public class CurriculumController {
 		}
 
 		// if master not found, get latest version
-		if (c == null) {
+		if (c == null) { // TODO Use Java Streams API
 			curriculumList = curriculumService.findAllCurriculumByName(batchType);
 			if (curriculumList != null) {
 				int min = curriculumList.get(0).getCurriculumVersion();
@@ -396,6 +435,7 @@ public class CurriculumController {
 		}
 	}
 	
+	// Hystrix Fallback for syncBatch
 	public void emptyMethod() {
 		
 	}

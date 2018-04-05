@@ -54,26 +54,26 @@ public class CurriculumServiceTests {
 	public void getCurriculumById_returnsCurriculumWithMatchingId() {
 		// SETUP
 		Curriculum curriculum = new Curriculum(1, null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findById(1)).thenReturn(curriculum);
+		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
 		
 		// EXECUTE
 		Curriculum returnCurriculum = curriculumService.getCuricullumById(1);
 		
 		// TEST
-		assertEquals(returnCurriculum.getId().intValue(), 1);
+		assertEquals(returnCurriculum.getCurriculumId().intValue(), 1);
 	}
 	
 	@Test
 	public void getCurriculumByIdKeepPwd_returnsCurriculumWithMatchingId() {
 		// SETUP
 		Curriculum curriculum = new Curriculum(1, null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findById(1)).thenReturn(curriculum);
+		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
 		
 		// EXECUTE
 		Curriculum returnCurriculum = curriculumService.getCuricullumByIdKeepPwd(1);
 		
 		// TEST
-		assertEquals(returnCurriculum.getId().intValue(), 1);
+		assertEquals(returnCurriculum.getCurriculumId().intValue(), 1);
 	}
 	
 	@Test
