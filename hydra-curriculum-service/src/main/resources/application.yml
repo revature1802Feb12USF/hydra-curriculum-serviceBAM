@@ -1,0 +1,39 @@
+#hydra-curriculum-serviceBAM
+spring:
+  application:
+    name: hydra-curriculum-service
+  datasource:
+    url: jdbc:oracle:thin:@usfdatabase.ciadranb6tbr.us-east-2.rds.amazonaws.com:1521:orcl
+    username: bear_db
+    password: p4ssw0rd
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8991
+#server.context-path=/api/v2/curriculum
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+#eureka.client.serviceUrl.defaultZone=${EUREKA_URI:http://18.219.59.193:8761/eureka}
+
+#spring.datasource.url=jdbc:oracle:thin:@bamprod.cvoui7q38caj.us-east-2.rds.amazonaws.com:1521:ORCL
+#spring.datasource.username=bamproduser
+#spring.datasource.username=bamcurriculumservice
+#spring.datasource.password=revabam2017
+
+endpoints:
+  actuator:
+    enabled: true
+    sensitive: false
+  sensitive: false
