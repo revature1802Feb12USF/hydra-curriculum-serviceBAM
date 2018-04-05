@@ -25,6 +25,7 @@ eureka:
     preferIpAddress: true
 #eureka.client.serviceUrl.defaultZone=${EUREKA_URI:http://18.219.59.193:8761/eureka}
 
+
 endpoints:
   actuator:
     enabled: true
