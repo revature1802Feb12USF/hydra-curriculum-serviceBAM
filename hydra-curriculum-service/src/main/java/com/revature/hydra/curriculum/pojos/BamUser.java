@@ -20,11 +20,12 @@ public class BamUser {
 	// Role 1 is for associates // Role 2 is for trainers & QC
 	private Role role; // Role 3 is for admins
 
-	// Batch ID should only be used for associates. DO NOT use this
-	private Integer batch; // field to assign a batch to a trainer. It should be
-							// null for
-							// trainers and admins. A trainer is assigned in the
-							// Batches table.
+	/*
+	 *  Batch ID should only be used for associates. DO NOT use this
+	 *	field to assign a batch to a trainer. It should be null for
+	 *	trainers and admins. A trainer is assigned in the Batches table.
+	 */
+	private Integer batch; 
 	private String phone;
 
 	private String phone2;

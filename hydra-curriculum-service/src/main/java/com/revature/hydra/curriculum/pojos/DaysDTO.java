@@ -10,7 +10,6 @@ public class DaysDTO {
 	private Integer[] subtopics;
 	
 	public DaysDTO(){
-		//Empty because of No Args
 		
 	}
 

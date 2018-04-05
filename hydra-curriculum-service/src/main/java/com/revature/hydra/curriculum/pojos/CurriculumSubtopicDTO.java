@@ -11,7 +11,6 @@ public class CurriculumSubtopicDTO {
 	private WeeksDTO [] weeks;
 	
 	public CurriculumSubtopicDTO(){
-		//Empty Because of No Args.
 		
 	}
 
