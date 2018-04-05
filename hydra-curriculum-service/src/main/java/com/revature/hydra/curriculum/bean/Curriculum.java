@@ -44,10 +44,23 @@ public class Curriculum {
 	@Column(name = "Curriculum_Is_Master")
 	private int isMaster;
 	
+	/**
+	 * Creates a curriculum with default values.
+	 */
 	public Curriculum() {
-		
 	}
 
+	/**
+	 * Creates a curriculum with the given parameters.
+	 * @param id The ID of the curriculum.
+	 * @param curriculumName The name of the curriculum.
+	 * @param curriculumVersion The version number of the curriculum.
+	 * @param curriculumCreator The user ID of the user who created the curriculum.
+	 * @param curriculumModifier The user ID of the user who last modified the curriculum.
+	 * @param curriculumDateCreated The date the curriculum was created.
+	 * @param curriculumNumberOfWeeks Number of weeks the curriculum lasts.
+	 * @param isMaster 1 if the curriculum is the master version. Otherwise, should be 0.
+	 */
 	public Curriculum(Integer id, String curriculumName, int curriculumVersion, Integer curriculumCreator,
 			Integer curriculumModifier, String curriculumDateCreated, int curriculumNumberOfWeeks, int isMaster) {
 		super();
@@ -60,79 +73,147 @@ public class Curriculum {
 		this.curriculumNumberOfWeeks = curriculumNumberOfWeeks;
 		this.isMaster = isMaster;
 	}
-
+	
+	/**
+	 * Get the curriculum's ID.
+	 * @return The curriculum's ID.
+	 */
 	public Integer getCurriculumId() {
 		return curriculumId;
 	}
 
+	/**
+	 * Set the curriculum's ID.
+	 * @param id The ID number to set this curriculum's ID to.
+	 */
 	public void setCurriculumId(Integer id) {
 		this.curriculumId = id;
 	}
 
+	/**
+	 * Get the curriculum's name.
+	 * @return The curriculum's name.
+	 */
 	public String getCurriculumName() {
 		return curriculumName;
 	}
 
+	/**
+	 * Set the curriculum's name.
+	 * @param curriculumName The new name of the curriculum.
+	 */
 	public void setCurriculumName(String curriculumName) {
 		this.curriculumName = curriculumName;
 	}
 
+	/**
+	 * Get the curriculum version number.
+	 * @return The version number of the curriculum.
+	 */
 	public int getCurriculumVersion() {
 		return curriculumVersion;
 	}
-
+	
+	/**
+	 * Set the curriculum version.
+	 * @param curriculumVersion Set curriculum's version number.
+	 */
 	public void setCurriculumVersion(int curriculumVersion) {
 		this.curriculumVersion = curriculumVersion;
 	}
 
+	/**
+	 * Get the ID of the curriculum's creator.
+	 * @return Get the curriculum creator's ID.
+	 */
 	public Integer getCurriculumCreator() {
 		return curriculumCreator;
 	}
 
+	/**
+	 * Specify the curriculum creator's ID.
+	 * @param curriculumCreator The curriculum creator's ID.
+	 */
 	public void setCurriculumCreator(Integer curriculumCreator) {
 		this.curriculumCreator = curriculumCreator;
 	}
-
+	
+	/**
+	 * Get the ID of the last user who modified the curriculum.
+	 * @return The ID of the last user who modified the curriculum.
+	 */
 	public Integer getCurriculumModifier() {
 		return curriculumModifier;
 	}
 
+	/**
+	 * Specify the ID of the last user who modified the curriculum.
+	 * @param curriculumModifier The ID of the last user who modified the curriculum.
+	 */
 	public void setCurriculumModifier(Integer curriculumModifier) {
 		this.curriculumModifier = curriculumModifier;
 	}
 
+	/**
+	 * Gets the date the curriculum was created.
+	 * @return The date when the curriculum was 
+	 */
 	public String getCurriculumDateCreated() {
 		return curriculumDateCreated;
 	}
-
+	
+	/**
+	 * Set the date the curriculum was created.
+	 * @param curriculumDateCreated The date the curriculum was created.
+	 */
 	public void setCurriculumDateCreated(String curriculumDateCreated) {
 		this.curriculumDateCreated = curriculumDateCreated;
 	}
-
+	
+	/**
+	 * Get the number of weeks the curriculum lasts.
+	 * @return The number of weeks the curriculum lasts.
+	 */
 	public int getCurriculumNumberOfWeeks() {
 		return curriculumNumberOfWeeks;
 	}
-
+	
+	/**
+	 * Specify the number of weeks the curriculum lasts.
+	 * @param curriculumNumberOfWeeks The number of weeks the curriculum lasts.
+	 */
 	public void setCurriculumNumberOfWeeks(int curriculumNumberOfWeeks) {
 		this.curriculumNumberOfWeeks = curriculumNumberOfWeeks;
 	}
 
+	/**
+	 * Gets whether or not the user is the master version or not.
+	 * 	0 -> non-master version
+	 *  1 -> master version
+	 * @return 1 if this curriculum is the master version. 0 if this curriculum is not the master version.
+	 */
 	public int getIsMaster() {
 		return isMaster;
 	}
 
+	/**
+	 * Specify whether or not the curriculum is the master version.
+	 * @param isMaster 1 if the curriculum is the master version.
+	 * 				   0 if the curriculum is not the master version.
+	 */
 	public void setIsMaster(int isMaster) {
 		this.isMaster = isMaster;
 	}
-
+	
+	
 	@Override
 	public String toString() {
-		return "Curriculum [id=" + curriculumId + ", curriculumName=" + curriculumName + ", curriculumVersion="
-				+ curriculumVersion + ", curriculumCreator=" + curriculumCreator + ", curriculumModifier="
-				+ curriculumModifier + ", curriculumDateCreated=" + curriculumDateCreated + ", curriculumNumberOfWeeks="
-				+ curriculumNumberOfWeeks + ", isMaster=" + isMaster + "]";
+		return "Curriculum [ (ID) id=" + curriculumId + ", (Curriculum Name) curriculumName=" + curriculumName + ", (Curriculum Version) curriculumVersion="
+				+ curriculumVersion + ", (Curriculum Creator ID) curriculumCreator=" + curriculumCreator + ", (Curriculum Modifier ID) curriculumModifier="
+				+ curriculumModifier + ", (Date Created) curriculumDateCreated=" + curriculumDateCreated + ", (Duration in Weeks) curriculumNumberOfWeeks="
+				+ curriculumNumberOfWeeks + ", (Is Master Version) isMaster=" + isMaster + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		//make prime, PRIME
@@ -146,17 +227,17 @@ public class Curriculum {
 		result = PRIME * result + curriculumVersion;
 		result = PRIME * result + ((curriculumId == null) ? 0 : curriculumId.hashCode());
 		result = PRIME * result + isMaster;
-		return result;
+		return result; 
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		
+		// modify to check using instanceof
+		if (getClass() != obj.getClass()) return false;
+		
 		Curriculum other = (Curriculum) obj;
 		if (curriculumCreator == null) {
 			if (other.curriculumCreator != null)
