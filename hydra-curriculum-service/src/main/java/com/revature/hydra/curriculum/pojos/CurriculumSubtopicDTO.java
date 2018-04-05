@@ -2,7 +2,7 @@ package com.revature.hydra.curriculum.pojos;
 
 import java.util.Arrays;
 /**
- * Non-persistent bean containing a MetaDTO and WeeksDTO[]
+ * DTO containing a MetaDTO and WeeksDTO[]
  */
 public class CurriculumSubtopicDTO {
 

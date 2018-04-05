@@ -2,6 +2,9 @@ package com.revature.hydra.curriculum.pojos;
 
 import java.util.Arrays;
 
+/**
+ * DTO that holds subtopic id's
+ */
 public class DaysDTO {
 
 	private Integer[] subtopics;
@@ -21,7 +24,7 @@ public class DaysDTO {
 
 	@Override
 	public String toString() {
-		return "DaysDTO [subtopics=" + Arrays.toString(subtopics) + "]";
+		return "DaysDTO [(Sube Topics) /t subtopics=" + Arrays.toString(subtopics) + "\n]";
 	}
 	
 }
