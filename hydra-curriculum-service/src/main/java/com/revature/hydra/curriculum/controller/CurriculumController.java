@@ -378,13 +378,15 @@ public class CurriculumController {
 	}
 
 	/**
-	 * @author Carter Taylor (1712-Steve), Stephen Negron (1801-Trevin), Rafael
-	 *         Sanchez (1801-Trevin)
-	 * @param PathVariable
-	 *            int id batch id given as path variable syncBatch: sync batch by
-	 *            getting list of curriculum subtopics related to that batch type
-	 * @return HttpStatus.RESET_CONTENT if successful, HttpStatus.NO_CONTENT if
-	 *         already synced
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin) 
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Sync batch by getting list of curriculum subtopics related to that batch type.
+	 * HttpStatus.RESET_CONTENT if successful, HttpStatus.NO_CONTENT if already synced.
+	 * 
+	 * @param id  Batch ID
+	 *            
 	 * @throws CustomException
 	 */
 	
@@ -459,12 +461,15 @@ public class CurriculumController {
 	}
 
 	/**
-	 * @author Carter Taylor, James Holzer (1712-Steve), Stephen Negron
-	 *         (1801-Trevin), Rafael Sanchez (1801-Trevin)
-	 * @param RequestBody
-	 *            Curriculum version deleteCurriculumVersion: Deletes a curriculum
-	 *            version along with it's related CurriculumSubtopics
-	 * @return HttpStatus.OK if successful.
+	 * @author Carter Taylor
+	 * @author James Holzer (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Deletes a curriculum version along with it's related CurriculumSubtopics
+	 * HttpStatus.OK if successful.
+	 * 
+	 * @param version Curriculum version 
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("deleteversion")
