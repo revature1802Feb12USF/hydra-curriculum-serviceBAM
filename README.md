@@ -29,6 +29,7 @@ N/A
 ## Authors
 
 * **Seth Maize** - *Code cleanup* - [sgm4789](https://github.com/sgm4789)
+* **Johne Vang** - *Code cleanup* - [vangjk](https://github.com/vangjk)
 
 ## License
 
