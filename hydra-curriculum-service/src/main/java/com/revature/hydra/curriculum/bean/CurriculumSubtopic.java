@@ -12,6 +12,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The Curriculum Subtopic class will contain data about the subtopics of the curriculum
+ */
 @Entity
 @Table(name = "Curriculum_Subtopic")
 public class CurriculumSubtopic {
@@ -29,19 +32,31 @@ public class CurriculumSubtopic {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "curriculum_Subtopic_Cur_Id", referencedColumnName = "Curriculum_Id")
-	private Curriculum curriculum;
+	private Curriculum curriculum;	//curriculum that the subtopic belongs to
 
 	
 	@Column(name = "Curriculum_Week")
 	private int curriculumSubtopicWeek;
 	
 	@Column(name = "Curriculum_Day")
-	private int curriculumSubtopicDay;
+	private int curriculumSubtopicDay;	//TODO discuss modifications on how to make this more clear
 	
+	/**
+	 * Creates a no-args curriculum subtopic 
+	 */
 	public CurriculumSubtopic() {
 		
 	}
 
+	/**
+	 * Creates a subtopic for a curriculum with a specific subtopic id, subtopic name id, curriculum that the subtopic belongs to, 
+	 * the week the subtopic is assigned, and day that the subtopic is being assigned
+	 * @param curriculumSubtopicId
+	 * @param curriculumSubtopicNameId
+	 * @param curriculum
+	 * @param curriculumSubtopicWeek
+	 * @param curriculumSubtopicDay
+	 */
 	public CurriculumSubtopic(Integer curriculumSubtopicId, int curriculumSubtopicNameId, Curriculum curriculum,
 			int curriculumSubtopicWeek, int curriculumSubtopicDay) {
 		super();
@@ -52,51 +67,84 @@ public class CurriculumSubtopic {
 		this.curriculumSubtopicDay = curriculumSubtopicDay;
 	}
 
+	/**
+	 * @return the curriculumSubtopicId
+	 */
 	public Integer getCurriculumSubtopicId() {
 		return curriculumSubtopicId;
 	}
 
+	/**
+	 * @param curriculumSubtopicId the curriculumSubtopicId to set
+	 */
 	public void setCurriculumSubtopicId(Integer curriculumSubtopicId) {
 		this.curriculumSubtopicId = curriculumSubtopicId;
 	}
 
+	/**
+	 * @return the curriculumSubtopicNameId
+	 */
 	public int getCurriculumSubtopicNameId() {
 		return curriculumSubtopicNameId;
 	}
 
+	/**
+	 * @param curriculumSubtopicNameId the curriculumSubtopicNameId to set
+	 */
 	public void setCurriculumSubtopicNameId(int curriculumSubtopicNameId) {
 		this.curriculumSubtopicNameId = curriculumSubtopicNameId;
 	}
 
+	/**
+	 * @return the curriculum
+	 */
 	public Curriculum getCurriculum() {
 		return curriculum;
 	}
 
+	/**
+	 * @param curriculum the curriculum to set
+	 */
 	public void setCurriculum(Curriculum curriculum) {
 		this.curriculum = curriculum;
 	}
 
+	/**
+	 * @return the curriculumSubtopicWeek
+	 */
 	public int getCurriculumSubtopicWeek() {
 		return curriculumSubtopicWeek;
 	}
 
+	/**
+	 * @param curriculumSubtopicWeek the curriculumSubtopicWeek to set
+	 */
 	public void setCurriculumSubtopicWeek(int curriculumSubtopicWeek) {
 		this.curriculumSubtopicWeek = curriculumSubtopicWeek;
 	}
 
+	/**
+	 * @return the curriculumSubtopicDay
+	 */
 	public int getCurriculumSubtopicDay() {
 		return curriculumSubtopicDay;
 	}
 
+	/**
+	 * @param curriculumSubtopicDay the curriculumSubtopicDay to set
+	 */
 	public void setCurriculumSubtopicDay(int curriculumSubtopicDay) {
 		this.curriculumSubtopicDay = curriculumSubtopicDay;
 	}
 
 	@Override
 	public String toString() {
-		return "CurriculumSubtopic [curriculumSubtopicId=" + curriculumSubtopicId + ", curriculumSubtopicNameId="
-				+ curriculumSubtopicNameId + ", curriculum=" + curriculum + ", curriculumSubtopicWeek="
-				+ curriculumSubtopicWeek + ", curriculumSubtopicDay=" + curriculumSubtopicDay + "]";
+		return "CurriculumSubtopic [\n" + "(Curriculum Subtopic Id) \t curriculumSubtopicId =" + curriculumSubtopicId + ",\n" 
+				+ "(Subtopic Name Id) \t curriculumSubtopicNameId =" + curriculumSubtopicNameId + ",\n"
+				+ "(Curriculum Subtopic it belongs to) \t curriculum =" + curriculum + ",\n" 
+				+ "(Week of Subtopic) \t curriculumSubtopicWeek =" + curriculumSubtopicWeek + ",\n"
+				+ "(Day of Subtopic) \t curriculumSubtopicDay =" + curriculumSubtopicDay 
+				+ "]";
 	}
 
 	@Override
