@@ -36,18 +36,7 @@ public class CurriculumServiceTests {
 	
 	@Test
 	public void getAllCurriculum_returnsUsersArgument() {
-//		// SETUP
-//		BamUser user1 = new BamUser(1, null, null, null, null, null, null, null, null, null, null, null);
-//		BamUser user2 = new BamUser(2, null, null, null, null, null, null, null, null, null, null, null);
-//		List<BamUser> argumentList = new ArrayList<>();
-//		argumentList.add(user1);
-//		argumentList.add(user2);
-//
-//		// EXECUTE
-//		Map<String, List> curriculumUsers = curriculumService.getAllCurriculum(argumentList);
-//		
-//		// TEST
-//		assertEquals(curriculumUsers.get("users").size(), argumentList.size());
+
 	}
 	
 	@Test
