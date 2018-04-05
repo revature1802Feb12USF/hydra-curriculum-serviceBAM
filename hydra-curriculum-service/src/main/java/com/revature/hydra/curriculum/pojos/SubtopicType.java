@@ -1,5 +1,8 @@
 package com.revature.hydra.curriculum.pojos;
 
+/**
+ * Non-persistent bean holding Subtopic Type information.
+ */
 public class SubtopicType {
 
 	private Integer id;
@@ -39,7 +42,8 @@ public class SubtopicType {
 
 	@Override
 	public String toString() {
-		return "SubtopicType [id=" + id + ", name=" + name + "]";//NOSONAR
+		return "SubtopicType [(Subtopic Type ID) \t id=" + id + ",\n"
+				+ "(Name) \t name=" + name + "\n]";//NOSONAR
 	}
 
 }
