@@ -127,12 +127,12 @@ public class Batch {
 	
 	@Override
 	public String toString() {
-		return "Batch [\n " + "(Batch ID) id =" + id + ",\n" 
-				+ "(Batch Name) name =" + name + ",\n" 
-				+ "(Batch Start Date) startDate =" + startDate + ",\n" 
-				+ "(End Date) endDate =" + endDate + ",\n" 
-				+ "(Trainer's ID) trainerID =" + trainerID + ",\n" 
-				+ "(Batch Type) type =" + type 
+		return "Batch [\n " + "(Batch ID) \t id =" + id + ",\n" 
+				+ "(Batch Name) \t name =" + name + ",\n" 
+				+ "(Batch Start Date) \t startDate =" + startDate + ",\n" 
+				+ "(End Date) \t endDate =" + endDate + ",\n" 
+				+ "(Trainer's ID) \t trainerID =" + trainerID + ",\n" 
+				+ "(Batch Type) \t type =" + type 
 				+ "]";
 	}
 
