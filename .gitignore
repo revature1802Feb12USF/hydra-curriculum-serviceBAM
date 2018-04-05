@@ -1,0 +1,48 @@
+#Eclipse
+/.metadata/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+**/local.properties
+**/*.settings/
+.loadpath
+**/*.recommenders
+**/*.project
+**/*.classpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# Java annotation processor (APT)
+.factorypath
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+#Java
+**/*.class
+**/*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+
+#target folder from Maven
+*/target/**
+
+#Servers folder from Tomcat
+*/Servers/**
