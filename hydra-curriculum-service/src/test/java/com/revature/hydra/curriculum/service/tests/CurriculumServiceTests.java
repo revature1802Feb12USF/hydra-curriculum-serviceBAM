@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
 import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 import com.revature.hydra.curriculum.services.CurriculumService;
@@ -41,33 +42,18 @@ public class CurriculumServiceTests {
 	 * Testing if the given ID in getCurriculumByID exists in the database.
 	 */
 	@Test
-	public void getCurriculumById_returnsCurriculumWithMatchingId() {
+	public void getCurriculumById_returnsCurriculumWithMatchingId() throws NoContentException {
 		// SETUP
 		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
 		
 		// EXECUTE
-		Curriculum returnCurriculum = curriculumService.getCuricullumById(1);
+		Curriculum returnCurriculum = curriculumService.getCurriculumById(1);
 		
 		// TEST
 		assertEquals(returnCurriculum.getId().intValue(), 1);
 	}
 	
-	/*
-	 * Testing if the given ID in getCurriculumByIDKeepPwd exists in the database.
-	 */
-	@Test
-	public void getCurriculumByIdKeepPwd_returnsCurriculumWithMatchingId() {
-		// SETUP
-		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
-		
-		// EXECUTE
-		Curriculum returnCurriculum = curriculumService.getCuricullumByIdKeepPwd(1);
-		
-		// TEST
-		assertEquals(returnCurriculum.getId().intValue(), 1);
-	}
 	
 	/*
 	 * Test and verify to see if curriculum will be saved in the repository 1 time in the 

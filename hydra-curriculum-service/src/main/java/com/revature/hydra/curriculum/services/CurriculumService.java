@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.exceptions.BadRequestException;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
 import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 
@@ -22,6 +25,9 @@ public class CurriculumService {
 
 	@Autowired
 	CurriculumSubtopicRepository curriculumSubtopicRepository;
+	
+	@Autowired
+	CurriculumSubtopicService curriculumSubtopicService;
 	
 	/**
 	 * Creates a curriculum service with default parameters.
@@ -47,9 +53,14 @@ public class CurriculumService {
 	 * Returns all curriculums.
 	 * @return A list of all the curriculums in the database.
 	 */
-	public List<Curriculum> getAllCurriculum() {
+	public List<Curriculum> getAllCurriculums() throws NoContentException {
 		List<Curriculum> curriculumList = curriculumRepository.findAll();
-		return curriculumList;
+		
+		if (curriculumList != null && !curriculumList.isEmpty()) {
+			return curriculumList;
+		} else {
+			throw new NoContentException("No curriculums found");
+		}
 	}
 	
 	
@@ -60,25 +71,14 @@ public class CurriculumService {
 	 *            
 	 * @return The curriculum with the given id if it exists; otherwise, null is returned.
 	 */
-	// TODO KEEP ME; FIX MY SPELLING
-	public Curriculum getCuricullumById(Integer id) {
+	public Curriculum getCurriculumById(Integer id) throws NoContentException {
 		Curriculum curriculum = curriculumRepository.findCurriculumById(id);
-		return curriculum;
-	}
-	
-	// TODO ERASE ME; REFACTOR TO getCuricullumById()
-	/**
-	 * @author Carter Taylor (1712-Steve)
-	 * 
-	 * Find a curriculum by id.
-	 * 
-	 * @param id The id of the curriculum to find.
-	 *            
-	 * @return The curriculum with the given id if it exists; otherwise, null is returned.
-	 */
-	public Curriculum getCuricullumByIdKeepPwd(Integer id) {
-		Curriculum curriculum = curriculumRepository.findCurriculumById(id);
-		return curriculum;
+		
+		if(curriculum != null) {
+			return curriculum;
+		} else {
+			throw new NoContentException("Curriculum by id: " + id + " was not found");
+		}
 	}
 
 	/**
@@ -143,5 +143,27 @@ public class CurriculumService {
 	@Transactional
 	public void deleteCurriculumSubtopics(Curriculum version) {
 		curriculumSubtopicRepository.deleteByCurriculum(version);
+	}
+	
+	/**
+	 * Gets all the schedules for the curriculum specified by the ID.
+	 * @param id The ID of the curriculum.
+	 * @return A list of subtopics for the specified curriculum.
+	 * @throws NoContentException No topics found.
+	 * @throws BadRequestException No curriculum found with given ID.
+	 */
+	public List<CurriculumSubtopic> getAllCurriculumSchedulesForCurriculum(int id) throws NoContentException, BadRequestException {
+		Curriculum c = getCurriculumById(id);
+		
+		if(c == null) {
+			throw new BadRequestException("No curriculum found with ID: " + id + ".");
+		}
+		
+		List<CurriculumSubtopic> result = curriculumSubtopicService.getCurriculumSubtopicForCurriculum(c);
+		
+		if(result != null && !result.isEmpty()) 
+			return result; 
+		else 
+			throw new NoContentException("No schedules by curriculum id: " + id + " were found.");
 	}
 }

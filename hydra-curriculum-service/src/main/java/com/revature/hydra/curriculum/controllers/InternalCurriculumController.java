@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.services.CurriculumService;
 
 /**
@@ -72,10 +73,11 @@ public class InternalCurriculumController {
 	 * Retrieve all curriculums from the database.
 	 * 
 	 * @return A list of all curriculums in the database.
+	 * @throws NoContentException  
 	 */
 	@PostMapping("getAllCurriculum")
-	public List<Curriculum> getAllCurriculum(){
-		return curriculumService.getAllCurriculum();
+	public List<Curriculum> getAllCurriculum() throws NoContentException {
+		return curriculumService.getAllCurriculums();
 	}
 	
 	/**
@@ -84,10 +86,11 @@ public class InternalCurriculumController {
 	 * @param id The id of the curriculum to retrieve.
 	 * 
 	 * @return The curriculum of the given id.
+	 * @throws NoContentException No curriculum found with the given ID.
 	 */
 	@PostMapping("getCuricullumById/{id}")
-	public Curriculum getCuricullumById(@PathVariable Integer id){
-		return curriculumService.getCuricullumById(id);
+	public Curriculum getCuricullumById(@PathVariable Integer id) throws NoContentException{
+		return curriculumService.getCurriculumById(id);
 	}
 	
 	/**
@@ -96,10 +99,11 @@ public class InternalCurriculumController {
 	 * @param id The id of the curriculum to retrieve.
 	 * 
 	 * @return The curriculum of the given id.
+	 * @throws NoContentException No curriculum found with the given ID.
 	 */
 	@PostMapping("getCuricullumByIdKeepPwd/{id}")
-	public Curriculum getCuricullumByIdKeepPwd(@PathVariable Integer id){
-		return curriculumService.getCuricullumByIdKeepPwd(id);
+	public Curriculum getCuricullumByIdKeepPwd(@PathVariable Integer id) throws NoContentException{
+		return curriculumService.getCurriculumById(id);
 	}
 	
 	/**
