@@ -15,6 +15,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,7 @@ import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
  * This class establishes REST endpoints for retrieval and modification of curriculum data.
  */
 @RestController
-@RequestMapping("/api/v2/curriculum/")
+@RequestMapping("/api/v2/curriculums")
 public class CurriculumController {
 	
 	/**
@@ -103,7 +104,7 @@ public class CurriculumController {
 	 * @return The list of all curriculums.
 	 * @throws NoContentException Thrown when given list is empty or null. (HttpStatus.NO_CONTENT)
 	 */
-	@GetMapping(value = "all")
+	@GetMapping()
 	public List<Curriculum> getAllCurriculum() throws NoContentException {
 		List<Curriculum> curriculums = curriculumService.getAllCurriculum();
 		if (curriculums != null && !curriculums.isEmpty()) {
@@ -131,7 +132,7 @@ public class CurriculumController {
 	 * @throws BadRequestException There are missing parameters.
 	 * @throws NoContentException No curriculum found for the given ID.
 	 */
-	@GetMapping(value = "getcurriculum/{cId}")
+	@GetMapping("/{cId}")
 	public Curriculum getCurriculumById(@PathVariable int cId) throws BadRequestException, NoContentException {
 		Curriculum result = new Curriculum();
 		try {
@@ -164,7 +165,7 @@ public class CurriculumController {
 	 * @throws BadRequestException Parameters missing.
 	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
-	@GetMapping(value = "schedule/{cId}")
+	@GetMapping(value = "/schedule/{cId}")
 	public List<CurriculumSubtopic> getAllCurriculumSchedules(@PathVariable int cId)
 			throws BadRequestException, NoContentException {
 		Curriculum c = new Curriculum();
@@ -273,7 +274,7 @@ public class CurriculumController {
 	 * @throws JsonMappingException Error occurred in mapping the parsed JSON string.
 	 * @throws IOException Error occurred in parsing the JSON string.
 	 */
-	@PostMapping(value = "addcurriculum")
+	@PostMapping()
 	public Curriculum addSchedule(@RequestBody String json) throws JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		CurriculumSubtopicDTO c = mapper.readValue(json, CurriculumSubtopicDTO.class);
@@ -342,7 +343,7 @@ public class CurriculumController {
 	 * @throws BadRequestException Could not find a curriculum with the provided ID.
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@GetMapping(value = "makemaster/{cId}")
+	@PatchMapping(value = "master/{cId}")
 	public void markCurriculumAsMaster(@PathVariable int cId) throws BadRequestException {
 		Curriculum c = new Curriculum();
 
@@ -472,7 +473,7 @@ public class CurriculumController {
 	 * @param version Curriculum version 
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("deleteversion")
+	@PostMapping("version")
 	public void deleteCurriculumVersion(@RequestBody Curriculum version) {
 		curriculumService.deleteCurriculum(version);
 	}
