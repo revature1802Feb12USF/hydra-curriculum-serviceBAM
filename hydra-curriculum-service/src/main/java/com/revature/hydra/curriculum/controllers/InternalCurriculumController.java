@@ -27,7 +27,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @param curriculum The curriculum to delete.
 	 */
-	@PostMapping("deleteCurriculum")
+	@PostMapping("curriculums")
 	public void deleteCurriculum(@RequestBody Curriculum curriculum){
 		curriculumService.deleteCurriculum(curriculum);
 	}
@@ -37,7 +37,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @param curriculum Determines which curriculum subtopics will be deleted.
 	 */
-	@PostMapping("deleteCurriculumSubtopics")
+	@PostMapping("curriculumsubtopics")
 	public void deleteCurriculumSubtopics(@RequestBody Curriculum curriculum){
 		curriculumService.deleteCurriculumSubtopics(curriculum);
 	}
@@ -49,7 +49,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return A list of curriculums of the given name.
 	 */
-	@PostMapping("findAllCurriculumByName/{name}")
+	@PostMapping("curriculums/{name}")
 	public List<Curriculum> findAllCurriculumByName(@PathVariable String name){
 		return curriculumService.findAllCurriculumByName(name);
 	}
@@ -63,7 +63,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return List of curriculums found with the provided constraints.
 	 */
-	@PostMapping("findAllCurriculumByNameAndIsMaster/{name}")
+	@PostMapping("master/{name}")
 	public List<Curriculum> findAllCurriculumByNameAndIsMaster(@PathVariable String name, @RequestBody Integer isMaster){
 		return curriculumService.findAllCurriculumByNameAndIsMaster(name, isMaster);
 	}
@@ -73,7 +73,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return A list of all curriculums in the database.
 	 */
-	@PostMapping("getAllCurriculum")
+	@PostMapping("curriculums")
 	public List<Curriculum> getAllCurriculum(){
 		return curriculumService.getAllCurriculum();
 	}
@@ -85,7 +85,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return The curriculum of the given id.
 	 */
-	@PostMapping("getCuricullumById/{id}")
+	@PostMapping("curriculums/{id}")
 	public Curriculum getCuricullumById(@PathVariable Integer id){
 		return curriculumService.getCuricullumById(id);
 	}
@@ -97,7 +97,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return The curriculum of the given id.
 	 */
-	@PostMapping("getCuricullumByIdKeepPwd/{id}")
+	@PostMapping("curriculums/{id}")
 	public Curriculum getCuricullumByIdKeepPwd(@PathVariable Integer id){
 		return curriculumService.getCuricullumByIdKeepPwd(id);
 	}
@@ -109,7 +109,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return The curriculum saved to the database.
 	 */
-	@PostMapping("save")
+	@PostMapping("curriculums")
 	public Curriculum save(@RequestBody Curriculum curriculum){
 		return curriculumService.save(curriculum);
 	}
