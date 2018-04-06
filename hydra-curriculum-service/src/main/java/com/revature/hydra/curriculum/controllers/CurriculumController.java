@@ -165,7 +165,7 @@ public class CurriculumController {
 	 * @throws BadRequestException Parameters missing.
 	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
-	@GetMapping(value = "/schedule/{cId}")
+	@GetMapping("/schedule/{cId}")
 	public List<CurriculumSubtopic> getAllCurriculumSchedules(@PathVariable int cId)
 			throws BadRequestException, NoContentException {
 		Curriculum c = new Curriculum();
@@ -343,7 +343,7 @@ public class CurriculumController {
 	 * @throws BadRequestException Could not find a curriculum with the provided ID.
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@PatchMapping(value = "master/{cId}")
+	@PatchMapping("master/{cId}")
 	public void markCurriculumAsMaster(@PathVariable int cId) throws BadRequestException {
 		Curriculum c = new Curriculum();
 
