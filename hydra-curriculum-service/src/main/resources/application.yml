@@ -10,6 +10,10 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.Oracle10gDialect
     show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
 
 server:
   port: 8991
