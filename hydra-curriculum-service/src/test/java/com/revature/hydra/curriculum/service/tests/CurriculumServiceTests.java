@@ -44,13 +44,13 @@ public class CurriculumServiceTests {
 	public void getCurriculumById_returnsCurriculumWithMatchingId() {
 		// SETUP
 		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
+		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
 		
 		// EXECUTE
 		Curriculum returnCurriculum = curriculumService.getCuricullumById(1);
 		
 		// TEST
-		assertEquals(returnCurriculum.getCurriculumId().intValue(), 1);
+		assertEquals(returnCurriculum.getId().intValue(), 1);
 	}
 	
 	/*
@@ -60,13 +60,13 @@ public class CurriculumServiceTests {
 	public void getCurriculumByIdKeepPwd_returnsCurriculumWithMatchingId() {
 		// SETUP
 		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
+		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
 		
 		// EXECUTE
 		Curriculum returnCurriculum = curriculumService.getCuricullumByIdKeepPwd(1);
 		
 		// TEST
-		assertEquals(returnCurriculum.getCurriculumId().intValue(), 1);
+		assertEquals(returnCurriculum.getId().intValue(), 1);
 	}
 	
 	/*
@@ -98,7 +98,7 @@ public class CurriculumServiceTests {
 		curriculumService.findAllCurriculumByName(name);
 		
 		// TEST
-		verify(mockCurriculumRepository, times(1)).findByCurriculumName(name);
+		verify(mockCurriculumRepository, times(1)).findCurriculumByName(name);
 	}
 	
 	/*
@@ -115,7 +115,7 @@ public class CurriculumServiceTests {
 		curriculumService.findAllCurriculumByNameAndIsMaster(name, isMaster);
 		
 		// TEST
-		verify(mockCurriculumRepository, times(1)).findByCurriculumNameAndIsMaster(name, isMaster);
+		verify(mockCurriculumRepository, times(1)).findCurriculumByNameAndIsMasterVersion(name, isMaster);
 	}
 	
 	/*

@@ -15,34 +15,34 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Curriculum {
 
 	@Id
-	@Column(name = "Curriculum_Id")
-	@SequenceGenerator(name = "Curriculum_ID_SEQ", sequenceName = "Curriculum_ID_SEQ", allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Curriculum_ID_SEQ")
-	private Integer curriculumId;
+	@Column(name = "Id")
+	@SequenceGenerator(name = "ID_SEQ", sequenceName = "ID_SEQ", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQ")
+	private Integer Id;
 	
-	@Column(name= "Curriculum_name")
+	@Column(name= "Name")
 	@NotEmpty(message = "Curriculum name cannot be empty")
-	private String curriculumName;
+	private String name;
 	
-	@Column(name ="Curriculum_version")
-	private int curriculumVersion;
+	@Column(name ="Version")
+	private int version;
 	
-	@Column(name = "Curriculum_Creator")
-	private Integer curriculumCreator;
+	@Column(name = "Creator")
+	private Integer creatorId;
 	
-	@Column(name = "Curriculum_Modifier")
-	private Integer curriculumModifier;
+	@Column(name = "Modifier")
+	private Integer modifierId;
 	
-	@Column(name = "Curriculum_Date_Created")
+	@Column(name = "Date_Created")
 	@NotEmpty(message = "Curriculum Date Created cannot be empty")
-	private String curriculumDateCreated;
+	private String dateCreated;
 	
-	@Column(name = "Curriculum_Number_Of_Weeks")
-	private int curriculumNumberOfWeeks;
+	@Column(name = "Number_Of_Weeks")
+	private int numberOfWeeks;
 	
 	//should probably be a boolean
-	@Column(name = "Curriculum_Is_Master")
-	private int isMaster;
+	@Column(name = "Is_Master")
+	private int isMasterVersion;
 	
 	/**
 	 * Creates a curriculum with default values.
@@ -52,136 +52,136 @@ public class Curriculum {
 
 	/**
 	 * Creates a curriculum with the given parameters.
-	 * @param curriculumName The name of the curriculum.
-	 * @param curriculumVersion The version number of the curriculum.
-	 * @param curriculumCreator The user ID of the user who created the curriculum.
-	 * @param curriculumModifier The user ID of the user who last modified the curriculum.
-	 * @param curriculumDateCreated The date the curriculum was created.
-	 * @param curriculumNumberOfWeeks Number of weeks the curriculum lasts.
-	 * @param isMaster 1 if the curriculum is the master version. Otherwise, should be 0.
+	 * @param name The name of the curriculum.
+	 * @param version The version number of the curriculum.
+	 * @param creatorId The user ID of the user who created the curriculum.
+	 * @param modifierId The user ID of the user who last modified the curriculum.
+	 * @param dateCreated The date the curriculum was created.
+	 * @param numberOfWeeks Number of weeks the curriculum lasts.
+	 * @param isMasterVersion 1 if the curriculum is the master version. Otherwise, should be 0.
 	 */
-	public Curriculum(String curriculumName, int curriculumVersion, Integer curriculumCreator,
-			Integer curriculumModifier, String curriculumDateCreated, int curriculumNumberOfWeeks, int isMaster) {
+	public Curriculum(String name, int version, Integer creatorId,
+			Integer modifierId, String dateCreated, int numberOfWeeks, int isMasterVersion) {
 		super();
-		this.curriculumName = curriculumName;
-		this.curriculumVersion = curriculumVersion;
-		this.curriculumCreator = curriculumCreator;
-		this.curriculumModifier = curriculumModifier;
-		this.curriculumDateCreated = curriculumDateCreated;
-		this.curriculumNumberOfWeeks = curriculumNumberOfWeeks;
-		this.isMaster = isMaster;
+		this.name = name;
+		this.version = version;
+		this.creatorId = creatorId;
+		this.modifierId = modifierId;
+		this.dateCreated = dateCreated;
+		this.numberOfWeeks = numberOfWeeks;
+		this.isMasterVersion = isMasterVersion;
 	}
 	
 	/**
 	 * Get the curriculum's ID.
 	 * @return The curriculum's ID.
 	 */
-	public Integer getCurriculumId() {
-		return curriculumId;
+	public Integer getId() {
+		return Id;
 	}
 
 	/**
 	 * Set the curriculum's ID.
 	 * @param id The ID number to set this curriculum's ID to.
 	 */
-	public void setCurriculumId(Integer id) {
-		this.curriculumId = id;
+	public void setId(Integer id) {
+		this.Id = id;
 	}
 
 	/**
 	 * Get the curriculum's name.
 	 * @return The curriculum's name.
 	 */
-	public String getCurriculumName() {
-		return curriculumName;
+	public String getName() {
+		return name;
 	}
 
 	/**
 	 * Set the curriculum's name.
-	 * @param curriculumName The new name of the curriculum.
+	 * @param name The new name of the curriculum.
 	 */
-	public void setCurriculumName(String curriculumName) {
-		this.curriculumName = curriculumName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
 	 * Get the curriculum version number.
 	 * @return The version number of the curriculum.
 	 */
-	public int getCurriculumVersion() {
-		return curriculumVersion;
+	public int getVersion() {
+		return version;
 	}
 	
 	/**
 	 * Set the curriculum version.
-	 * @param curriculumVersion Set curriculum's version number.
+	 * @param version Set curriculum's version number.
 	 */
-	public void setCurriculumVersion(int curriculumVersion) {
-		this.curriculumVersion = curriculumVersion;
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	/**
 	 * Get the ID of the curriculum's creator.
 	 * @return Get the curriculum creator's ID.
 	 */
-	public Integer getCurriculumCreator() {
-		return curriculumCreator;
+	public Integer getCreatorId() {
+		return creatorId;
 	}
 
 	/**
 	 * Specify the curriculum creator's ID.
-	 * @param curriculumCreator The curriculum creator's ID.
+	 * @param creator The curriculum creator's ID.
 	 */
-	public void setCurriculumCreator(Integer curriculumCreator) {
-		this.curriculumCreator = curriculumCreator;
+	public void setCreatorId(Integer creator) {
+		this.creatorId = creator;
 	}
 	
 	/**
 	 * Get the ID of the last user who modified the curriculum.
 	 * @return The ID of the last user who modified the curriculum.
 	 */
-	public Integer getCurriculumModifier() {
-		return curriculumModifier;
+	public Integer getModifierId() {
+		return modifierId;
 	}
 
 	/**
 	 * Specify the ID of the last user who modified the curriculum.
-	 * @param curriculumModifier The ID of the last user who modified the curriculum.
+	 * @param modifierId The ID of the last user who modified the curriculum.
 	 */
-	public void setCurriculumModifier(Integer curriculumModifier) {
-		this.curriculumModifier = curriculumModifier;
+	public void setModifierId(Integer modifierId) {
+		this.modifierId = modifierId;
 	}
 
 	/**
 	 * Gets the date the curriculum was created.
 	 * @return The date when the curriculum was 
 	 */
-	public String getCurriculumDateCreated() {
-		return curriculumDateCreated;
+	public String getDateCreated() {
+		return dateCreated;
 	}
 	
 	/**
 	 * Set the date the curriculum was created.
-	 * @param curriculumDateCreated The date the curriculum was created.
+	 * @param dateCreated The date the curriculum was created.
 	 */
-	public void setCurriculumDateCreated(String curriculumDateCreated) {
-		this.curriculumDateCreated = curriculumDateCreated;
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 	
 	/**
 	 * Get the number of weeks the curriculum lasts.
 	 * @return The number of weeks the curriculum lasts.
 	 */
-	public int getCurriculumNumberOfWeeks() {
-		return curriculumNumberOfWeeks;
+	public int getNumberOfWeeks() {
+		return numberOfWeeks;
 	}
 	
 	/**
 	 * Specify the number of weeks the curriculum lasts.
-	 * @param curriculumNumberOfWeeks The number of weeks the curriculum lasts.
+	 * @param numberOfWeeks The number of weeks the curriculum lasts.
 	 */
-	public void setCurriculumNumberOfWeeks(int curriculumNumberOfWeeks) {
-		this.curriculumNumberOfWeeks = curriculumNumberOfWeeks;
+	public void setNumberOfWeeks(int numberOfWeeks) {
+		this.numberOfWeeks = numberOfWeeks;
 	}
 
 	/**
@@ -190,8 +190,8 @@ public class Curriculum {
 	 *  1 -> master version
 	 * @return 1 if this curriculum is the master version. 0 if this curriculum is not the master version.
 	 */
-	public int getIsMaster() {
-		return isMaster;
+	public int getIsMasterVersion() {
+		return isMasterVersion;
 	}
 
 	/**
@@ -199,17 +199,17 @@ public class Curriculum {
 	 * @param isMaster 1 if the curriculum is the master version.
 	 * 				   0 if the curriculum is not the master version.
 	 */
-	public void setIsMaster(int isMaster) {
-		this.isMaster = isMaster;
+	public void setIsMasterVersion(int isMasterVersion) {
+		this.isMasterVersion = isMasterVersion;
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "Curriculum [ (ID) id=" + curriculumId + ", (Curriculum Name) curriculumName=" + curriculumName + ", (Curriculum Version) curriculumVersion="
-				+ curriculumVersion + ", (Curriculum Creator ID) curriculumCreator=" + curriculumCreator + ", (Curriculum Modifier ID) curriculumModifier="
-				+ curriculumModifier + ", (Date Created) curriculumDateCreated=" + curriculumDateCreated + ", (Duration in Weeks) curriculumNumberOfWeeks="
-				+ curriculumNumberOfWeeks + ", (Is Master Version) isMaster=" + isMaster + "]";
+		return "Curriculum [ (ID) id=" + Id + ", (Curriculum Name) curriculumName=" + name + ", (Curriculum Version) curriculumVersion="
+				+ version + ", (Curriculum Creator ID) curriculumCreator=" + creatorId + ", (Curriculum Modifier ID) curriculumModifier="
+				+ modifierId + ", (Date Created) curriculumDateCreated=" + dateCreated + ", (Duration in Weeks) curriculumNumberOfWeeks="
+				+ numberOfWeeks + ", (Is Master Version) isMaster=" + isMasterVersion + "]";
 	}
 	
 	@Override
@@ -217,14 +217,14 @@ public class Curriculum {
 		//make prime, PRIME
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + ((curriculumCreator == null) ? 0 : curriculumCreator.hashCode());
-		result = PRIME * result + ((curriculumDateCreated == null) ? 0 : curriculumDateCreated.hashCode());
-		result = PRIME * result + ((curriculumModifier == null) ? 0 : curriculumModifier.hashCode());
-		result = PRIME * result + ((curriculumName == null) ? 0 : curriculumName.hashCode());
-		result = PRIME * result + curriculumNumberOfWeeks;
-		result = PRIME * result + curriculumVersion;
-		result = PRIME * result + ((curriculumId == null) ? 0 : curriculumId.hashCode());
-		result = PRIME * result + isMaster;
+		result = PRIME * result + ((creatorId == null) ? 0 : creatorId.hashCode());
+		result = PRIME * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = PRIME * result + ((modifierId == null) ? 0 : modifierId.hashCode());
+		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+		result = PRIME * result + numberOfWeeks;
+		result = PRIME * result + version;
+		result = PRIME * result + ((Id == null) ? 0 : Id.hashCode());
+		result = PRIME * result + isMasterVersion;
 		return result; 
 	}
 	
@@ -237,36 +237,36 @@ public class Curriculum {
 		if (getClass() != obj.getClass()) return false;
 		
 		Curriculum other = (Curriculum) obj;
-		if (curriculumCreator == null) {
-			if (other.curriculumCreator != null)
+		if (creatorId == null) {
+			if (other.creatorId != null)
 				return false;
-		} else if (!curriculumCreator.equals(other.curriculumCreator))
+		} else if (!creatorId.equals(other.creatorId))
 			return false;
-		if (curriculumDateCreated == null) {
-			if (other.curriculumDateCreated != null)
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
 				return false;
-		} else if (!curriculumDateCreated.equals(other.curriculumDateCreated))
+		} else if (!dateCreated.equals(other.dateCreated))
 			return false;
-		if (curriculumModifier == null) {
-			if (other.curriculumModifier != null)
+		if (modifierId == null) {
+			if (other.modifierId != null)
 				return false;
-		} else if (!curriculumModifier.equals(other.curriculumModifier))
+		} else if (!modifierId.equals(other.modifierId))
 			return false;
-		if (curriculumName == null) {
-			if (other.curriculumName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!curriculumName.equals(other.curriculumName))
+		} else if (!name.equals(other.name))
 			return false;
-		if (curriculumNumberOfWeeks != other.curriculumNumberOfWeeks)
+		if (numberOfWeeks != other.numberOfWeeks)
 			return false;
-		if (curriculumVersion != other.curriculumVersion)
+		if (version != other.version)
 			return false;
-		if (curriculumId == null) {
-			if (other.curriculumId != null)
+		if (Id == null) {
+			if (other.Id != null)
 				return false;
-		} else if (!curriculumId.equals(other.curriculumId))
+		} else if (!Id.equals(other.Id))
 			return false;
-		if (isMaster != other.isMaster)
+		if (isMasterVersion != other.isMasterVersion)
 			return false;
 		return true;
 	}

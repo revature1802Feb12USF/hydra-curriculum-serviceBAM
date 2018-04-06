@@ -62,7 +62,7 @@ public class CurriculumService {
 	 */
 	// TODO KEEP ME; FIX MY SPELLING
 	public Curriculum getCuricullumById(Integer id) {
-		Curriculum curriculum = curriculumRepository.findByCurriculumId(id);
+		Curriculum curriculum = curriculumRepository.findCurriculumById(id);
 		return curriculum;
 	}
 	
@@ -77,7 +77,7 @@ public class CurriculumService {
 	 * @return The curriculum with the given id if it exists; otherwise, null is returned.
 	 */
 	public Curriculum getCuricullumByIdKeepPwd(Integer id) {
-		Curriculum curriculum = curriculumRepository.findByCurriculumId(id);
+		Curriculum curriculum = curriculumRepository.findCurriculumById(id);
 		return curriculum;
 	}
 
@@ -100,7 +100,7 @@ public class CurriculumService {
 	 * @return List of Curriculum objects of the given name.
 	 */
 	public List<Curriculum> findAllCurriculumByName(String name) {
-		return curriculumRepository.findByCurriculumName(name);
+		return curriculumRepository.findCurriculumByName(name);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class CurriculumService {
 	 */
 	// Modify appropriately. Find Master version of curriculum by name.
 	public List<Curriculum> findAllCurriculumByNameAndIsMaster(String name, Integer isMaster) {
-		List<Curriculum> master = curriculumRepository.findByCurriculumNameAndIsMaster(name, isMaster);
+		List<Curriculum> master = curriculumRepository.findCurriculumByNameAndIsMasterVersion(name, isMaster);
 		return master;
 	}
 

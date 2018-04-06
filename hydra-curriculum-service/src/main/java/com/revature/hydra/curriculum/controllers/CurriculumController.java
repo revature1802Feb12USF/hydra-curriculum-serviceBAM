@@ -26,15 +26,15 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.hydra.curriculum.beans.BadRequestException;
 import com.revature.hydra.curriculum.beans.Batch;
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopicDTO;
 import com.revature.hydra.curriculum.beans.DaysDTO;
-import com.revature.hydra.curriculum.beans.NoContentException;
 import com.revature.hydra.curriculum.beans.Subtopic;
 import com.revature.hydra.curriculum.beans.SubtopicName;
+import com.revature.hydra.curriculum.exceptions.BadRequestException;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.services.CurriculumService;
 import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
 
@@ -281,27 +281,27 @@ public class CurriculumController {
 		// save curriculum object first
 
 		Curriculum curriculum = new Curriculum();
-		curriculum.setCurriculumCreator(c.getMeta().getCurriculum().getCurriculumCreator());
-		curriculum.setCurriculumDateCreated(c.getMeta().getCurriculum().getCurriculumDateCreated());
-		curriculum.setCurriculumName(c.getMeta().getCurriculum().getCurriculumName());
-		curriculum.setCurriculumNumberOfWeeks(c.getMeta().getCurriculum().getCurriculumNumberOfWeeks());
-		curriculum.setCurriculumVersion(c.getMeta().getCurriculum().getCurriculumVersion());
-		curriculum.setIsMaster(c.getMeta().getCurriculum().getIsMaster());
+		curriculum.setCreatorId(c.getMeta().getCurriculum().getCreatorId());
+		curriculum.setDateCreated(c.getMeta().getCurriculum().getDateCreated());
+		curriculum.setName(c.getMeta().getCurriculum().getName());
+		curriculum.setNumberOfWeeks(c.getMeta().getCurriculum().getNumberOfWeeks());
+		curriculum.setVersion(c.getMeta().getCurriculum().getVersion());
+		curriculum.setIsMasterVersion(c.getMeta().getCurriculum().getIsMasterVersion());
 		
 		//curriculum = c.getMeta().getCurriculum();
 		
-		if (curriculum.getIsMaster() == 1) {
-			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getCurriculumName());
+		if (curriculum.getIsMasterVersion() == 1) {
+			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getName());
 			Curriculum prevMaster = null;
 
 			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMaster() == 1)
+				if (curriculumList.get(i).getIsMasterVersion() == 1)
 					prevMaster = curriculumList.get(i);
 			}
 			
 			
 			if (prevMaster != null) {
-				prevMaster.setIsMaster(0);
+				prevMaster.setIsMasterVersion(0);
 				curriculumService.save(prevMaster);
 			}
 		}
@@ -353,17 +353,17 @@ public class CurriculumController {
 		}
 
 		// find the curriculum with same name and isMaster = 1; set to 0; save
-		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(c.getCurriculumName());
+		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(c.getName());
 
 		try {
 			Curriculum prevMaster = null;
 
 			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMaster() == 1)
+				if (curriculumList.get(i).getIsMasterVersion() == 1)
 					prevMaster = curriculumList.get(i);
 			}
 			if (prevMaster != null) {
-				prevMaster.setIsMaster(0);
+				prevMaster.setIsMasterVersion(0);
 				curriculumService.save(prevMaster);
 			} else {
 				LogManager.getRootLogger().error(prevMaster);
@@ -373,7 +373,7 @@ public class CurriculumController {
 		}
 
 		// save new master curriculum
-		c.setIsMaster(1);
+		c.setIsMasterVersion(1);
 		curriculumService.save(c);
 	}
 
@@ -404,7 +404,7 @@ public class CurriculumController {
 		Curriculum c = null;
 		for (int i = 0; i < curriculumList.size(); i++) {
 			// master version found
-			if (curriculumList.get(i).getIsMaster() == 1) {
+			if (curriculumList.get(i).getIsMasterVersion() == 1) {
 				c = curriculumList.get(i);
 			}
 		}
@@ -413,11 +413,11 @@ public class CurriculumController {
 		if (c == null) { // TODO Use Java Streams API
 			curriculumList = curriculumService.findAllCurriculumByName(batchType);
 			if (curriculumList != null) {
-				int min = curriculumList.get(0).getCurriculumVersion();
+				int min = curriculumList.get(0).getVersion();
 				Curriculum tempCurric = curriculumList.get(0);
 				for (int i = 1; i < curriculumList.size(); i++) {
-					if (curriculumList.get(i).getCurriculumVersion() > min) {
-						min = curriculumList.get(i).getCurriculumVersion();
+					if (curriculumList.get(i).getVersion() > min) {
+						min = curriculumList.get(i).getVersion();
 						tempCurric = curriculumList.get(i);
 					}
 				}
