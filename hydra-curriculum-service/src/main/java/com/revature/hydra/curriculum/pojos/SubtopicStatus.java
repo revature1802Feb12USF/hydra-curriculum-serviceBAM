@@ -1,5 +1,8 @@
 package com.revature.hydra.curriculum.pojos;
 
+/**
+ * Non-persistent bean holding subtopic status information
+ */
 public class SubtopicStatus {
 
 	private Integer id;
@@ -7,7 +10,7 @@ public class SubtopicStatus {
 	private String name;
 
 	public SubtopicStatus() {
-		//Empty Because No Args
+		
 	}
 
 	public SubtopicStatus(Integer id, String name) {
@@ -39,7 +42,8 @@ public class SubtopicStatus {
 
 	@Override
 	public String toString() {
-		return "SubtopicStatus [id=" + id + ", name=" + name + "]";//NOSONAR
+		return "SubtopicStatus [(Suptopic Status ID) \t id=" + id + ",\n"
+				+ "(Name) \t name=" + name + "\n]";//NOSONAR
 	}
 
 }

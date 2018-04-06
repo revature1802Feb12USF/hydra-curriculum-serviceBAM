@@ -1,7 +1,9 @@
 package com.revature.hydra.curriculum.pojos;
 
 import java.util.Arrays;
-
+/**
+ * DTO containing a MetaDTO and WeeksDTO[]
+ */
 public class CurriculumSubtopicDTO {
 
 	private MetaDTO meta;
@@ -9,7 +11,6 @@ public class CurriculumSubtopicDTO {
 	private WeeksDTO [] weeks;
 	
 	public CurriculumSubtopicDTO(){
-		//Empty Because of No Args.
 		
 	}
 
@@ -31,14 +32,8 @@ public class CurriculumSubtopicDTO {
 
 	@Override
 	public String toString() {
-		return "CurriculumSubtopicDTO [meta=" + meta + ", weeks=" + Arrays.toString(weeks) + "]";
+		return "CurriculumSubtopicDTO [(Curriculum) \t meta=" + meta + ",\n"
+				+ "(Weeks) \t weeks=" + Arrays.toString(weeks) + "\n]";
 	}
-	
-	//private Meta object
-		//Curriculum Object
-	
-	//private Weeks object array
-		//private Days object array [each represent weeks]
-			//private Subtopics object that has subtopics field array of int [each array index represents days]
 	
 }

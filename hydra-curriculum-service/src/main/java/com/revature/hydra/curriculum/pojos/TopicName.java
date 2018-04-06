@@ -1,5 +1,8 @@
 package com.revature.hydra.curriculum.pojos;
 
+/**
+ * Non-persistent bean that holds Topic Name information
+ */
 public class TopicName {
 
 	private Integer id;
@@ -39,7 +42,8 @@ public class TopicName {
 
 	@Override
 	public String toString() {
-		return "TopicName [id=" + id + ", name=" + name + "]";//NOSONAR
+		return "TopicName [(TopicName) \t id=" + id + ",\n"
+				+ "(Name) \t name=" + name + "\n]";//NOSONAR
 	}
 
 }

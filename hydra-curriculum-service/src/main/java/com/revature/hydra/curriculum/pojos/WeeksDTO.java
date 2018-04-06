@@ -2,12 +2,14 @@ package com.revature.hydra.curriculum.pojos;
 
 import java.util.Arrays;
 
+/**
+ * DTO holding DaysDTO information
+ */
 public class WeeksDTO {
 
 	private DaysDTO[] days;
 	
 	public WeeksDTO(){
-		//Empty because of NoArgs.
 		
 	}
 
@@ -26,7 +28,7 @@ public class WeeksDTO {
 
 	@Override
 	public String toString() {
-		return "WeeksDTO [days=" + Arrays.toString(days) + "]";
+		return "WeeksDTO [(Days) \t days=" + Arrays.toString(days) + "\n]";
 	}
 	
 }

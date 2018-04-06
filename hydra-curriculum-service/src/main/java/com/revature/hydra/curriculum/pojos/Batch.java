@@ -2,26 +2,42 @@ package com.revature.hydra.curriculum.pojos;
 
 import java.sql.Timestamp;
 
+/**
+ * non-persistent bean for Batch.
+ * This class contains data about Batch. 
+ */
 public class Batch {
 
-	private Integer id;
+	private Integer id; 
 
-	private String name;
+	private String name; 
 
 	private Timestamp startDate;
 
 	private Timestamp endDate;
-	
+
 	private Integer trainerID;
 
-	private BatchType type;
-
+	private BatchType type; 
+	
+	/**
+	 * No-args constructor
+	 */
 	public Batch() {
 		super();
 	}
-	
-	
 
+	/**
+	 * Creates a Batch with a specified batch name, the start date for the training of the
+	 * batch, the end date of training for the batch, the trainer's ID associated
+	 * with the batch, and the type of batch it will be.
+	 * 
+	 * @param name the name of the Batch
+	 * @param startDate start date of the batch
+	 * @param endDate end date of the batch
+	 * @param trainerID	trainer's ID 
+	 * @param type specifying what type of batch it will be
+	 */
 	public Batch(String name, Timestamp startDate, Timestamp endDate, int trainerID, BatchType type) {
 		super();
 		this.name = name;
@@ -30,9 +46,19 @@ public class Batch {
 		this.trainerID = trainerID;
 		this.type = type;
 	}
-
-
-
+	
+	/**
+	 * Creates a Batch with an ID, a specified batch name, the start date for the training of the
+	 * batch, the end date of training for the batch, the trainer's ID associated
+	 * with the batch, and the type of batch it will be.
+	 * 
+	 * @param id for unique identifier
+	 * @param name the name of the Batch
+	 * @param startDate start date of the batch
+	 * @param endDate end date of the batch
+	 * @param trainerID	trainer's ID 
+	 * @param type specifying what type of batch it will be
+	 */
 	public Batch(Integer id, String name, Timestamp startDate, Timestamp endDate, int trainer, BatchType type) {
 		super();
 		this.id = id;
@@ -76,44 +102,38 @@ public class Batch {
 	}
 
 	public int getTrainer() {
-		// if needed we will get the trainer from the user micro service
 		return trainerID;
 	}
 
 	public void setTrainer(int trainer) {
-		// if needed we can change this to take in a trainer
-		// and then grab the trainers id
 		this.trainerID = trainer;
 	}
-
 
 	public int getTrainerID() {
 		return trainerID;
 	}
 
-
-
 	public void setTrainerID(int trainerID) {
 		this.trainerID = trainerID;
 	}
-
-
 
 	public BatchType getType() {
 		return type;
 	}
 
-
-
 	public void setType(BatchType type) {
 		this.type = type;
 	}
-
 	
-
 	@Override
 	public String toString() {
-		return "Batch [id=" + id + ", name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + ", trainerID=" + trainerID + ", type=" + type + "]";
+		return "Batch [\n " + "(Batch ID) \t id =" + id + ",\n" 
+				+ "(Batch Name) \t name =" + name + ",\n" 
+				+ "(Batch Start Date) \t startDate =" + startDate + ",\n" 
+				+ "(End Date) \t endDate =" + endDate + ",\n" 
+				+ "(Trainer's ID) \t trainerID =" + trainerID + ",\n" 
+				+ "(Batch Type) \t type =" + type 
+				+ "]";
 	}
 
 }

@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.hydra.curriculum.bean.Curriculum;
 import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
 import com.revature.hydra.curriculum.pojos.BadRequestException;
-import com.revature.hydra.curriculum.pojos.BamUser;
 import com.revature.hydra.curriculum.pojos.Batch;
 import com.revature.hydra.curriculum.pojos.CurriculumSubtopicDTO;
 import com.revature.hydra.curriculum.pojos.DaysDTO;
@@ -40,10 +38,20 @@ import com.revature.hydra.curriculum.pojos.SubtopicName;
 import com.revature.hydra.curriculum.service.CurriculumService;
 import com.revature.hydra.curriculum.service.CurriculumSubtopicService;
 
+/**
+ * @author ryuujin
+ * 
+ * This class establishes REST endpoints for retrieval and modification of curriculum data.
+ */
 @RestController
 @RequestMapping("/api/v2/curriculum/")
 public class CurriculumController {
-
+	
+	/**
+	 * Generates a RestTemplate for performing external REST requests.
+	 * @param restTemplateBuilder The template builder used to generate the RestTemplate.
+	 * @return A RestTemplate to be used for performing external REST API requests.
+	 */
 	@LoadBalanced
 	@Bean
 	public RestTemplate buildRestTemplate(RestTemplateBuilder restTemplateBuilder) {
@@ -52,33 +60,29 @@ public class CurriculumController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
-	// @HystrixCommand(fallbackMethod = "cachedTopic")
-	// @GetMapping("/getTopic")
-	// public Topic getTopic() {
-	// System.out.println("hit /getTopic");
-	// Topic t =
-	// restTemplate.getForObject("http://hydra-topic-service/api/v2/Topic",
-	// Topic.class);
-	// return t;
-	// }
-
-	// public Topic cachedTopic() {
-	// return new Topic();
-	// }
+	
 
 	@Autowired
 	CurriculumService curriculumService;
 
 	@Autowired
 	CurriculumSubtopicService curriculumSubtopicService;
-
+	
+	/**
+	 * Gets the curriculum service bean this controller uses.
+	 * @return This controller's curriculum service bean.
+	 */
 	public CurriculumService get() {
 		return curriculumService;
 	}
-
-	/***
-	 * @author Nam Mai Method is needed for injecting mocked services for unit test
+	
+	/**
+	 * @author Nam Mai
+	 * 
+	 * Creates a controller using the given curriculum and curriculum subtopic services.
+	 * 
+	 * @param cs The curriculum service used to perform operations on curriculum data.
+	 * @param css The curriculum subtopic service used to perform operations on curriculum subtopic data.
 	 */
 	@Autowired
 	public CurriculumController(CurriculumService cs, CurriculumSubtopicService css) {
@@ -87,12 +91,17 @@ public class CurriculumController {
 	}
 
 	/**
-	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
-	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getAllCurriculum:
-	 *         method to get all curriculums
-	 * @return List<Curriculum>, HttpStatus.OK if successful, HttpStatus.NO_CONTENT
-	 *         if list is empty
-	 * @throws Exception
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Retrieves all curriculums.
+	 * 	HttpStatus.OK: At least 1 curriculum found.
+	 *  HttpStatus.NO_CONTENT: No curriculums found.
+	 *  
+	 * @return The list of all curriculums.
+	 * @throws NoContentException Thrown when given list is empty or null. (HttpStatus.NO_CONTENT)
 	 */
 	@GetMapping(value = "all")
 	public List<Curriculum> getAllCurriculum() throws NoContentException {
@@ -106,15 +115,22 @@ public class CurriculumController {
 	}
 
 	/**
-	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
-	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getCurriculumById:
-	 *         method to get a Curriculum by its Id
-	 * @return Curriculum, HttpStatus.OK if successful HttpStatus.NO_CONTENT if id
-	 *         doesn't match, HttpStatus.BAD_REQUEST if missing parameters
-	 * @throws BadRequestException
-	 * @throws NoContentException
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin) 
+	 * 
+	 * Retrieves the curriculum specified by the ID cId.
+	 * 	HttpStatus.OK: Curriculum found.
+	 *  HttpStatus.NO_CONTENT: No curriculum with the ID cId found. 
+	 *  HttpStatus.BAD_REQUEST: Parameters missing.
+	 *  
+	 * @param cId The curriculum ID to search for.
+	 * 
+	 * @return The curriculum specified by the given ID.
+	 * @throws BadRequestException There are missing parameters.
+	 * @throws NoContentException No curriculum found for the given ID.
 	 */
-	@SuppressWarnings("unused")
 	@GetMapping(value = "getcurriculum/{cId}")
 	public Curriculum getCurriculumById(@PathVariable int cId) throws BadRequestException, NoContentException {
 		Curriculum result = new Curriculum();
@@ -123,7 +139,7 @@ public class CurriculumController {
 		} catch (NullPointerException e) {
 			throw new BadRequestException("Request Failed");
 		}
-
+		
 		if (result != null) {
 			return result;
 		} else {
@@ -131,17 +147,22 @@ public class CurriculumController {
 		}
 	}
 
+	
 	/**
-	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
-	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin)
-	 * @param PathVariable:
-	 *            int cId holds curriculumId getAllCurriculumSchedules: method to
-	 *            retrieve list of curriculum subtopics given a curriculumId
-	 * @return List<CurriculumSubtopics>, HttpStatus.OK if successful
-	 *         HttpStatus.NO_CONTENT if id doesn't match, HttpStatus.BAD_REQUEST if
-	 *         missing parameters
-	 * @throws BadRequestException
-	 * @throws NoContentException
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Retrieves a list of curriculum subtopics with the given curriculum ID.
+	 * 	HttpStatus.OK: Found at least 1 subtopic for the specified curriculum.
+	 *  HttpStatus.NO_CONTENT: No subtopics found for the specified curriculum.
+	 *  HttpStatus.BAD_REQUEST: Missing parameters.
+	 *  
+	 * @param cId The curriculum ID.
+	 * @return A list of curriculum subtopics belonging to the given curriculum.
+	 * @throws BadRequestException Parameters missing.
+	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
 	@GetMapping(value = "schedule/{cId}")
 	public List<CurriculumSubtopic> getAllCurriculumSchedules(@PathVariable int cId)
@@ -150,11 +171,10 @@ public class CurriculumController {
 
 		try {
 			c = curriculumService.getCuricullumById(cId);
-			c.setId(cId);
 		} catch (NullPointerException e) {
 			throw new BadRequestException("Request Failed");
 		}
-
+		
 		List<CurriculumSubtopic> result = curriculumSubtopicService.getCurriculumSubtopicForCurriculum(c);
 		if (result != null && !result.isEmpty()) {
 			return result;
@@ -162,71 +182,96 @@ public class CurriculumController {
 			throw new NoContentException("No schedules by Curriculum Id: " + cId + " were found");
 		}
 	}
+	
 
 	/**
-	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
-	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getTopicPool:
-	 *         method to get list of topics
-	 * @return List<SubtopicName>, HttpStatus.OK if successful,
-	 *         HttpStatus.NO_CONTENT if list is empty
-	 * @throws NoContentException
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Retrieves all topic names from the topic name pool.
+	 * 	HttpStatus.OK: Found at least 1 topic name.
+	 *  HttpStatus.NO_CONTENT: No topic names found.
+	 *  
+	 * @return The list of all subtopic names.
+	 * @throws NoContentException No topics found.
 	 */
 	@HystrixCommand(fallbackMethod = "getSubtopicNames")
 	@GetMapping("topicpool")
 	public List<SubtopicName> getTopicPool() throws NoContentException {
-		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {
-		};
+		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
+		
 		List<SubtopicName> result = this.restTemplate.exchange(
 				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
-		if (result != null) {
+		if (result != null && !result.isEmpty()) {
 			return result;
 		} else {
 			throw new NoContentException("No SubtopicNames were found");
 		}
 	}
 	
+	/**
+	 * Hystrix fallback method for getTopicPool().
+	 * 
+	 * @return An empty list of subtopic names.
+	 */
 	public List<SubtopicName> getSubtopicNames() {
 		return new ArrayList<SubtopicName>();
 	}
 
+	
+	
+	
 	/**
-	 * @author Carter Taylor (1712-Steve), Olayinka Ewumi (1712-Steve), Stephen
-	 *         Negron (1801-Trevin), Rafael Sanchez (1801-Trevin) getSubtopicPool:
-	 *         method to get list of subtopics with associated batch and status
-	 * @return List<Subtopic>, HttpStatus.OK if successful, HttpStatus.NO_CONTENT if
-	 *         list is empty
-	 * @throws NoContentException
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin) 
+	 * 
+	 * Retrieves all topic names from the topic pool.
+	 * 	HttpStatus.OK: Found at least 1 topic.
+	 *  HttpStatus.NO_CONTENT: No topics found.
+	 * 
+	 * @return The list of all subtopics.
+	 * @throws NoContentException No topics found.
 	 */
 	@HystrixCommand(fallbackMethod = "getSubtopics")
 	@GetMapping("subtopicpool")
 	public List<Subtopic> getSubtopicPool() throws NoContentException {
-		ParameterizedTypeReference<List<Subtopic>> ptr = new ParameterizedTypeReference<List<Subtopic>>() {
-		};
+		ParameterizedTypeReference<List<Subtopic>> ptr = new ParameterizedTypeReference<List<Subtopic>>() {};
 		List<Subtopic> result = this.restTemplate.exchange(
 				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopics", HttpMethod.GET, null, ptr).getBody();
-		if (result != null) {
+		if (result != null && !result.isEmpty()) {
 			return result;
 		} else {
 			throw new NoContentException("No Subtopics were found");
 		}
 	}
 	
+	
+	/**
+	 * Hystrix fallback method for getSubtopicPool().
+	 * 
+	 * @return A list of all subtopics.
+	 */
 	public List<Subtopic> getSubtopics() {
 		return new ArrayList<Subtopic>();
 	}
 
+	
 	/**
-	 * @author Carter Taylor (1712-Steve), Stephen Negron (1801-Trevin), Rafael
-	 *         Sanchez (1801-Trevin)
-	 * @param json
-	 *            String that contains curriculum subtopic object addSchedule:
-	 *            method that takes a curriculum subtopic (schedule) as input from
-	 *            request body and saves both curriculum and curriculum subtopic.
-	 *            Handles case of incoming curriculum being marked as master
-	 *            version.
-	 * @return Curriculum, HttpStatus.CREATED if successful
-	 * @throws JsonMappingException
-	 * @throws IOException
+	 * @author Carter Taylor (1712-Steve) 
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Add a new curriculum. Handles the case of the new curriculum being added as the master version.
+	 * 
+	 * @param json JSON string that contains the curriculum subtopic object.
+	 * 
+	 * @return The newly created curriculum.
+	 * @throws JsonMappingException Error occurred in mapping the parsed JSON string.
+	 * @throws IOException Error occurred in parsing the JSON string.
 	 */
 	@PostMapping(value = "addcurriculum")
 	public Curriculum addSchedule(@RequestBody String json) throws JsonMappingException, IOException {
@@ -242,7 +287,9 @@ public class CurriculumController {
 		curriculum.setCurriculumNumberOfWeeks(c.getMeta().getCurriculum().getCurriculumNumberOfWeeks());
 		curriculum.setCurriculumVersion(c.getMeta().getCurriculum().getCurriculumVersion());
 		curriculum.setIsMaster(c.getMeta().getCurriculum().getIsMaster());
-
+		
+		//curriculum = c.getMeta().getCurriculum();
+		
 		if (curriculum.getIsMaster() == 1) {
 			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getCurriculumName());
 			Curriculum prevMaster = null;
@@ -251,20 +298,23 @@ public class CurriculumController {
 				if (curriculumList.get(i).getIsMaster() == 1)
 					prevMaster = curriculumList.get(i);
 			}
+			
+			
 			if (prevMaster != null) {
 				prevMaster.setIsMaster(0);
 				curriculumService.save(prevMaster);
 			}
 		}
-
+		
+		
 		Curriculum addedCurr = curriculumService.save(curriculum);
 
 		int numWeeks = c.getWeeks().length;
-		for (int i = 0; i < numWeeks; i++) {
-			DaysDTO[] days = c.getWeeks()[i].getDays();
-			for (int j = 0; j < days.length; j++) {
+		for (int i = 0; i < numWeeks; i++) { // for each week
+			DaysDTO[] days = c.getWeeks()[i].getDays(); 
+			for (int j = 0; j < days.length; j++) { // for each day
 				Integer[] subtopic = days[j].getSubtopics();
-				for (int k = 0; k < subtopic.length; k++) {
+				for (int k = 0; k < subtopic.length; k++) { // for each sub-topic
 					CurriculumSubtopic cs = new CurriculumSubtopic();
 					cs.setCurriculum(curriculum);
 					cs.setCurriculumSubtopicNameId(subtopic[k]);
@@ -276,18 +326,20 @@ public class CurriculumController {
 		}
 		return addedCurr;
 	}
-
+	
+	
 	/**
-	 * @author Jordan DeLong Carter Taylor (1712-Steve), Stephen Negron
-	 *         (1801-Trevin), Rafael Sanchez (1801-Trevin)
-	 * @param PathVariable:
-	 *            int cId that holds curriculumId markCurricullumAsMaster: method
-	 *            that marks selected curriculum as master version (identified by id
-	 *            sent as request parameter), and sets previous master version to
-	 *            non-master status.
-	 * @return HttpStatus.BAD_REQUEST if missing parameter, HttpStatus.ACCEPTED if
-	 *         successful
-	 * @throws BadRequestException
+	 * @author Jordan DeLong
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Marks the curriculum with the given ID cId as the master version.
+	 * 	HttpStatus.BAD_REQUEST: Could not find a curriculum with the provided ID.
+	 * 
+	 * @param cId The ID of the curriculum to mark as the master version.
+	 * 
+	 * @throws BadRequestException Could not find a curriculum with the provided ID.
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
 	@GetMapping(value = "makemaster/{cId}")
@@ -326,15 +378,19 @@ public class CurriculumController {
 	}
 
 	/**
-	 * @author Carter Taylor (1712-Steve), Stephen Negron (1801-Trevin), Rafael
-	 *         Sanchez (1801-Trevin)
-	 * @param PathVariable
-	 *            int id batch id given as path variable syncBatch: sync batch by
-	 *            getting list of curriculum subtopics related to that batch type
-	 * @return HttpStatus.RESET_CONTENT if successful, HttpStatus.NO_CONTENT if
-	 *         already synced
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin) 
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Sync batch by getting list of curriculum subtopics related to that batch type.
+	 * HttpStatus.RESET_CONTENT if successful, HttpStatus.NO_CONTENT if already synced.
+	 * 
+	 * @param id  Batch ID
+	 *            
 	 * @throws CustomException
 	 */
+	
+	// TODO Rework ERRTHANG
 	@SuppressWarnings("unchecked")
 	@HystrixCommand(fallbackMethod = "emptyMethod")
 	@ResponseStatus(value = HttpStatus.RESET_CONTENT)
@@ -354,7 +410,7 @@ public class CurriculumController {
 		}
 
 		// if master not found, get latest version
-		if (c == null) {
+		if (c == null) { // TODO Use Java Streams API
 			curriculumList = curriculumService.findAllCurriculumByName(batchType);
 			if (curriculumList != null) {
 				int min = curriculumList.get(0).getCurriculumVersion();
@@ -396,17 +452,24 @@ public class CurriculumController {
 		}
 	}
 	
+	
+	/**
+	 * Hystrix fallback method for syncBatch().
+	 */
 	public void emptyMethod() {
 		
 	}
 
 	/**
-	 * @author Carter Taylor, James Holzer (1712-Steve), Stephen Negron
-	 *         (1801-Trevin), Rafael Sanchez (1801-Trevin)
-	 * @param RequestBody
-	 *            Curriculum version deleteCurriculumVersion: Deletes a curriculum
-	 *            version along with it's related CurriculumSubtopics
-	 * @return HttpStatus.OK if successful
+	 * @author Carter Taylor
+	 * @author James Holzer (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Deletes a curriculum version along with it's related CurriculumSubtopics
+	 * HttpStatus.OK if successful.
+	 * 
+	 * @param version Curriculum version 
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("deleteversion")

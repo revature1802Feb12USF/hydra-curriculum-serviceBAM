@@ -1,5 +1,8 @@
 package com.revature.hydra.curriculum.pojos;
 
+/**
+ * Non-persistent bean for BamUser object
+ */
 public class BamUser {
 
 	private int userId;
@@ -17,11 +20,12 @@ public class BamUser {
 	// Role 1 is for associates // Role 2 is for trainers & QC
 	private Role role; // Role 3 is for admins
 
-	// Batch ID should only be used for associates. DO NOT use this
-	private Integer batch; // field to assign a batch to a trainer. It should be
-							// null for
-							// trainers and admins. A trainer is assigned in the
-							// Batches table.
+	/*
+	 *  Batch ID should only be used for associates. DO NOT use this
+	 *	field to assign a batch to a trainer. It should be null for
+	 *	trainers and admins. A trainer is assigned in the Batches table.
+	 */
+	private Integer batch; 
 	private String phone;
 
 	private String phone2;
@@ -32,7 +36,6 @@ public class BamUser {
 	private String pwd2; // the user needs to reset their password.
 
 	private Integer assignForceID;
-	
 	
 	public BamUser() {
 		super();
@@ -195,9 +198,17 @@ public class BamUser {
 
 	@Override
 	public String toString() {
-		return "BamUser [userId=" + userId + ", fName=" + fName + ", mName=" + mName + ", lName=" + lName + ", email="
-				+ email + ", pwd=" + pwd + ", role=" + role + ", batch=" + batch + ", phone=" + phone + ", phone2="
-				+ phone2 + ", skype=" + skype + ", pwd2=" + pwd2 + "]";
+		return "BamUser [\n" + "(User ID) \t userId=" + userId + ",\n"
+				+ "(First Namae) \t fName=" + fName + ",\n"
+				+ "(Middle Name) \t mName=" + mName + ",\n"
+				+ "(Last Name) \t lName=" + lName + ",\n "
+				+ "(Email) \t email=" + email + ",\n"
+				+ "(Password) \t pwd=" + pwd + ",\n"
+				+ "(Role) \t role=" + role + ",\n"
+				+ "(Batch) \t batch=" + batch + ",\n "
+				+ "(Phone) \t phone=" + phone + ",\n"
+				+ "(Second Phone) \t phone2=" + phone2 + ",\n"
+				+ "(Skype) \t skype=" + skype + ",\n"
+				+ "(Backup Password) \t pwd2=" + pwd2 + "\n]";
 	}
-
 }
