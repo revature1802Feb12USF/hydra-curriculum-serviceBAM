@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.bean;
+package com.revature.hydra.curriculum.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +52,6 @@ public class Curriculum {
 
 	/**
 	 * Creates a curriculum with the given parameters.
-	 * @param id The ID of the curriculum.
 	 * @param curriculumName The name of the curriculum.
 	 * @param curriculumVersion The version number of the curriculum.
 	 * @param curriculumCreator The user ID of the user who created the curriculum.
@@ -61,10 +60,9 @@ public class Curriculum {
 	 * @param curriculumNumberOfWeeks Number of weeks the curriculum lasts.
 	 * @param isMaster 1 if the curriculum is the master version. Otherwise, should be 0.
 	 */
-	public Curriculum(Integer id, String curriculumName, int curriculumVersion, Integer curriculumCreator,
+	public Curriculum(String curriculumName, int curriculumVersion, Integer curriculumCreator,
 			Integer curriculumModifier, String curriculumDateCreated, int curriculumNumberOfWeeks, int isMaster) {
 		super();
-		this.curriculumId = id;
 		this.curriculumName = curriculumName;
 		this.curriculumVersion = curriculumVersion;
 		this.curriculumCreator = curriculumCreator;

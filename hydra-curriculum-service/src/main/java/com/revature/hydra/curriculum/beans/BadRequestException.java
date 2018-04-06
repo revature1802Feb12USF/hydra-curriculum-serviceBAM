@@ -1,15 +1,15 @@
-package com.revature.hydra.curriculum.pojos;
+package com.revature.hydra.curriculum.beans;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Exception for no content.
+ * Exception for bad requests.
  */
-@ResponseStatus(HttpStatus.NO_CONTENT)
-public class NoContentException extends Exception{
-
-	private static final long serialVersionUID = -1669307485951446112L;
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class BadRequestException extends Exception{
+	
+	private static final long serialVersionUID = -8911611381170071078L;
 
 	private final String message;
 
@@ -18,7 +18,7 @@ public class NoContentException extends Exception{
 	 * 
 	 * @param message Exception message
 	 */
-	public NoContentException(String message) {
+	public BadRequestException(String message) {
 		this.message = message;
 	}
 
@@ -29,4 +29,5 @@ public class NoContentException extends Exception{
 	public String getMessage() {
 		return message;
 	}
+	
 }

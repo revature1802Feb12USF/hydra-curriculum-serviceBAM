@@ -9,10 +9,10 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.repository.CurriculumRepository;
-import com.revature.hydra.curriculum.repository.CurriculumSubtopicRepository;
-import com.revature.hydra.curriculum.service.CurriculumService;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.repositories.CurriculumRepository;
+import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
+import com.revature.hydra.curriculum.services.CurriculumService;
 
 public class CurriculumServiceTests {
 	
@@ -43,7 +43,7 @@ public class CurriculumServiceTests {
 	@Test
 	public void getCurriculumById_returnsCurriculumWithMatchingId() {
 		// SETUP
-		Curriculum curriculum = new Curriculum(1, null, 1, null, null, null, 1, 1);	
+		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
 		
 		// EXECUTE
@@ -59,7 +59,7 @@ public class CurriculumServiceTests {
 	@Test
 	public void getCurriculumByIdKeepPwd_returnsCurriculumWithMatchingId() {
 		// SETUP
-		Curriculum curriculum = new Curriculum(1, null, 1, null, null, null, 1, 1);	
+		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 		when(mockCurriculumRepository.findByCurriculumId(1)).thenReturn(curriculum);
 		
 		// EXECUTE
@@ -76,7 +76,7 @@ public class CurriculumServiceTests {
 	@Test
 	public void save_callsRepositorySave() {
 		// SETUP
-		Curriculum curriculum = new Curriculum(1, null, 1, null, null, null, 1, 1);	
+		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 		
 		// EXECUTE
 		curriculumService.save(curriculum);

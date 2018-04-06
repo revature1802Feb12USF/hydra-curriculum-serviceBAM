@@ -1,13 +1,13 @@
-package com.revature.hydra.curriculum.service;
+package com.revature.hydra.curriculum.services;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
-import com.revature.hydra.curriculum.repository.CurriculumSubtopicRepository;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 
 /**
  * A Service class for retrieving and modifying curriculum subtopic data.

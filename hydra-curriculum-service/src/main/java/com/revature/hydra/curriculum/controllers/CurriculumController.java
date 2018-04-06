@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.controller;
+package com.revature.hydra.curriculum.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,17 +26,17 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
-import com.revature.hydra.curriculum.pojos.BadRequestException;
-import com.revature.hydra.curriculum.pojos.Batch;
-import com.revature.hydra.curriculum.pojos.CurriculumSubtopicDTO;
-import com.revature.hydra.curriculum.pojos.DaysDTO;
-import com.revature.hydra.curriculum.pojos.NoContentException;
-import com.revature.hydra.curriculum.pojos.Subtopic;
-import com.revature.hydra.curriculum.pojos.SubtopicName;
-import com.revature.hydra.curriculum.service.CurriculumService;
-import com.revature.hydra.curriculum.service.CurriculumSubtopicService;
+import com.revature.hydra.curriculum.beans.BadRequestException;
+import com.revature.hydra.curriculum.beans.Batch;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopicDTO;
+import com.revature.hydra.curriculum.beans.DaysDTO;
+import com.revature.hydra.curriculum.beans.NoContentException;
+import com.revature.hydra.curriculum.beans.Subtopic;
+import com.revature.hydra.curriculum.beans.SubtopicName;
+import com.revature.hydra.curriculum.services.CurriculumService;
+import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
 
 /**
  * @author ryuujin

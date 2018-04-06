@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.controller;
+package com.revature.hydra.curriculum.controllers;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.service.CurriculumService;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.services.CurriculumService;
 
 /**
  * A RestController that is used to manipulate, store, retrieve, and delete curriculums.
