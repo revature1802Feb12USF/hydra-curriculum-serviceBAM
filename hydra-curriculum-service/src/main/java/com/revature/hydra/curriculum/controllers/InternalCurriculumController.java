@@ -67,7 +67,7 @@ public class InternalCurriculumController {
 	 */
 	@PostMapping("master/{name}")
 	public List<Curriculum> findAllCurriculumByNameAndIsMaster(@PathVariable String name, @RequestBody Integer isMaster){
-		return curriculumService.findAllCurriculumByNameAndIsMaster(name, isMaster);
+		return curriculumService.findAllCurriculumsByNameAndIsMaster(name, isMaster);
 	}
 	
 	/**

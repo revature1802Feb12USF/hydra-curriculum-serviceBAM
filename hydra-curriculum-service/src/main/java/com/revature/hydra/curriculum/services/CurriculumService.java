@@ -1,6 +1,7 @@
 package com.revature.hydra.curriculum.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -112,9 +113,9 @@ public class CurriculumService {
 	 * 
 	 * @return List of curriculums found with the provided constraints.
 	 */
-	// Modify appropriately. Find Master version of curriculum by name.
-	public List<Curriculum> findAllCurriculumByNameAndIsMaster(String name, Integer isMaster) {
+	public List<Curriculum> findAllCurriculumsByNameAndIsMaster(String name, Integer isMaster) {
 		List<Curriculum> master = curriculumRepository.findCurriculumByNameAndIsMasterVersion(name, isMaster);
+		
 		return master;
 	}
 

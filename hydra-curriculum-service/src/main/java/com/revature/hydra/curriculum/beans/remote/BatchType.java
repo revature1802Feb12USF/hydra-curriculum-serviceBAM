@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.beans;
+package com.revature.hydra.curriculum.beans.remote;
 
 /**
  * Non-persistent bean that references the BatchType a Batch member is in

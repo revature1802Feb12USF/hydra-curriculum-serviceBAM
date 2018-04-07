@@ -1,6 +1,7 @@
 package com.revature.hydra.curriculum.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,16 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.hydra.curriculum.beans.Batch;
+import com.revature.hydra.curriculum.beans.CurrSubtopic;
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
-import com.revature.hydra.curriculum.beans.CurriculumSubtopicDTO;
-import com.revature.hydra.curriculum.beans.DaysDTO;
-import com.revature.hydra.curriculum.beans.Subtopic;
-import com.revature.hydra.curriculum.beans.SubtopicName;
+import com.revature.hydra.curriculum.beans.Schedule;
+import com.revature.hydra.curriculum.beans.remote.Batch;
+import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.services.CurriculumService;
@@ -60,7 +58,6 @@ public class CurriculumController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-
 	@Autowired
 	CurriculumService curriculumService;
 
@@ -144,19 +141,19 @@ public class CurriculumController {
 	 * @return The list of all subtopic names.
 	 * @throws NoContentException No topics found.
 	 */
-	@HystrixCommand(fallbackMethod = "getSubtopicNames")
-	@GetMapping("topicpool") // TODO WAWA
-	public List<SubtopicName> getTopicPool() throws NoContentException {
-		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
-		
-		List<SubtopicName> result = restTemplate.exchange(
-				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
-		if (result != null && !result.isEmpty()) {
-			return result;
-		} else {
-			throw new NoContentException("No SubtopicNames were found");
-		}
-	}
+//	@HystrixCommand(fallbackMethod = "getSubtopicNames")
+//	@GetMapping("topicpool") // TODO WAWA
+//	public List<SubtopicName> getTopicPool() throws NoContentException {
+//		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
+//		
+//		List<SubtopicName> result = restTemplate.exchange(
+//				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
+//		if (result != null && !result.isEmpty()) {
+//			return result;
+//		} else {
+//			throw new NoContentException("No SubtopicNames were found");
+//		}
+//	}
 	
 	/**
 	 * Hystrix fallback method for getTopicPool().
@@ -164,9 +161,9 @@ public class CurriculumController {
 	 * @return An empty list of subtopic names.
 	 * @throws NoContentException No subtopics found.
 	 */
-	public List<SubtopicName> getSubtopicNames() throws NoContentException {
-		throw new NoContentException("No subtopic names were found.");
-	}
+//	public List<SubtopicName> getSubtopicNames() throws NoContentException { // TODO WAWA
+//		throw new NoContentException("No subtopic names were found.");
+//	}
 
 	
 	
@@ -185,7 +182,7 @@ public class CurriculumController {
 	 * @throws NoContentException No topics found.
 	 */
 	@HystrixCommand(fallbackMethod = "getSubtopics")
-	@GetMapping("subtopicpool")
+	@GetMapping("subtopicpool") // TODO WAWA
 	public List<Subtopic> getSubtopicPool() throws NoContentException {
 		ParameterizedTypeReference<List<Subtopic>> ptr = new ParameterizedTypeReference<List<Subtopic>>() {};
 		List<Subtopic> result = this.restTemplate.exchange(
@@ -223,59 +220,33 @@ public class CurriculumController {
 	 * @throws IOException Error occurred in parsing the JSON string.
 	 */
 	@PostMapping
-	public Curriculum addSchedule(@RequestBody ObjectNode json) throws JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		
-//		CurriculumSubtopicDTO c = mapper.readValue(json, CurriculumSubtopicDTO.class);
-		CurriculumSubtopicDTO c = mapper.convertValue(json, CurriculumSubtopicDTO.class);
-		
+	public Curriculum addSchedule(@RequestBody Schedule schedule) throws JsonMappingException, IOException {
 		
 		// save curriculum object first
-
-		Curriculum curriculum = new Curriculum();
-		curriculum.setCreatorId(c.getMeta().getCurriculum().getCreatorId());
-		curriculum.setDateCreated(c.getMeta().getCurriculum().getDateCreated());
-		curriculum.setName(c.getMeta().getCurriculum().getName());
-		curriculum.setNumberOfWeeks(c.getMeta().getCurriculum().getNumberOfWeeks());
-		curriculum.setVersion(c.getMeta().getCurriculum().getVersion());
-		curriculum.setIsMasterVersion(c.getMeta().getCurriculum().getIsMasterVersion());
+		Curriculum curriculum = schedule.getCurriculum();
 		
-		//curriculum = c.getMeta().getCurriculum();
-		
+		// Make adjustments to previous versions if new version is set as master version.
 		if (curriculum.getIsMasterVersion() == 1) {
-			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getName());
-			Curriculum prevMaster = null;
-
-			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMasterVersion() == 1)
-					prevMaster = curriculumList.get(i);
-			}
+			List<Curriculum> masterList = curriculumService.findAllCurriculumsByNameAndIsMaster(curriculum.getName(), 1);
 			
-			
-			if (prevMaster != null) {
-				prevMaster.setIsMasterVersion(0);
-				curriculumService.save(prevMaster);
-			}
+			masterList.forEach(curr -> {
+				curr.setIsMasterVersion(0);
+				curriculumService.save(curr);
+			});
 		}
 		
-		
+		// Save new curriculum.
 		Curriculum addedCurr = curriculumService.save(curriculum);
-
-		int numWeeks = c.getWeeks().length;
-		for (int i = 0; i < numWeeks; i++) { // for each week
-			DaysDTO[] days = c.getWeeks()[i].getDays(); 
-			for (int j = 0; j < days.length; j++) { // for each day
-				Integer[] subtopic = days[j].getSubtopics();
-				for (int k = 0; k < subtopic.length; k++) { // for each sub-topic
-					CurriculumSubtopic cs = new CurriculumSubtopic();
-					cs.setCurriculum(curriculum);
-					cs.setCurriculumSubtopicNameId(subtopic[k]);
-					cs.setCurriculumSubtopicWeek(i + 1);
-					cs.setCurriculumSubtopicDay(j + 1);
-					curriculumSubtopicService.saveCurriculumSubtopic(cs);
-				}
-			}
-		}
+		
+		List<CurrSubtopic> curriculumSubtopics = new ArrayList<>();
+		schedule.getSubtopics().forEach(subtopic -> {
+			CurrSubtopic currSubtopic = new CurrSubtopic(addedCurr, subtopic.getId());
+			curriculumSubtopics.add(currSubtopic);
+		});
+		
+		// TODO WAWA: Perform send request to hydra-topic-service
+		// Send: JSON form of schedule.getSubtopics()
+		
 		return addedCurr;
 	}
 	
@@ -297,40 +268,21 @@ public class CurriculumController {
 	@ResponseStatus(value = HttpStatus.OK)
 	@PatchMapping("master/{cId}")
 	public void markCurriculumAsMaster(@PathVariable int cId) throws BadRequestException, NoContentException {
-		Curriculum c = new Curriculum();
+		Curriculum targetCurriculum;
 
-		c = curriculumService.getCurriculumById(cId);
-
-		// find the curriculum with same name and isMaster = 1; set to 0; save
-		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(c.getName());
-
-		try {
-			Curriculum prevMaster = null;
-			
-			
-			// Set all curriculum versions as non-master
-			curriculumList.forEach((Curriculum curriculum) -> {
-				curriculum.setIsMasterVersion(0);
-			});
-			
-			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMasterVersion() == 1)
-					prevMaster = curriculumList.get(i);
-			}
-			
-			if (prevMaster != null) {
-				prevMaster.setIsMasterVersion(0);
-				curriculumService.save(prevMaster);
-			} else {
-				LogManager.getRootLogger().error(prevMaster);
-			}
-		} catch (NullPointerException e) {
-			LogManager.getRootLogger().error(e);
-		}
-
-		// save new master curriculum
-		c.setIsMasterVersion(1);
-		curriculumService.save(c);
+		targetCurriculum = curriculumService.getCurriculumById(cId);
+		
+		List<Curriculum> curriculumList = curriculumService.findAllCurriculumsByNameAndIsMaster(targetCurriculum.getName(), 1);
+		
+		if(curriculumList == null || curriculumList.isEmpty())
+			throw new NoContentException("Curriculum");
+		
+		Curriculum oldMasterVersion = curriculumList.get(0);
+		oldMasterVersion.setIsMasterVersion(0);
+		curriculumService.save(oldMasterVersion);
+		
+		targetCurriculum.setIsMasterVersion(1);
+		curriculumService.save(targetCurriculum);
 	}
 
 	/**
@@ -354,7 +306,7 @@ public class CurriculumController {
 	public void syncBatch(@PathVariable int id) throws NoContentException {
 		Batch currBatch = restTemplate.getForObject("http://hydra-batch-service/getBatchById/" + id, Batch.class);
 		String batchType = currBatch.getType().getName();
-		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByNameAndIsMaster(batchType, 1);
+		List<Curriculum> curriculumList = curriculumService.findAllCurriculumsByNameAndIsMaster(batchType, 1);
 
 		// get master version
 		Curriculum c = null;

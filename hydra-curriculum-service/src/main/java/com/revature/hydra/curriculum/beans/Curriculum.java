@@ -18,7 +18,7 @@ public class Curriculum {
 	@Column(name = "Id")
 	@SequenceGenerator(name = "ID_SEQ", sequenceName = "ID_SEQ", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQ")
-	private Integer Id;
+	private Integer id;
 	
 	@Column(name= "Name")
 	@NotEmpty(message = "Curriculum name cannot be empty")
@@ -77,7 +77,7 @@ public class Curriculum {
 	 * @return The curriculum's ID.
 	 */
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Curriculum {
 	 * @param id The ID number to set this curriculum's ID to.
 	 */
 	public void setId(Integer id) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class Curriculum {
 	
 	@Override
 	public String toString() {
-		return "Curriculum [ (ID) id=" + Id + ", (Curriculum Name) curriculumName=" + name + ", (Curriculum Version) curriculumVersion="
+		return "Curriculum [ (ID) id=" + id + ", (Curriculum Name) curriculumName=" + name + ", (Curriculum Version) curriculumVersion="
 				+ version + ", (Curriculum Creator ID) curriculumCreator=" + creatorId + ", (Curriculum Modifier ID) curriculumModifier="
 				+ modifierId + ", (Date Created) curriculumDateCreated=" + dateCreated + ", (Duration in Weeks) curriculumNumberOfWeeks="
 				+ numberOfWeeks + ", (Is Master Version) isMaster=" + isMasterVersion + "]";
@@ -223,7 +223,7 @@ public class Curriculum {
 		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
 		result = PRIME * result + numberOfWeeks;
 		result = PRIME * result + version;
-		result = PRIME * result + ((Id == null) ? 0 : Id.hashCode());
+		result = PRIME * result + ((id == null) ? 0 : id.hashCode());
 		result = PRIME * result + isMasterVersion;
 		return result; 
 	}
@@ -261,10 +261,10 @@ public class Curriculum {
 			return false;
 		if (version != other.version)
 			return false;
-		if (Id == null) {
-			if (other.Id != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!Id.equals(other.Id))
+		} else if (!id.equals(other.id))
 			return false;
 		if (isMasterVersion != other.isMasterVersion)
 			return false;

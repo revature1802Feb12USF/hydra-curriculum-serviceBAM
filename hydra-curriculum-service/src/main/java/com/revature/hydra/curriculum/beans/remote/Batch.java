@@ -1,6 +1,6 @@
-package com.revature.hydra.curriculum.beans;
+package com.revature.hydra.curriculum.beans.remote;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * non-persistent bean for Batch.
@@ -12,13 +12,13 @@ public class Batch {
 
 	private String name; 
 
-	private Timestamp startDate;
+	private LocalDateTime startDate;
 
-	private Timestamp endDate;
+	private LocalDateTime endDate;
 
 	private Integer trainerID;
 
-	private BatchType type; 
+	private BatchType type;
 	
 	/**
 	 * No-args constructor
@@ -38,7 +38,7 @@ public class Batch {
 	 * @param trainerID	trainer's ID 
 	 * @param type specifying what type of batch it will be
 	 */
-	public Batch(String name, Timestamp startDate, Timestamp endDate, int trainerID, BatchType type) {
+	public Batch(String name, LocalDateTime startDate, LocalDateTime endDate, int trainerID, BatchType type) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
@@ -59,7 +59,7 @@ public class Batch {
 	 * @param trainerID	trainer's ID 
 	 * @param type specifying what type of batch it will be
 	 */
-	public Batch(Integer id, String name, Timestamp startDate, Timestamp endDate, int trainer, BatchType type) {
+	public Batch(Integer id, String name, LocalDateTime startDate, LocalDateTime endDate, int trainer, BatchType type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -85,19 +85,19 @@ public class Batch {
 		this.name = name;
 	}
 
-	public Timestamp getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Timestamp startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public Timestamp getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Timestamp endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 

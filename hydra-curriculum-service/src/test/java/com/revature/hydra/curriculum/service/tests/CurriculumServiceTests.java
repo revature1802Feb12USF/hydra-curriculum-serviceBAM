@@ -98,7 +98,7 @@ public class CurriculumServiceTests {
 		Integer isMaster = 1;
 		
 		// EXECUTE
-		curriculumService.findAllCurriculumByNameAndIsMaster(name, isMaster);
+		curriculumService.findAllCurriculumsByNameAndIsMaster(name, isMaster);
 		
 		// TEST
 		verify(mockCurriculumRepository, times(1)).findCurriculumByNameAndIsMasterVersion(name, isMaster);
