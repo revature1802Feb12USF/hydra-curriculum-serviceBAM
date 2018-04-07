@@ -1,6 +1,4 @@
-package com.revature.hydra.curriculum.pojos;
-
-import com.revature.hydra.curriculum.bean.Curriculum;
+package com.revature.hydra.curriculum.beans;
 
 /**
  * non-persistent bean for MetaDTO.

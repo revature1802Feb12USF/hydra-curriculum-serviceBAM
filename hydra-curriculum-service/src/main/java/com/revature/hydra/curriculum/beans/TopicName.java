@@ -1,26 +1,26 @@
-package com.revature.hydra.curriculum.pojos;
+package com.revature.hydra.curriculum.beans;
 
 /**
- * Non-persistent bean holding Subtopic Type information.
+ * Non-persistent bean that holds Topic Name information
  */
-public class SubtopicType {
+public class TopicName {
 
 	private Integer id;
 
 	private String name;
 
-	public SubtopicType() {
-
+	public TopicName() {
+		super();
 	}
 
-	public SubtopicType(Integer id, String name) {
+	public TopicName(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public SubtopicType(String name) {
-		super();//NOSONAR
+	public TopicName(String name) {
+		super(); //NOSONAR
 		this.name = name;
 	}
 
@@ -42,7 +42,7 @@ public class SubtopicType {
 
 	@Override
 	public String toString() {
-		return "SubtopicType [(Subtopic Type ID) \t id=" + id + ",\n"
+		return "TopicName [(TopicName) \t id=" + id + ",\n"
 				+ "(Name) \t name=" + name + "\n]";//NOSONAR
 	}
 

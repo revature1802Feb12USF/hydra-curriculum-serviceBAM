@@ -1,7 +1,6 @@
-package com.revature.hydra.curriculum.controller;
+package com.revature.hydra.curriculum.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +14,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,26 +25,25 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
-import com.revature.hydra.curriculum.pojos.BadRequestException;
-import com.revature.hydra.curriculum.pojos.Batch;
-import com.revature.hydra.curriculum.pojos.CurriculumSubtopicDTO;
-import com.revature.hydra.curriculum.pojos.DaysDTO;
-import com.revature.hydra.curriculum.pojos.NoContentException;
-import com.revature.hydra.curriculum.pojos.Subtopic;
-import com.revature.hydra.curriculum.pojos.SubtopicName;
-import com.revature.hydra.curriculum.service.CurriculumService;
-import com.revature.hydra.curriculum.service.CurriculumSubtopicService;
+import com.revature.hydra.curriculum.beans.Batch;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopicDTO;
+import com.revature.hydra.curriculum.beans.DaysDTO;
+import com.revature.hydra.curriculum.beans.Subtopic;
+import com.revature.hydra.curriculum.beans.SubtopicName;
+import com.revature.hydra.curriculum.exceptions.BadRequestException;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
+import com.revature.hydra.curriculum.services.CurriculumService;
+import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
 
 /**
- * @author ryuujin
- * 
  * This class establishes REST endpoints for retrieval and modification of curriculum data.
  */
 @RestController
-@RequestMapping("/api/v2/curriculum/")
+@RequestMapping("/api/v2/curriculums")
 public class CurriculumController {
 	
 	/**
@@ -69,28 +68,6 @@ public class CurriculumController {
 	CurriculumSubtopicService curriculumSubtopicService;
 	
 	/**
-	 * Gets the curriculum service bean this controller uses.
-	 * @return This controller's curriculum service bean.
-	 */
-	public CurriculumService get() {
-		return curriculumService;
-	}
-	
-	/**
-	 * @author Nam Mai
-	 * 
-	 * Creates a controller using the given curriculum and curriculum subtopic services.
-	 * 
-	 * @param cs The curriculum service used to perform operations on curriculum data.
-	 * @param css The curriculum subtopic service used to perform operations on curriculum subtopic data.
-	 */
-	@Autowired
-	public CurriculumController(CurriculumService cs, CurriculumSubtopicService css) {
-		curriculumService = cs;
-		curriculumSubtopicService = css;
-	}
-
-	/**
 	 * @author Carter Taylor (1712-Steve)
 	 * @author Olayinka Ewumi (1712-Steve)
 	 * @author Stephen Negron (1801-Trevin)
@@ -103,15 +80,9 @@ public class CurriculumController {
 	 * @return The list of all curriculums.
 	 * @throws NoContentException Thrown when given list is empty or null. (HttpStatus.NO_CONTENT)
 	 */
-	@GetMapping(value = "all")
-	public List<Curriculum> getAllCurriculum() throws NoContentException {
-		List<Curriculum> curriculums = curriculumService.getAllCurriculum();
-		if (curriculums != null && !curriculums.isEmpty()) {
-			return curriculums;
-		} else {
-			// return new ResponseEntity<List<Curriculum>>(HttpStatus.NO_CONTENT);
-			throw new NoContentException("No Curriculums Found");
-		}
+	@GetMapping
+	public List<Curriculum> getAllCurriculums() throws NoContentException {
+		return curriculumService.getAllCurriculums();
 	}
 
 	/**
@@ -131,20 +102,9 @@ public class CurriculumController {
 	 * @throws BadRequestException There are missing parameters.
 	 * @throws NoContentException No curriculum found for the given ID.
 	 */
-	@GetMapping(value = "getcurriculum/{cId}")
-	public Curriculum getCurriculumById(@PathVariable int cId) throws BadRequestException, NoContentException {
-		Curriculum result = new Curriculum();
-		try {
-			result = curriculumService.getCuricullumById(cId);
-		} catch (NullPointerException e) {
-			throw new BadRequestException("Request Failed");
-		}
-		
-		if (result != null) {
-			return result;
-		} else {
-			throw new NoContentException("Curriculum by id: " + cId + " was not found");
-		}
+	@GetMapping("/{cId}")
+	public Curriculum getCurriculumById(@PathVariable int cId) throws NoContentException {
+		return curriculumService.getCurriculumById(cId);
 	}
 
 	
@@ -164,23 +124,10 @@ public class CurriculumController {
 	 * @throws BadRequestException Parameters missing.
 	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
-	@GetMapping(value = "schedule/{cId}")
+	@GetMapping("/schedule/{cId}")
 	public List<CurriculumSubtopic> getAllCurriculumSchedules(@PathVariable int cId)
 			throws BadRequestException, NoContentException {
-		Curriculum c = new Curriculum();
-
-		try {
-			c = curriculumService.getCuricullumById(cId);
-		} catch (NullPointerException e) {
-			throw new BadRequestException("Request Failed");
-		}
-		
-		List<CurriculumSubtopic> result = curriculumSubtopicService.getCurriculumSubtopicForCurriculum(c);
-		if (result != null && !result.isEmpty()) {
-			return result;
-		} else {
-			throw new NoContentException("No schedules by Curriculum Id: " + cId + " were found");
-		}
+		return curriculumService.getAllCurriculumSchedulesForCurriculum(cId);
 	}
 	
 
@@ -198,11 +145,11 @@ public class CurriculumController {
 	 * @throws NoContentException No topics found.
 	 */
 	@HystrixCommand(fallbackMethod = "getSubtopicNames")
-	@GetMapping("topicpool")
+	@GetMapping("topicpool") // TODO WAWA
 	public List<SubtopicName> getTopicPool() throws NoContentException {
 		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
 		
-		List<SubtopicName> result = this.restTemplate.exchange(
+		List<SubtopicName> result = restTemplate.exchange(
 				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
 		if (result != null && !result.isEmpty()) {
 			return result;
@@ -215,9 +162,10 @@ public class CurriculumController {
 	 * Hystrix fallback method for getTopicPool().
 	 * 
 	 * @return An empty list of subtopic names.
+	 * @throws NoContentException No subtopics found.
 	 */
-	public List<SubtopicName> getSubtopicNames() {
-		return new ArrayList<SubtopicName>();
+	public List<SubtopicName> getSubtopicNames() throws NoContentException {
+		throw new NoContentException("No subtopic names were found.");
 	}
 
 	
@@ -254,14 +202,15 @@ public class CurriculumController {
 	 * Hystrix fallback method for getSubtopicPool().
 	 * 
 	 * @return A list of all subtopics.
+	 * @throws NoContentException No subtopics found.
 	 */
-	public List<Subtopic> getSubtopics() {
-		return new ArrayList<Subtopic>();
+	public List<Subtopic> getSubtopics() throws NoContentException {
+		throw new NoContentException("No subtopics found.");
 	}
 
 	
 	/**
-	 * @author Carter Taylor (1712-Steve) 
+	 * @author Carter Taylor (1712-Steve)
 	 * @author Stephen Negron (1801-Trevin)
 	 * @author Rafael Sanchez (1801-Trevin)
 	 * 
@@ -273,35 +222,38 @@ public class CurriculumController {
 	 * @throws JsonMappingException Error occurred in mapping the parsed JSON string.
 	 * @throws IOException Error occurred in parsing the JSON string.
 	 */
-	@PostMapping(value = "addcurriculum")
-	public Curriculum addSchedule(@RequestBody String json) throws JsonMappingException, IOException {
+	@PostMapping
+	public Curriculum addSchedule(@RequestBody ObjectNode json) throws JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		CurriculumSubtopicDTO c = mapper.readValue(json, CurriculumSubtopicDTO.class);
-
+		
+//		CurriculumSubtopicDTO c = mapper.readValue(json, CurriculumSubtopicDTO.class);
+		CurriculumSubtopicDTO c = mapper.convertValue(json, CurriculumSubtopicDTO.class);
+		
+		
 		// save curriculum object first
 
 		Curriculum curriculum = new Curriculum();
-		curriculum.setCurriculumCreator(c.getMeta().getCurriculum().getCurriculumCreator());
-		curriculum.setCurriculumDateCreated(c.getMeta().getCurriculum().getCurriculumDateCreated());
-		curriculum.setCurriculumName(c.getMeta().getCurriculum().getCurriculumName());
-		curriculum.setCurriculumNumberOfWeeks(c.getMeta().getCurriculum().getCurriculumNumberOfWeeks());
-		curriculum.setCurriculumVersion(c.getMeta().getCurriculum().getCurriculumVersion());
-		curriculum.setIsMaster(c.getMeta().getCurriculum().getIsMaster());
+		curriculum.setCreatorId(c.getMeta().getCurriculum().getCreatorId());
+		curriculum.setDateCreated(c.getMeta().getCurriculum().getDateCreated());
+		curriculum.setName(c.getMeta().getCurriculum().getName());
+		curriculum.setNumberOfWeeks(c.getMeta().getCurriculum().getNumberOfWeeks());
+		curriculum.setVersion(c.getMeta().getCurriculum().getVersion());
+		curriculum.setIsMasterVersion(c.getMeta().getCurriculum().getIsMasterVersion());
 		
 		//curriculum = c.getMeta().getCurriculum();
 		
-		if (curriculum.getIsMaster() == 1) {
-			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getCurriculumName());
+		if (curriculum.getIsMasterVersion() == 1) {
+			List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(curriculum.getName());
 			Curriculum prevMaster = null;
 
 			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMaster() == 1)
+				if (curriculumList.get(i).getIsMasterVersion() == 1)
 					prevMaster = curriculumList.get(i);
 			}
 			
 			
 			if (prevMaster != null) {
-				prevMaster.setIsMaster(0);
+				prevMaster.setIsMasterVersion(0);
 				curriculumService.save(prevMaster);
 			}
 		}
@@ -340,30 +292,34 @@ public class CurriculumController {
 	 * @param cId The ID of the curriculum to mark as the master version.
 	 * 
 	 * @throws BadRequestException Could not find a curriculum with the provided ID.
+	 * @throws NoContentException Could not find the curriculum with the provided ID.
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@GetMapping(value = "makemaster/{cId}")
-	public void markCurriculumAsMaster(@PathVariable int cId) throws BadRequestException {
+	@PatchMapping("master/{cId}")
+	public void markCurriculumAsMaster(@PathVariable int cId) throws BadRequestException, NoContentException {
 		Curriculum c = new Curriculum();
 
-		try {
-			c = curriculumService.getCuricullumByIdKeepPwd(cId);
-		} catch (NullPointerException e) {
-			throw new BadRequestException("Request failed");
-		}
+		c = curriculumService.getCurriculumById(cId);
 
 		// find the curriculum with same name and isMaster = 1; set to 0; save
-		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(c.getCurriculumName());
+		List<Curriculum> curriculumList = curriculumService.findAllCurriculumByName(c.getName());
 
 		try {
 			Curriculum prevMaster = null;
-
+			
+			
+			// Set all curriculum versions as non-master
+			curriculumList.forEach((Curriculum curriculum) -> {
+				curriculum.setIsMasterVersion(0);
+			});
+			
 			for (int i = 0; i < curriculumList.size(); i++) {
-				if (curriculumList.get(i).getIsMaster() == 1)
+				if (curriculumList.get(i).getIsMasterVersion() == 1)
 					prevMaster = curriculumList.get(i);
 			}
+			
 			if (prevMaster != null) {
-				prevMaster.setIsMaster(0);
+				prevMaster.setIsMasterVersion(0);
 				curriculumService.save(prevMaster);
 			} else {
 				LogManager.getRootLogger().error(prevMaster);
@@ -373,7 +329,7 @@ public class CurriculumController {
 		}
 
 		// save new master curriculum
-		c.setIsMaster(1);
+		c.setIsMasterVersion(1);
 		curriculumService.save(c);
 	}
 
@@ -404,7 +360,7 @@ public class CurriculumController {
 		Curriculum c = null;
 		for (int i = 0; i < curriculumList.size(); i++) {
 			// master version found
-			if (curriculumList.get(i).getIsMaster() == 1) {
+			if (curriculumList.get(i).getIsMasterVersion() == 1) {
 				c = curriculumList.get(i);
 			}
 		}
@@ -413,11 +369,11 @@ public class CurriculumController {
 		if (c == null) { // TODO Use Java Streams API
 			curriculumList = curriculumService.findAllCurriculumByName(batchType);
 			if (curriculumList != null) {
-				int min = curriculumList.get(0).getCurriculumVersion();
+				int min = curriculumList.get(0).getVersion();
 				Curriculum tempCurric = curriculumList.get(0);
 				for (int i = 1; i < curriculumList.size(); i++) {
-					if (curriculumList.get(i).getCurriculumVersion() > min) {
-						min = curriculumList.get(i).getCurriculumVersion();
+					if (curriculumList.get(i).getVersion() > min) {
+						min = curriculumList.get(i).getVersion();
 						tempCurric = curriculumList.get(i);
 					}
 				}
@@ -472,7 +428,7 @@ public class CurriculumController {
 	 * @param version Curriculum version 
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("deleteversion")
+	@PostMapping("version")
 	public void deleteCurriculumVersion(@RequestBody Curriculum version) {
 		curriculumService.deleteCurriculum(version);
 	}

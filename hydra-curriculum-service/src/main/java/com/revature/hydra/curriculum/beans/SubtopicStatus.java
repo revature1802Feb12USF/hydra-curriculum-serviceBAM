@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.pojos;
+package com.revature.hydra.curriculum.beans;
 
 /**
  * Non-persistent bean holding subtopic status information

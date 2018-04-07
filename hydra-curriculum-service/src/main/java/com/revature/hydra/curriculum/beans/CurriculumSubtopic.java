@@ -1,4 +1,4 @@
-package com.revature.hydra.curriculum.bean;
+package com.revature.hydra.curriculum.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

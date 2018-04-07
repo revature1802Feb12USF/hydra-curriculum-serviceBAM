@@ -1,16 +1,18 @@
-package com.revature.hydra.curriculum.controller;
+package com.revature.hydra.curriculum.controllers;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.service.CurriculumService;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.exceptions.NoContentException;
+import com.revature.hydra.curriculum.services.CurriculumService;
 
 /**
  * A RestController that is used to manipulate, store, retrieve, and delete curriculums.
@@ -27,7 +29,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @param curriculum The curriculum to delete.
 	 */
-	@PostMapping("deleteCurriculum")
+	@PostMapping("curriculums")
 	public void deleteCurriculum(@RequestBody Curriculum curriculum){
 		curriculumService.deleteCurriculum(curriculum);
 	}
@@ -37,7 +39,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @param curriculum Determines which curriculum subtopics will be deleted.
 	 */
-	@PostMapping("deleteCurriculumSubtopics")
+	@PostMapping("curriculumsubtopics")
 	public void deleteCurriculumSubtopics(@RequestBody Curriculum curriculum){
 		curriculumService.deleteCurriculumSubtopics(curriculum);
 	}
@@ -49,7 +51,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return A list of curriculums of the given name.
 	 */
-	@PostMapping("findAllCurriculumByName/{name}")
+	@PostMapping("curriculums/{name}")
 	public List<Curriculum> findAllCurriculumByName(@PathVariable String name){
 		return curriculumService.findAllCurriculumByName(name);
 	}
@@ -63,7 +65,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return List of curriculums found with the provided constraints.
 	 */
-	@PostMapping("findAllCurriculumByNameAndIsMaster/{name}")
+	@PostMapping("master/{name}")
 	public List<Curriculum> findAllCurriculumByNameAndIsMaster(@PathVariable String name, @RequestBody Integer isMaster){
 		return curriculumService.findAllCurriculumByNameAndIsMaster(name, isMaster);
 	}
@@ -72,10 +74,11 @@ public class InternalCurriculumController {
 	 * Retrieve all curriculums from the database.
 	 * 
 	 * @return A list of all curriculums in the database.
+	 * @throws NoContentException  
 	 */
-	@PostMapping("getAllCurriculum")
-	public List<Curriculum> getAllCurriculum(){
-		return curriculumService.getAllCurriculum();
+	@GetMapping("curriculums")
+	public List<Curriculum> getAllCurriculums() throws NoContentException {
+		return curriculumService.getAllCurriculums();
 	}
 	
 	/**
@@ -84,22 +87,11 @@ public class InternalCurriculumController {
 	 * @param id The id of the curriculum to retrieve.
 	 * 
 	 * @return The curriculum of the given id.
+	 * @throws NoContentException No curriculum found with the given ID.
 	 */
-	@PostMapping("getCuricullumById/{id}")
-	public Curriculum getCuricullumById(@PathVariable Integer id){
-		return curriculumService.getCuricullumById(id);
-	}
-	
-	/**
-	 * Retrieves curriculum of the specified id.
-	 * 
-	 * @param id The id of the curriculum to retrieve.
-	 * 
-	 * @return The curriculum of the given id.
-	 */
-	@PostMapping("getCuricullumByIdKeepPwd/{id}")
-	public Curriculum getCuricullumByIdKeepPwd(@PathVariable Integer id){
-		return curriculumService.getCuricullumByIdKeepPwd(id);
+	@GetMapping("curriculums/{id}")
+	public Curriculum getCuricullumById(@PathVariable Integer id) throws NoContentException {
+		return curriculumService.getCurriculumById(id);
 	}
 	
 	/**
@@ -109,7 +101,7 @@ public class InternalCurriculumController {
 	 * 
 	 * @return The curriculum saved to the database.
 	 */
-	@PostMapping("save")
+	@PostMapping("curriculums")
 	public Curriculum save(@RequestBody Curriculum curriculum){
 		return curriculumService.save(curriculum);
 	}

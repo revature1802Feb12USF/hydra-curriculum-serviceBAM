@@ -1,12 +1,12 @@
-package com.revature.hydra.curriculum.repository;
+package com.revature.hydra.curriculum.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.revature.hydra.curriculum.bean.Curriculum;
-import com.revature.hydra.curriculum.bean.CurriculumSubtopic;
+import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
 
 @Repository
 public interface CurriculumSubtopicRepository extends JpaRepository<CurriculumSubtopic, Integer> {
