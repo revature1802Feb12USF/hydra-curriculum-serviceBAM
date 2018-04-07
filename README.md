@@ -31,6 +31,7 @@ N/A
 * **Seth Maize** - *Code cleanup* - [sgm4789](https://github.com/sgm4789)
 * **Johne Vang** - *Code cleanup* - [vangjk](https://github.com/vangjk)
 * **Ricky Baker** - *Code Cleanup* - [riorbak](https://github.com/riorbak)
+* **John Talanian** - *Code Cleanup* - [talanianj](https://github.com/talanianj)
 
 ## License
 
