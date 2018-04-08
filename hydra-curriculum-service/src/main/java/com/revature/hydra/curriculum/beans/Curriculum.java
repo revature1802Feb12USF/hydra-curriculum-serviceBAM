@@ -1,8 +1,11 @@
 package com.revature.hydra.curriculum.beans;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
@@ -177,29 +180,30 @@ public class Curriculum {
 	
 	@Override
 	public int hashCode() {
-		MessageDigest hasher = MessageDigest.getInstance("SHA-256");
-		Field[] fields = getClass().getFields();
-		ByteBuffer byteData;
-		
-		for(Field f : fields) {
-			byte[] data;
+		int hashValue = 0;
+		try {
+			MessageDigest hasher = MessageDigest.getInstance("SHA-256");
+			Field[] fields = getClass().getDeclaredFields();
+			ByteBuffer hashCodeBytes = ByteBuffer.allocate(4);
+			ByteArrayOutputStream cumulativeByteData = new ByteArrayOutputStream(4096);
 			
-			f.get(this).hashCode()
+			for(Field f : fields) {
+				Object fObj = f.get(this);
+				
+				hashCodeBytes.putInt(fObj == null ? 0 : fObj.hashCode());
+				cumulativeByteData.write(hashCodeBytes.array());
+				hashCodeBytes.rewind();
+			}
 			
-		}
+			byte[] sha256Hash = hasher.digest(cumulativeByteData.toByteArray());
+			hashCodeBytes.put(sha256Hash, 0, 4);
+		} catch(NoSuchAlgorithmException 
+				| SecurityException  
+				| IllegalArgumentException 
+				| IllegalAccessException 
+				| IOException ex) {}
 		
-		//make prime, PRIME
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((creatorId == null) ? 0 : creatorId.hashCode());
-		result = PRIME * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
-		result = PRIME * result + ((modifierId == null) ? 0 : modifierId.hashCode());
-		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-		result = PRIME * result + numberOfWeeks;
-		result = PRIME * result + version;
-		result = PRIME * result + ((id == null) ? 0 : id.hashCode());
-		result = PRIME * result + isMasterVersion;
-		return result; 
+		return hashValue; 
 	}
 	
 	@Override
