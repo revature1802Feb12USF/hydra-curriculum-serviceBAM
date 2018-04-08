@@ -10,8 +10,12 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "Curriculum")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Curriculum {
 
 	@Id
