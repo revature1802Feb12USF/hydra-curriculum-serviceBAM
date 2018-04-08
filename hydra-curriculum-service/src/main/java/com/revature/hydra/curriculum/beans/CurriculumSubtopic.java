@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="CURRICULUM_SUBTOPIC")
-public class CurrSubtopic {
+public class CurriculumSubtopic {
 	
 	@Id
 	@Column(name="ID")
@@ -38,11 +38,11 @@ public class CurrSubtopic {
 	@NotNull(message="Subtopic ID cannot be null.")
 	private Integer subtopicId;
 
-	public CurrSubtopic() {
+	public CurriculumSubtopic() {
 		
 	}
 	
-	public CurrSubtopic(Integer currSubtopicId, Curriculum curriculum, Integer subtopicId) {
+	public CurriculumSubtopic(Integer currSubtopicId, Curriculum curriculum, Integer subtopicId) {
 		super();
 		id = currSubtopicId;
 		this.curriculum = curriculum;
