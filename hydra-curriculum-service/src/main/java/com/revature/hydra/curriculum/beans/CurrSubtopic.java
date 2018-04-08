@@ -3,8 +3,12 @@ package com.revature.hydra.curriculum.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -13,51 +17,80 @@ import javax.validation.constraints.NotNull;
  * 
  */
 @Entity
-@Table(name="Curriculum_Subtopic")
+@Table(name="CURRICULUM_SUBTOPIC")
 public class CurrSubtopic {
 	
+	@Id
+	@Column(name="CURRICULUM_SUBTOPIC_ID")
+	@SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_GEN", sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CURRICULUM_SUBTOPIC_ID_GEN")
+	private Integer CurrSubtopicId;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="Curriculum_Id", 
+	@JoinColumn(name="CURRICULUM_ID", 
 				referencedColumnName="Id")
 	@NotNull(message="Curriculum ID cannot be null.")
-	private Curriculum curriculum;
+	private Curriculum curriculums;
 	
-	@Column(name="Subtopic_Id")
+	@Column(name="SUBTOPIC_ID")
 	@NotNull(message="Subtopic ID cannot be null.")
 	private Integer subtopicId;
-	
+
 	public CurrSubtopic() {
-		curriculum = null;
-		subtopicId = null;
+		
 	}
 	
-	public CurrSubtopic(Curriculum curriculum, Integer subtopicId) {
+	public CurrSubtopic(Integer currSubtopicId, Curriculum curriculums, Integer subtopicId) {
 		super();
-		this.curriculum = curriculum;
+		CurrSubtopicId = currSubtopicId;
+		this.curriculums = curriculums;
 		this.subtopicId = subtopicId;
 	}
 
-	public Curriculum getCurriculum() {
-		return curriculum;
+
+
+	public Integer getCurrSubtopicId() {
+		return CurrSubtopicId;
 	}
 
-	public void setCurriculum(Curriculum curriculumId) {
-		this.curriculum = curriculumId;
+
+
+	public void setCurrSubtopicId(Integer currSubtopicId) {
+		CurrSubtopicId = currSubtopicId;
 	}
+
+
+
+	public Curriculum getCurriculums() {
+		return curriculums;
+	}
+
+
+
+	public void setCurriculums(Curriculum curriculums) {
+		this.curriculums = curriculums;
+	}
+
+
 
 	public Integer getSubtopicId() {
 		return subtopicId;
 	}
 
+
+
 	public void setSubtopicId(Integer subtopicId) {
 		this.subtopicId = subtopicId;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Subtopic [(Curriculu Id) \t curriculumId=" + curriculum + ",\n"
-				+ "(Subtopic Id) \t subtopicId=" + subtopicId + "\n]";
+		return "CurrSubtopic [CurrSubtopicId=" + CurrSubtopicId + ", curriculums=" + curriculums + ", subtopicId="
+				+ subtopicId + "]";
 	}
+
 	
 	
 }

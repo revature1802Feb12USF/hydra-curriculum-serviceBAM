@@ -36,22 +36,22 @@ public class ScheduledSubtopic {
 	@NotNull
 	private ScheduledDate date;
 	
-	@Column(name="PARENT_CURRICULUM")
+	@Column(name="SCHEDULE")
 	@ManyToOne(cascade=CascadeType.ALL,
 			   fetch=FetchType.LAZY)
 	@NotNull
-	private Curriculum parentCurriculum;
+	private Schedule parentSchedule;
 	
 	public ScheduledSubtopic() {
 		super();
 	}
 
-	public ScheduledSubtopic(Integer id, Integer subtopicId, ScheduledDate date, Curriculum parentCurriculum) {
+	public ScheduledSubtopic(Integer id, Integer subtopicId, ScheduledDate date, Schedule parentSchedule) {
 		super();
 		this.id = id;
 		this.subtopicId = subtopicId;
 		this.date = date;
-		this.parentCurriculum = parentCurriculum;
+		this.parentSchedule = parentSchedule;
 	}
 
 	public Integer getId() {
@@ -78,12 +78,12 @@ public class ScheduledSubtopic {
 		this.date = date;
 	}
 
-	public Curriculum getParentCurriculum() {
-		return parentCurriculum;
+	public Schedule getParentSchedule() {
+		return parentSchedule;
 	}
 
-	public void setParentCurriculum(Curriculum parentCurriculum) {
-		this.parentCurriculum = parentCurriculum;
+	public void setParentSchedule(Schedule parentSchedule) {
+		this.parentSchedule = parentSchedule;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class ScheduledSubtopic {
 		return "ScheduledSubtopic [(Scheduled Subtopic Id) \t id=" + id + ",\n"
 				+ "(Subtopic Id) \t subtopicId=" + subtopicId + ",\n"
 				+ "(Date) \t date=" + date + ",\n"
-				+ "(Parent Curriculum) \t parentCurriculum=" + parentCurriculum + "\n]";
+				+ "(Parent Schedule) \t parentSchedule=" + parentSchedule + "\n]";
 	}
 	
 	
