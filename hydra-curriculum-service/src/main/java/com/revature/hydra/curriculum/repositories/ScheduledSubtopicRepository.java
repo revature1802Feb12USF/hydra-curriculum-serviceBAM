@@ -10,5 +10,6 @@ public interface ScheduledSubtopicRepository extends JpaRepository<ScheduledSubt
 
 	public List<ScheduledSubtopic> findAll();
 	public ScheduledSubtopic findScheduledSubtopicById(int id);
+	public List<ScheduledSubtopic> findAllByParentCurriculumIdOrderByScheduledDateStartTimeAsc(int id);
 	
 }
