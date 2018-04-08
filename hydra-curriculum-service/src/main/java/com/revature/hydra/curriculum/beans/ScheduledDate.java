@@ -11,8 +11,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="SCHEDULED_DATE")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ScheduledDate {
 	@Id
 	@SequenceGenerator(initialValue=0,
@@ -39,7 +42,7 @@ public class ScheduledDate {
 	@Column(name="END_TIME")
 	@NotNull
 	private ZonedDateTime endTime;
-
+	
 	public ScheduledDate() {
 		super();
 	}

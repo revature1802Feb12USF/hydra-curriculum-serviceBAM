@@ -12,8 +12,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="SCHEDULED_SUBTOPICS")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ScheduledSubtopic {
 	@Id
 	@SequenceGenerator(initialValue=0,
