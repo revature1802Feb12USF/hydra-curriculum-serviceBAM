@@ -13,24 +13,26 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * 
- * 
+ * Pseudo-join table to represent a many-to-many relationship between Subtopic and Curriculum
  */
 @Entity
 @Table(name="CURRICULUM_SUBTOPIC")
 public class CurrSubtopic {
 	
 	@Id
-	@Column(name="CURRICULUM_SUBTOPIC_ID")
-	@SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_GEN", sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ", allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CURRICULUM_SUBTOPIC_ID_GEN")
-	private Integer CurrSubtopicId;
+	@Column(name="ID")
+	@SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN", 
+					   sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ",
+					   allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, 
+					generator = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN")
+	private Integer id;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="CURRICULUM_ID", 
 				referencedColumnName="Id")
 	@NotNull(message="Curriculum ID cannot be null.")
-	private Curriculum curriculums;
+	private Curriculum curriculum;
 	
 	@Column(name="SUBTOPIC_ID")
 	@NotNull(message="Subtopic ID cannot be null.")
@@ -40,35 +42,35 @@ public class CurrSubtopic {
 		
 	}
 	
-	public CurrSubtopic(Integer currSubtopicId, Curriculum curriculums, Integer subtopicId) {
+	public CurrSubtopic(Integer currSubtopicId, Curriculum curriculum, Integer subtopicId) {
 		super();
-		CurrSubtopicId = currSubtopicId;
-		this.curriculums = curriculums;
+		id = currSubtopicId;
+		this.curriculum = curriculum;
 		this.subtopicId = subtopicId;
 	}
 
 
 
-	public Integer getCurrSubtopicId() {
-		return CurrSubtopicId;
+	public Integer getId() {
+		return id;
 	}
 
 
 
-	public void setCurrSubtopicId(Integer currSubtopicId) {
-		CurrSubtopicId = currSubtopicId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 
 
-	public Curriculum getCurriculums() {
-		return curriculums;
+	public Curriculum getCurriculum() {
+		return curriculum;
 	}
 
 
 
-	public void setCurriculums(Curriculum curriculums) {
-		this.curriculums = curriculums;
+	public void setCurriculum(Curriculum curriculum) {
+		this.curriculum = curriculum;
 	}
 
 
@@ -83,14 +85,8 @@ public class CurrSubtopic {
 		this.subtopicId = subtopicId;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "CurrSubtopic [CurrSubtopicId=" + CurrSubtopicId + ", curriculums=" + curriculums + ", subtopicId="
-				+ subtopicId + "]";
+		return "CurrSubtopic [id=" + id + ", curriculum=" + curriculum + ", subtopicId=" + subtopicId + "]";
 	}
-
-	
-	
 }

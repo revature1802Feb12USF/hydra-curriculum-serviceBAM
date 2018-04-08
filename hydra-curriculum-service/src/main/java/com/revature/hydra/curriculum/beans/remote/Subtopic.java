@@ -102,15 +102,4 @@ public class Subtopic {
 				+ "(Date) \t date=" + date + ",\n"
 				+ "(Parent Topic) \t parentTopic=" + parentTopic + "\n]";
 	}
-	
-	
-	
-//	@Override
-//	public String toString() {
-//		return "Subtopic [(Subtopic ID) \t id=" + id + ",\n"
-//				+ "(Subtopic Date) \t date=" + date + ",\n"
-//				+ "(Status) \t status=" + status +"\n]";
-//	}
-
-	
 }

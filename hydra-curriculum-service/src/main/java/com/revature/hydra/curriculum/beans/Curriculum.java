@@ -1,22 +1,12 @@
 package com.revature.hydra.curriculum.beans;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -69,9 +59,6 @@ public class Curriculum {
 	@Column(name="MASTER_VERSION")
 	private Boolean masterVersion;
 	
-	@OneToMany(cascade=CascadeType.ALL,
-			   fetch=FetchType.LAZY)
-	private List<CurrSubtopic> subtopics;
 	
 	/**
 	 * Creates a curriculum with default values.
@@ -172,16 +159,6 @@ public class Curriculum {
 		this.id = id;
 	}
 
-	
-	
-	public List<CurrSubtopic> getSubtopics() {
-		return subtopics;
-	}
-
-	public void setSubtopics(List<CurrSubtopic> subtopics) {
-		this.subtopics = subtopics;
-	}
-
 	public Boolean getMasterVersion() {
 		return masterVersion;
 	}
@@ -195,8 +172,7 @@ public class Curriculum {
 				+ "(Last Modified by) \t modifierId=" + modifierId + ",\n "
 				+ "(Created on) \t dateCreated=" + dateCreated + ",\n"
 				+ "(Duration in weeks) \t weekDuration=" + weekDuration + ",\n"
-				+ "(Master Version) \t masterVersion=" + masterVersion + "\n"
-				+ "(Subtopics) \t subtopics=" + subtopics + "\n]";
+				+ "(Master Version) \t masterVersion=" + masterVersion + "\n]";
 	}
 
 	@Override

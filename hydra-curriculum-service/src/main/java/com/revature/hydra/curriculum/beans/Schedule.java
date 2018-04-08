@@ -1,13 +1,10 @@
 package com.revature.hydra.curriculum.beans;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -25,19 +22,14 @@ public class Schedule {
 	@NotNull
 	private Curriculum curriculum;
 	
-	@OneToMany
-	@NotNull
-	private List<ScheduledSubtopic> scheduledSubtopics;
-	
 	public Schedule() {
 		
 	}
 	
-	public Schedule(Integer id, Curriculum curriculum, List<ScheduledSubtopic> scheduledSubtopics) {
+	public Schedule(Integer id, Curriculum curriculum) {
 		super();
 		this.id = id;
 		this.curriculum = curriculum;
-		this.scheduledSubtopics = scheduledSubtopics;
 	}
 	
 	
@@ -58,21 +50,12 @@ public class Schedule {
 		this.curriculum = curriculum;
 	}
 
-	public List<ScheduledSubtopic> getScheduledSubtopics() {
-		return scheduledSubtopics;
-	}
-
-	public void setScheduledSubtopics(List<ScheduledSubtopic> scheduledSubtopics) {
-		this.scheduledSubtopics = scheduledSubtopics;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((curriculum == null) ? 0 : curriculum.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((scheduledSubtopics == null) ? 0 : scheduledSubtopics.hashCode());
 		return result;
 	}
 
@@ -95,14 +78,9 @@ public class Schedule {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (scheduledSubtopics == null) {
-			if (other.scheduledSubtopics != null)
-				return false;
-		} else if (!scheduledSubtopics.equals(other.scheduledSubtopics))
-			return false;
 		return true;
 	}
-	
+
 	
 	
 }
