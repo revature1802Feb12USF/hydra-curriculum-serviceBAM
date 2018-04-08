@@ -226,11 +226,11 @@ public class CurriculumController {
 		Curriculum curriculum = schedule.getCurriculum();
 		
 		// Make adjustments to previous versions if new version is set as master version.
-		if (curriculum.getIsMasterVersion() == 1) {
+		if (curriculum.isMasterVersion()) {
 			List<Curriculum> masterList = curriculumService.findAllCurriculumsByNameAndIsMaster(curriculum.getName(), 1);
 			
 			masterList.forEach(curr -> {
-				curr.setIsMasterVersion(0);
+				curr.setMasterVersion(false);
 				curriculumService.save(curr);
 			});
 		}
@@ -278,10 +278,10 @@ public class CurriculumController {
 			throw new NoContentException("Curriculum");
 		
 		Curriculum oldMasterVersion = curriculumList.get(0);
-		oldMasterVersion.setIsMasterVersion(0);
+		oldMasterVersion.setMasterVersion(false);
 		curriculumService.save(oldMasterVersion);
 		
-		targetCurriculum.setIsMasterVersion(1);
+		targetCurriculum.setMasterVersion(true);
 		curriculumService.save(targetCurriculum);
 	}
 
@@ -312,7 +312,7 @@ public class CurriculumController {
 		Curriculum c = null;
 		for (int i = 0; i < curriculumList.size(); i++) {
 			// master version found
-			if (curriculumList.get(i).getIsMasterVersion() == 1) {
+			if (curriculumList.get(i).isMasterVersion()) {
 				c = curriculumList.get(i);
 			}
 		}
