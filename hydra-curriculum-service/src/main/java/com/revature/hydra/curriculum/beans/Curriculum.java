@@ -175,45 +175,30 @@ public class Curriculum {
 				+ "(Duration in weeks) \t weekDuration=" + weekDuration + ",\n"
 				+ "(Master Version) \t masterVersion=" + masterVersion + "\n]";
 	}
-	
-	
-	
+
 	@Override
 	public int hashCode() {
-		int hashValue = 0;
-		try {
-			MessageDigest hasher = MessageDigest.getInstance("SHA-256");
-			Field[] fields = getClass().getDeclaredFields();
-			ByteBuffer hashCodeBytes = ByteBuffer.allocate(4);
-			ByteArrayOutputStream cumulativeByteData = new ByteArrayOutputStream(4096);
-			
-			for(Field f : fields) {
-				Object fObj = f.get(this);
-				
-				hashCodeBytes.putInt(fObj == null ? 0 : fObj.hashCode());
-				cumulativeByteData.write(hashCodeBytes.array());
-				hashCodeBytes.rewind();
-			}
-			
-			byte[] sha256Hash = hasher.digest(cumulativeByteData.toByteArray());
-			hashCodeBytes.put(sha256Hash, 0, 4);
-		} catch(NoSuchAlgorithmException 
-				| SecurityException  
-				| IllegalArgumentException 
-				| IllegalAccessException 
-				| IOException ex) {}
-		
-		return hashValue; 
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((creatorId == null) ? 0 : creatorId.hashCode());
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((masterVersion == null) ? 0 : masterVersion.hashCode());
+		result = prime * result + ((modifierId == null) ? 0 : modifierId.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		result = prime * result + ((weekDuration == null) ? 0 : weekDuration.hashCode());
+		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		
-		// modify to check using instanceof
-		if (getClass() != obj.getClass()) return false;
-		
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		Curriculum other = (Curriculum) obj;
 		if (creatorId == null) {
 			if (other.creatorId != null)
@@ -225,6 +210,16 @@ public class Curriculum {
 				return false;
 		} else if (!dateCreated.equals(other.dateCreated))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (masterVersion == null) {
+			if (other.masterVersion != null)
+				return false;
+		} else if (!masterVersion.equals(other.masterVersion))
+			return false;
 		if (modifierId == null) {
 			if (other.modifierId != null)
 				return false;
@@ -235,18 +230,23 @@ public class Curriculum {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (numberOfWeeks != other.numberOfWeeks)
-			return false;
-		if (version != other.version)
-			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (version == null) {
+			if (other.version != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!version.equals(other.version))
 			return false;
-		if (isMasterVersion != other.isMasterVersion)
+		if (weekDuration == null) {
+			if (other.weekDuration != null)
+				return false;
+		} else if (!weekDuration.equals(other.weekDuration))
 			return false;
 		return true;
 	}
+	
+	
+	
+	
+	
+	
 	
 }
