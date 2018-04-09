@@ -1,6 +1,5 @@
 package com.revature.hydra.curriculum.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,10 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.Schedule;
-import com.revature.hydra.curriculum.beans.dto.ScheduleDto;
+import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.ScheduleRepository;
+import com.revature.hydra.curriculum.repositories.ScheduledSubtopicRepository;
 
 @Service
 public class ScheduleService {
@@ -27,6 +27,11 @@ public class ScheduleService {
 	@Autowired
 	private CurriculumService curriculumService;
 	
+	@Autowired
+	private ScheduledSubtopicService scheduledSubtopicService;
+	
+	@Autowired
+	private ScheduledSubtopicRepository scheduledSubtopicRepository;
 	
 	/**
 	 * Retrieve all schedules from the database
@@ -84,7 +89,7 @@ public class ScheduleService {
 	 * @throws NoContentException Non-existent curriculum specified.
 	 */
 	@Transactional
-	public Schedule addSchedule(Schedule schedule) throws NoContentException, BadRequestException {
+	public Schedule add(Schedule schedule) throws NoContentException, BadRequestException {
 		schedule.setId(null);
 		
 		Curriculum curriculum = curriculumService.getCurriculumById(schedule.getCurriculum().getId());
@@ -101,5 +106,28 @@ public class ScheduleService {
 		
 	}
 	
+	@Transactional
+	public void deleteById(Integer id) {
+		scheduleRepository.delete(id);
+	}
+	
+	@Transactional
+	public void deleteSubtopic(int scheduleId, int subtopicId) throws NoContentException {
+		
+		ScheduledSubtopic subtopic =  scheduledSubtopicService.getById(subtopicId);
+		
+		//verify that we did not get a null value, and that the subtopic belongs to the subtopic id
+		if(subtopic != null && scheduleId == subtopic.getParentSchedule().getId()) {
+			scheduledSubtopicRepository.delete(subtopicId);
+		}
+		else {
+			throw new NoContentException("The subtopic does not belong to the specified schedule, or does not exist at all");
+		}
+	}
+	
+	@Transactional
+	public void updateSubtopic() {
+		
+	}
 	
 }
