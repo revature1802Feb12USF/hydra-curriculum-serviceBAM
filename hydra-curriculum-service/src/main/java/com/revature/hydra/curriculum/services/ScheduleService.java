@@ -78,35 +78,28 @@ public class ScheduleService {
 	
 	/**
 	 * Registers a new schedule into the system.
-	 * @param scheduleData A DTO containing  the curriculum and scheduled subtopics.
+	 * @param schedule Adds schedule to the database
 	 * @return The added schedule.
 	 * @throws BadRequestException Non-existent subtopics exist within the schedule.
 	 * @throws NoContentException Non-existent curriculum specified.
 	 */
 	@Transactional
-	public Schedule addSchedule(ScheduleDto scheduleData) throws BadRequestException, NoContentException {
-		List<Integer> subtopicIds = new ArrayList<>();
+	public Schedule addSchedule(Schedule schedule) throws NoContentException, BadRequestException {
+		schedule.setId(null);
 		
-		Curriculum curriculum = curriculumService.getCurriculumById(scheduleData.getCurriculumId());
+		Curriculum curriculum = curriculumService.getCurriculumById(schedule.getCurriculum().getId());
 		
+		//make sure that curriculum is valid
 		if(curriculum == null) {
 			throw new BadRequestException("Non-existent curriculum is associated with the schedule.");
 		}
-		
-		scheduleData.getSubtopics().forEach(sub -> {
-			subtopicIds.add(sub.getSubtopicId());
-		});
-		
-		if(!remoteTopicService.allSubtopicsExist(subtopicIds)) {
-			throw new BadRequestException("Non-existent subtopics requested.");
+		else {
+			schedule.setCurriculum(curriculum);
 		}
 		
-		Schedule schedule = new Schedule();
-		schedule.setCurriculum(curriculum);
-		schedule.setSubtopics(scheduleData.getSubtopics());
-		Schedule newSchedule = scheduleRepository.save(schedule);
+		return scheduleRepository.save(schedule);
 		
-		return newSchedule;
 	}
+	
 	
 }
