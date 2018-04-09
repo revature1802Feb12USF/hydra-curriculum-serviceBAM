@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -19,10 +20,18 @@ public class RemoteTopicService {
 	// TODO annotate with @Value() from properties
 	private static String topicEndpoint = "";
 	private static String requestSubtopicsEndpoint = "";
+	private static String verifySubtopicsExistEndpoint = "";
 	
 	@Autowired
 	private static RestTemplate restTemplate;
 	
+	
+	/**
+	 * Generates a RestTemplate for performing external REST requests.
+	 * @param restTemplateBuilder The template builder used to generate the RestTemplate.
+	 * @return A RestTemplate to be used for performing external REST API requests.
+	 */
+	@LoadBalanced
 	@Bean
 	private static RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
 		return restTemplateBuilder.build();
@@ -43,5 +52,20 @@ public class RemoteTopicService {
 				HttpMethod.GET, null, paramTypeRef).getBody();
 		
 		return subtopics;
+	}
+	
+	/**
+	 * Verifies the existence of the subtopic IDs.
+	 * @param subtopicIds The list of subtopics to verify.
+	 * @return {@literal true} if all given subtopic IDs are valid; otherwise, {@literal false}.
+	 */
+	public boolean allSubtopicsExist(List<Integer> subtopicIds) {
+		Boolean isValid = false;
+		
+		isValid = restTemplate.exchange(verifySubtopicsExistEndpoint 
+				+ "?ids=" + ST.format("<%1; separator=\",\"", subtopicIds), 
+				HttpMethod.GET, null, Boolean.class).getBody();
+		
+		return isValid;
 	}
 }

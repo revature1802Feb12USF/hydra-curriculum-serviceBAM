@@ -1,12 +1,17 @@
 package com.revature.hydra.curriculum.services;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.Schedule;
+import com.revature.hydra.curriculum.beans.dto.ScheduleDto;
+import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.ScheduleRepository;
 
@@ -14,7 +19,14 @@ import com.revature.hydra.curriculum.repositories.ScheduleRepository;
 public class ScheduleService {
 	
 	@Autowired
-	ScheduleRepository scheduleRepository;
+	private ScheduleRepository scheduleRepository;
+	
+	@Autowired
+	private RemoteTopicService remoteTopicService;
+	
+	@Autowired
+	private CurriculumService curriculumService;
+	
 	
 	/**
 	 * Retrieve all schedules from the database
@@ -62,4 +74,39 @@ public class ScheduleService {
 			throw new NoContentException("Schedule by id: " + id + " was not found");
 		}
 	}
+	
+	
+	/**
+	 * Registers a new schedule into the system.
+	 * @param scheduleData A DTO containing  the curriculum and scheduled subtopics.
+	 * @return The added schedule.
+	 * @throws BadRequestException Non-existent subtopics exist within the schedule.
+	 * @throws NoContentException Non-existent curriculum specified.
+	 */
+	@Transactional
+	public Schedule addSchedule(ScheduleDto scheduleData) throws BadRequestException, NoContentException {
+		List<Integer> subtopicIds = new ArrayList<>();
+		
+		Curriculum curriculum = curriculumService.getCurriculumById(scheduleData.getCurriculumId());
+		
+		if(curriculum == null) {
+			throw new BadRequestException("Non-existent curriculum is associated with the schedule.");
+		}
+		
+		scheduleData.getSubtopics().forEach(sub -> {
+			subtopicIds.add(sub.getSubtopicId());
+		});
+		
+		if(!remoteTopicService.allSubtopicsExist(subtopicIds)) {
+			throw new BadRequestException("Non-existent subtopics requested.");
+		}
+		
+		Schedule schedule = new Schedule();
+		schedule.setCurriculum(curriculum);
+		schedule.setSubtopics(scheduleData.getSubtopics());
+		Schedule newSchedule = scheduleRepository.save(schedule);
+		
+		return newSchedule;
+	}
+	
 }

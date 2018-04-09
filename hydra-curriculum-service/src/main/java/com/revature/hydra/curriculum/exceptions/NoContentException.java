@@ -12,9 +12,8 @@ public class NoContentException extends Exception{
 	private static final long serialVersionUID = -1669307485951446112L;
 	
 	/**
-	 * One argument constructor.
-	 * 
-	 * @param message Exception message
+	 * Create a exception representing no content.
+	 * @param message Custom message to store.
 	 */
 	public NoContentException(String message) {
 		super(message);

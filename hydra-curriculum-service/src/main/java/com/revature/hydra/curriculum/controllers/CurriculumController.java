@@ -32,6 +32,7 @@ import com.revature.hydra.curriculum.beans.remote.Batch;
 import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
+import com.revature.hydra.curriculum.exceptions.ServiceUnavailableException;
 import com.revature.hydra.curriculum.services.CurriculumService;
 import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
 
@@ -42,17 +43,6 @@ import com.revature.hydra.curriculum.services.CurriculumSubtopicService;
 @RequestMapping("/api/v2/curriculums")
 public class CurriculumController {
 	
-	/**
-	 * Generates a RestTemplate for performing external REST requests.
-	 * @param restTemplateBuilder The template builder used to generate the RestTemplate.
-	 * @return A RestTemplate to be used for performing external REST API requests.
-	 */
-	@LoadBalanced
-	@Bean
-	public RestTemplate buildRestTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.build();
-	}
-
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -97,9 +87,9 @@ public class CurriculumController {
 	 * @throws BadRequestException There are missing parameters.
 	 * @throws NoContentException No curriculum found for the given ID.
 	 */
-	@GetMapping("/{cId}")
-	public Curriculum getCurriculumById(@PathVariable int cId) throws NoContentException {
-		return curriculumService.getCurriculumById(cId);
+	@GetMapping("/{id}")
+	public Curriculum getCurriculumById(@PathVariable int id) throws NoContentException {
+		return curriculumService.getCurriculumById(id);
 	}
 
 	
@@ -109,106 +99,34 @@ public class CurriculumController {
 	 * @author Stephen Negron (1801-Trevin)
 	 * @author Rafael Sanchez (1801-Trevin)
 	 * 
-	 * Retrieves a list of scheduled curriculums subtopics with the given curriculum ID.
+	 * Retrieves a list of subtopics in the specified curriculum.
 	 * 	HttpStatus.OK: Found at least 1 subtopic for the specified curriculum.
 	 *  HttpStatus.NO_CONTENT: No subtopics found for the specified curriculum.
-	 *  HttpStatus.BAD_REQUEST: Missing parameters.
 	 *  
-	 * @param cId The curriculum ID.
+	 * @param id The curriculum ID.
 	 * @return A list of curriculum subtopics belonging to the given curriculum.
-	 * @throws BadRequestException Parameters missing.
-	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
+	@HystrixCommand(fallbackMethod="unavailableService")
 	@GetMapping("/{cid}/subtopics")
-	public List<Subtopic> getAllCurriculumSubtopics(@PathVariable int cId) {
-		return curriculumService.getAllSubtopicsForCurriculum(cId);
-	}
-	
-
-	/**
-	 * @author Carter Taylor (1712-Steve)
-	 * @author Olayinka Ewumi (1712-Steve)
-	 * @author Stephen Negron (1801-Trevin)
-	 * @author Rafael Sanchez (1801-Trevin)
-	 * 
-	 * Retrieves all topic names from the topic name pool.
-	 * 	HttpStatus.OK: Found at least 1 topic name.
-	 *  HttpStatus.NO_CONTENT: No topic names found.
-	 *  
-	 * @return The list of all subtopic names.
-	 * @throws NoContentException No topics found.
-	 */
-//	@HystrixCommand(fallbackMethod = "getSubtopicNames")
-//	@GetMapping("topicpool") // TODO WAWA
-//	public List<SubtopicName> getTopicPool() throws NoContentException {
-//		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
-//		
-//		List<SubtopicName> result = restTemplate.exchange(
-//				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
-//		if (result != null && !result.isEmpty()) {
-//			return result;
-//		} else {
-//			throw new NoContentException("No SubtopicNames were found");
-//		}
-//	}
-	
-	/**
-	 * Hystrix fallback method for getTopicPool().
-	 * 
-	 * @return An empty list of subtopic names.
-	 * @throws NoContentException No subtopics found.
-	 */
-//	public List<SubtopicName> getSubtopicNames() throws NoContentException { // TODO WAWA
-//		throw new NoContentException("No subtopic names were found.");
-//	}
-
-	
-	
-	
-	/**
-	 * @author Carter Taylor (1712-Steve)
-	 * @author Olayinka Ewumi (1712-Steve)
-	 * @author Stephen Negron (1801-Trevin)
-	 * @author Rafael Sanchez (1801-Trevin) 
-	 * 
-	 * Retrieves all topic names from the topic pool.
-	 * 	HttpStatus.OK: Found at least 1 topic.
-	 *  HttpStatus.NO_CONTENT: No topics found.
-	 * 
-	 * @return The list of all subtopics.
-	 * @throws NoContentException No topics found.
-	 */
-	@HystrixCommand(fallbackMethod = "getSubtopics")
-	@GetMapping("subtopicpool") // TODO WAWA
-	public List<Subtopic> getSubtopicPool() throws NoContentException {
-		ParameterizedTypeReference<List<Subtopic>> ptr = new ParameterizedTypeReference<List<Subtopic>>() {};
-		List<Subtopic> result = this.restTemplate.exchange(
-				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopics", HttpMethod.GET, null, ptr).getBody();
-		if (result != null && !result.isEmpty()) {
-			return result;
-		} else {
-			throw new NoContentException("No Subtopics were found");
-		}
+	public List<Subtopic> getAllCurriculumSubtopics(@PathVariable int id) throws NoContentException {
+		return curriculumService.getAllSubtopicsForCurriculum(id);
 	}
 	
 	
 	/**
-	 * Hystrix fallback method for getSubtopicPool().
-	 * 
-	 * @return A list of all subtopics.
-	 * @throws NoContentException No subtopics found.
+	 * Hystrix fallback method for when an endpoint using a remote service can't access the service. 
 	 */
-	public List<Subtopic> getSubtopics() throws NoContentException {
-		throw new NoContentException("No subtopics found.");
+	public void unavailableService() throws ServiceUnavailableException {
+		throw new ServiceUnavailableException("Service is currently unavailable.");
 	}
-
+	
 	
 	/**
 	 * @author Carter Taylor (1712-Steve)
 	 * @author Stephen Negron (1801-Trevin)
 	 * @author Rafael Sanchez (1801-Trevin)
 	 * 
-	 * Add a new curriculum. Handles the case of the new curriculum being added as the master version.
+	 * Add a new curriculum.
 	 * 
 	 * @param json JSON string that contains the curriculum subtopic object.
 	 * 
@@ -216,8 +134,10 @@ public class CurriculumController {
 	 * @throws JsonMappingException Error occurred in mapping the parsed JSON string.
 	 * @throws IOException Error occurred in parsing the JSON string.
 	 */
-	@PostMapping
-	public Curriculum addSchedule(@RequestBody Schedule schedule) throws JsonMappingException, IOException {
+	@PostMapping // TODO CONTINUE FROM HERE; MOVE TO ScheduleController
+	public Schedule addSchedule(@RequestBody Schedule schedule) throws JsonMappingException, IOException {
+		
+		
 		
 		// save curriculum object first
 		Curriculum curriculum = schedule.getCurriculum();
@@ -381,5 +301,96 @@ public class CurriculumController {
 	public void deleteCurriculumVersion(@RequestBody Curriculum version) {
 		curriculumService.deleteCurriculum(version);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// TODO Likely to be erased.
+	/**
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin)
+	 * 
+	 * Retrieves all topic names from the topic name pool.
+	 * 	HttpStatus.OK: Found at least 1 topic name.
+	 *  HttpStatus.NO_CONTENT: No topic names found.
+	 *  
+	 * @return The list of all subtopic names.
+	 * @throws NoContentException No topics found.
+	 */
+//	@HystrixCommand(fallbackMethod = "getSubtopicNames")
+//	@GetMapping("topicpool") // TODO WAWA
+//	public List<SubtopicName> getTopicPool() throws NoContentException {
+//		ParameterizedTypeReference<List<SubtopicName>> ptr = new ParameterizedTypeReference<List<SubtopicName>>() {};
+//		
+//		List<SubtopicName> result = restTemplate.exchange(
+//				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopicNames", HttpMethod.GET, null, ptr).getBody();
+//		if (result != null && !result.isEmpty()) {
+//			return result;
+//		} else {
+//			throw new NoContentException("No SubtopicNames were found");
+//		}
+//	}
+	
+	/**
+	 * Hystrix fallback method for getTopicPool().
+	 * 
+	 * @return An empty list of subtopic names.
+	 * @throws NoContentException No subtopics found.
+	 */
+//	public List<SubtopicName> getSubtopicNames() throws NoContentException { // TODO WAWA
+//		throw new NoContentException("No subtopic names were found.");
+//	}
 
+	
+	/**
+	 * @author Carter Taylor (1712-Steve)
+	 * @author Olayinka Ewumi (1712-Steve)
+	 * @author Stephen Negron (1801-Trevin)
+	 * @author Rafael Sanchez (1801-Trevin) 
+	 * 
+	 * Retrieves all topic names from the topic pool.
+	 * 	HttpStatus.OK: Found at least 1 topic.
+	 *  HttpStatus.NO_CONTENT: No topics found.
+	 * 
+	 * @return The list of all subtopics.
+	 * @throws NoContentException No topics found.
+	 */
+//	@HystrixCommand(fallbackMethod = "getSubtopics")
+//	@GetMapping("subtopicpool") // TODO WAWA
+//	public List<Subtopic> getSubtopicPool() throws NoContentException {
+//		ParameterizedTypeReference<List<Subtopic>> ptr = new ParameterizedTypeReference<List<Subtopic>>() {};
+//		List<Subtopic> result = this.restTemplate.exchange(
+//				"http://hydra-topic-service/api/v2/subtopicService/getAllSubtopics", HttpMethod.GET, null, ptr).getBody();
+//		if (result != null && !result.isEmpty()) {
+//			return result;
+//		} else {
+//			throw new NoContentException("No Subtopics were found");
+//		}
+//	}
+	
+	/**
+	 * Hystrix fallback method for getSubtopicPool().
+	 * 
+	 * @return A list of all subtopics.
+	 * @throws NoContentException No subtopics found.
+	 */
+//	public List<Subtopic> getSubtopics() throws NoContentException {
+//		throw new NoContentException("No subtopics found.");
+//	}
+	
 }

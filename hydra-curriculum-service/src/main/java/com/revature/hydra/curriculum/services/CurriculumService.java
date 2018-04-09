@@ -172,15 +172,32 @@ public class CurriculumService {
 		else 
 			throw new NoContentException("No schedules by curriculum id: " + id + " were found.");
 	}
-
-	public List<Subtopic> getAllSubtopicsForCurriculum(int cId) {
-		List<CurriculumSubtopic> curriculumSubtopics = curriculumSubtopicRepository.findAllByCurriculumId(cId);
+	
+	/**
+	 * Acquire all subtopics from the topic service that belong to the given curriculum.
+	 * @param curriculumId The ID of the curriculum.
+	 * @return A list of all subtopics that belong to the service.
+	 * @throws NoContentException 
+	 */
+	public List<Subtopic> getAllSubtopicsForCurriculum(int curriculumId) throws NoContentException {
+		List<CurriculumSubtopic> curriculumSubtopics = curriculumSubtopicRepository.findAllByCurriculumId(curriculumId);
+		
+		if(curriculumSubtopics == null || curriculumSubtopics.isEmpty()) {
+			throw new NoContentException("No subtopics found.");
+		}
+		
 		List<Integer> subtopicIds = new ArrayList<>();
 		
 		curriculumSubtopics.forEach(currSubtopic -> {
 			subtopicIds.add(currSubtopic.getSubtopicId());
 		});
 		
-		return remoteTopicService.requestSubtopics(subtopicIds); 
+		List<Subtopic> subtopics = remoteTopicService.requestSubtopics(subtopicIds);
+		
+		if(subtopics == null || subtopics.isEmpty()) {
+			throw new NoContentException("No subtopics found.");
+		}
+		
+		return subtopics; 
 	}
 }
