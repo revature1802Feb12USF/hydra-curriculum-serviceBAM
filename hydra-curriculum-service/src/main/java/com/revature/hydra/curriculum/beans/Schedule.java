@@ -1,16 +1,25 @@
 package com.revature.hydra.curriculum.beans;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="SCHEDULE")
+@JsonIdentityInfo(property="id", generator=ObjectIdGenerators.PropertyGenerator.class)
 public class Schedule {
 	
 	@Id
@@ -21,6 +30,12 @@ public class Schedule {
 	@Column(name="CURRICULULM_ID")
 	@NotNull
 	private Curriculum curriculum;
+	
+	@OneToMany(mappedBy="parentSchedule", 
+			   fetch=FetchType.LAZY,
+			   orphanRemoval=true,
+			   cascade=CascadeType.ALL)
+	private List<ScheduledSubtopic> subtopics;
 	
 	public Schedule() {
 		

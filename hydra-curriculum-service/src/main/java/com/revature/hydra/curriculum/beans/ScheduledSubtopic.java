@@ -7,11 +7,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -36,10 +38,10 @@ public class ScheduledSubtopic {
 	@NotNull
 	private ScheduledDate date;
 	
-	@Column(name="SCHEDULE")
+	@JoinColumn(name="SCHEDULE",nullable=false)
 	@ManyToOne(cascade=CascadeType.ALL,
 			   fetch=FetchType.LAZY)
-	@NotNull
+	@JsonIdentityReference(alwaysAsId=true)
 	private Schedule parentSchedule;
 	
 	public ScheduledSubtopic() {
