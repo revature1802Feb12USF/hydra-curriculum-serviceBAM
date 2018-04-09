@@ -18,7 +18,6 @@ import com.revature.hydra.curriculum.beans.remote.Subtopic;
 public class RemoteTopicService {
 	
 	// TODO annotate with @Value() from properties
-	private static String topicEndpoint = "";
 	private static String requestSubtopicsEndpoint = "";
 	private static String verifySubtopicsExistEndpoint = "";
 	
