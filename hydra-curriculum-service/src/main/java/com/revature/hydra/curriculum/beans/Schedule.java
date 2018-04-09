@@ -64,6 +64,16 @@ public class Schedule {
 	public void setCurriculum(Curriculum curriculum) {
 		this.curriculum = curriculum;
 	}
+	
+	
+
+	public List<ScheduledSubtopic> getSubtopics() {
+		return subtopics;
+	}
+
+	public void setSubtopics(List<ScheduledSubtopic> subtopics) {
+		this.subtopics = subtopics;
+	}
 
 	@Override
 	public int hashCode() {

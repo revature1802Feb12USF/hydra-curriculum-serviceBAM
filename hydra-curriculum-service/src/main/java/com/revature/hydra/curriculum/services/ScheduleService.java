@@ -1,5 +1,6 @@
 package com.revature.hydra.curriculum.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,20 @@ public class ScheduleService {
 		Schedule schedule = scheduleRepository.findById(id);
 		
 		if(schedule != null) {
+			return schedule;
+		}
+		else {
+			throw new NoContentException("Schedule by id: " + id + " was not found");
+		}
+	}
+	
+	public Schedule getByIdOrdered(Integer id) throws NoContentException {
+		Schedule schedule = scheduleRepository.findById(id);
+		
+		if(schedule != null) {
+			schedule.getSubtopics().sort((a, b) ->
+				a.getDate().getStartTime().compareTo(b.getDate().getStartTime())
+			);
 			return schedule;
 		}
 		else {
