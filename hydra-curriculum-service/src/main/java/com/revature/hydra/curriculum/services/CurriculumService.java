@@ -1,7 +1,7 @@
 package com.revature.hydra.curriculum.services;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
@@ -22,13 +23,17 @@ import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 public class CurriculumService {
 
 	@Autowired
-	CurriculumRepository curriculumRepository;
+	private CurriculumRepository curriculumRepository;
 
 	@Autowired
-	CurriculumSubtopicRepository curriculumSubtopicRepository;
+	private CurriculumSubtopicRepository curriculumSubtopicRepository;
 	
 	@Autowired
-	CurriculumSubtopicService curriculumSubtopicService;
+	private CurriculumSubtopicService curriculumSubtopicService;
+	
+	@Autowired
+	private RemoteTopicService remoteTopicService;
+	
 	
 	/**
 	 * Creates a curriculum service with default parameters.
@@ -143,7 +148,7 @@ public class CurriculumService {
 	 */
 	@Transactional
 	public void deleteCurriculumSubtopics(Curriculum version) {
-		curriculumSubtopicRepository.deleteByCurriculum(version);
+		curriculumSubtopicRepository.deleteByCurriculumId(version.getId());
 	}
 	
 	/**
@@ -166,5 +171,16 @@ public class CurriculumService {
 			return result; 
 		else 
 			throw new NoContentException("No schedules by curriculum id: " + id + " were found.");
+	}
+
+	public List<Subtopic> getAllSubtopicsForCurriculum(int cId) {
+		List<CurriculumSubtopic> curriculumSubtopics = curriculumSubtopicRepository.findAllByCurriculumId(cId);
+		List<Integer> subtopicIds = new ArrayList<>();
+		
+		curriculumSubtopics.forEach(currSubtopic -> {
+			subtopicIds.add(currSubtopic.getSubtopicId());
+		});
+		
+		return remoteTopicService.requestSubtopics(subtopicIds); 
 	}
 }

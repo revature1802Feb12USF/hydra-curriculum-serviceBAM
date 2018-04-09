@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -26,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.revature.hydra.curriculum.beans.CurrSubtopic;
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
 import com.revature.hydra.curriculum.beans.Schedule;
@@ -111,7 +109,7 @@ public class CurriculumController {
 	 * @author Stephen Negron (1801-Trevin)
 	 * @author Rafael Sanchez (1801-Trevin)
 	 * 
-	 * Retrieves a list of curriculum subtopics with the given curriculum ID.
+	 * Retrieves a list of scheduled curriculums subtopics with the given curriculum ID.
 	 * 	HttpStatus.OK: Found at least 1 subtopic for the specified curriculum.
 	 *  HttpStatus.NO_CONTENT: No subtopics found for the specified curriculum.
 	 *  HttpStatus.BAD_REQUEST: Missing parameters.
@@ -121,10 +119,9 @@ public class CurriculumController {
 	 * @throws BadRequestException Parameters missing.
 	 * @throws NoContentException No subtopics found for the specified curriculum.
 	 */
-	@GetMapping("/schedule/{cId}")
-	public List<CurriculumSubtopic> getAllCurriculumSchedules(@PathVariable int cId)
-			throws BadRequestException, NoContentException {
-		return curriculumService.getAllCurriculumSchedulesForCurriculum(cId);
+	@GetMapping("/{cid}/subtopics")
+	public List<Subtopic> getAllCurriculumSubtopics(@PathVariable int cId) {
+		return curriculumService.getAllSubtopicsForCurriculum(cId);
 	}
 	
 
@@ -238,9 +235,9 @@ public class CurriculumController {
 		// Save new curriculum.
 		Curriculum addedCurr = curriculumService.save(curriculum);
 		
-		List<CurrSubtopic> curriculumSubtopics = new ArrayList<>();
+		List<CurriculumSubtopic> curriculumSubtopics = new ArrayList<>();
 		schedule.getSubtopics().forEach(subtopic -> {
-			CurrSubtopic currSubtopic = new CurrSubtopic(addedCurr, subtopic.getId());
+			CurriculumSubtopic currSubtopic = new CurriculumSubtopic(addedCurr, subtopic.getId());
 			curriculumSubtopics.add(currSubtopic);
 		});
 		
