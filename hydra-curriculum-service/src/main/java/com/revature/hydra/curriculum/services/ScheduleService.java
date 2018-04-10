@@ -13,6 +13,12 @@ import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.ScheduleRepository;
 
+/**
+ * A Service class for retrieving and modifying Schedule data.
+ * 
+ *@author Seth Maize (Matt 1802)
+ *@author Ricky Baker (Matt 1802)
+ */
 @Service
 public class ScheduleService {
 	
@@ -25,7 +31,11 @@ public class ScheduleService {
 	
 	/**
 	 * Retrieve all schedules from the database
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * 
 	 * @return A list of all schedules in the database
+	 * 
 	 * @throws NoContentException 
 	 */
 	public List<Schedule> getAll() throws NoContentException{
@@ -41,8 +51,13 @@ public class ScheduleService {
 	
 	/**
 	 * Retrieves schedule by id from database
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 *  
 	 * @param id The id that identifies which schedule to grab
+	 * 
 	 * @return Schedule specified by the id given
+	 * 
 	 * @throws NoContentException 
 	 */
 	public Schedule getById(Integer id) throws NoContentException {
@@ -56,6 +71,18 @@ public class ScheduleService {
 		}
 	}
 	
+	/**
+	 * Get a schedule with an ordered list of ScheduledSubtopics based on start time in ascending order
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * @author Ricky Baker (Matt 1802)
+	 * 
+	 * @param id
+	 * 
+	 * @return
+	 * 
+	 * @throws NoContentException
+	 */
 	public Schedule getByIdOrdered(Integer id) throws NoContentException {
 		Schedule schedule = scheduleRepository.findById(id);
 		
@@ -73,9 +100,16 @@ public class ScheduleService {
 	
 	/**
 	 * Registers a new schedule into the system.
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * @author Ricky Baker (Matt 1802)
+	 * 
 	 * @param schedule Adds schedule to the database
+	 * 
 	 * @return The added schedule.
+	 * 
 	 * @throws BadRequestException Non-existent subtopics exist within the schedule.
+	 * 
 	 * @throws NoContentException Non-existent curriculum specified.
 	 */
 	@Transactional
@@ -96,6 +130,13 @@ public class ScheduleService {
 		
 	}
 	
+	/**
+	 * Delete Schedule by id
+	 * 
+	 *@author Seth Maize (Matt 1802)
+	 *
+	 * @param id The id of the schedule to delete
+	 */
 	@Transactional
 	public void deleteById(Integer id) {
 		scheduleRepository.delete(id);
