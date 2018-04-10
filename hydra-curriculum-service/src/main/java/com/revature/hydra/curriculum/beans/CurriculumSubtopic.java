@@ -13,178 +13,80 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * The Curriculum Subtopic class will contain data about the subtopics of the curriculum
+ * Pseudo-join table to represent a many-to-many relationship between Subtopic and Curriculum
  */
 @Entity
-@Table(name = "Curriculum_Subtopic")
+@Table(name="CURRICULUM_SUBTOPIC")
 public class CurriculumSubtopic {
 	
 	@Id
-	@Column(name = "Curriculum_Subtopic_Id")
-	@SequenceGenerator(name = "Curriculum_Subtopic_ID_SEQ", sequenceName = "Curriculum_Subtopic_ID_SEQ", allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Curriculum_Subtopic_ID_SEQ")
-	private Integer curriculumSubtopicId;
+	@Column(name="ID")
+	@SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN", 
+					   sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ",
+					   allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, 
+					generator = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN")
+	private Integer id;
 	
-	@Column(name = "curriculum_Subtopic_Name_Id")
-	@NotNull(message="Curriculum Subtopic Name cannot be null")
-	private int curriculumSubtopicNameId;
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="CURRICULUM_ID", 
+				referencedColumnName="Id")
+	@NotNull(message="Curriculum ID cannot be null.")
+	private Curriculum curriculum;
+	
+	@Column(name="SUBTOPIC_ID")
+	@NotNull(message="Subtopic ID cannot be null.")
+	private Integer subtopicId;
 
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "curriculum_Subtopic_Cur_Id", referencedColumnName = "C_ID")
-	private Curriculum curriculum;	//curriculum that the subtopic belongs to
-
-	
-	@Column(name = "Curriculum_Week")
-	private int curriculumSubtopicWeek;
-	
-	@Column(name = "Curriculum_Day")
-	private int curriculumSubtopicDay;	//TODO discuss modifications on how to make this more clear
-	
-	/**
-	 * Creates a no-args curriculum subtopic 
-	 */
 	public CurriculumSubtopic() {
 		
 	}
-
-	/**
-	 * Creates a subtopic for a curriculum with a specific subtopic id, subtopic name id, curriculum that the subtopic belongs to, 
-	 * the week the subtopic is assigned, and day that the subtopic is being assigned
-	 * @param curriculumSubtopicId
-	 * @param curriculumSubtopicNameId
-	 * @param curriculum
-	 * @param curriculumSubtopicWeek
-	 * @param curriculumSubtopicDay
-	 */
-	public CurriculumSubtopic(Integer curriculumSubtopicId, int curriculumSubtopicNameId, Curriculum curriculum,
-			int curriculumSubtopicWeek, int curriculumSubtopicDay) {
+	
+	public CurriculumSubtopic(Integer currSubtopicId, Curriculum curriculum, Integer subtopicId) {
 		super();
-		this.curriculumSubtopicId = curriculumSubtopicId;
-		this.curriculumSubtopicNameId = curriculumSubtopicNameId;
+		id = currSubtopicId;
 		this.curriculum = curriculum;
-		this.curriculumSubtopicWeek = curriculumSubtopicWeek;
-		this.curriculumSubtopicDay = curriculumSubtopicDay;
+		this.subtopicId = subtopicId;
 	}
 
-	/**
-	 * @return the curriculumSubtopicId
-	 */
-	public Integer getCurriculumSubtopicId() {
-		return curriculumSubtopicId;
+
+
+	public Integer getId() {
+		return id;
 	}
 
-	/**
-	 * @param curriculumSubtopicId the curriculumSubtopicId to set
-	 */
-	public void setCurriculumSubtopicId(Integer curriculumSubtopicId) {
-		this.curriculumSubtopicId = curriculumSubtopicId;
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	/**
-	 * @return the curriculumSubtopicNameId
-	 */
-	public int getCurriculumSubtopicNameId() {
-		return curriculumSubtopicNameId;
-	}
 
-	/**
-	 * @param curriculumSubtopicNameId the curriculumSubtopicNameId to set
-	 */
-	public void setCurriculumSubtopicNameId(int curriculumSubtopicNameId) {
-		this.curriculumSubtopicNameId = curriculumSubtopicNameId;
-	}
 
-	/**
-	 * @return the curriculum
-	 */
 	public Curriculum getCurriculum() {
 		return curriculum;
 	}
 
-	/**
-	 * @param curriculum the curriculum to set
-	 */
+
+
 	public void setCurriculum(Curriculum curriculum) {
 		this.curriculum = curriculum;
 	}
 
-	/**
-	 * @return the curriculumSubtopicWeek
-	 */
-	public int getCurriculumSubtopicWeek() {
-		return curriculumSubtopicWeek;
+
+
+	public Integer getSubtopicId() {
+		return subtopicId;
 	}
 
-	/**
-	 * @param curriculumSubtopicWeek the curriculumSubtopicWeek to set
-	 */
-	public void setCurriculumSubtopicWeek(int curriculumSubtopicWeek) {
-		this.curriculumSubtopicWeek = curriculumSubtopicWeek;
-	}
 
-	/**
-	 * @return the curriculumSubtopicDay
-	 */
-	public int getCurriculumSubtopicDay() {
-		return curriculumSubtopicDay;
-	}
 
-	/**
-	 * @param curriculumSubtopicDay the curriculumSubtopicDay to set
-	 */
-	public void setCurriculumSubtopicDay(int curriculumSubtopicDay) {
-		this.curriculumSubtopicDay = curriculumSubtopicDay;
+	public void setSubtopicId(Integer subtopicId) {
+		this.subtopicId = subtopicId;
 	}
 
 	@Override
 	public String toString() {
-		return "CurriculumSubtopic [\n" + "(Curriculum Subtopic Id) \t curriculumSubtopicId =" + curriculumSubtopicId + ",\n" 
-				+ "(Subtopic Name Id) \t curriculumSubtopicNameId =" + curriculumSubtopicNameId + ",\n"
-				+ "(Curriculum Subtopic it belongs to) \t curriculum =" + curriculum + ",\n" 
-				+ "(Week of Subtopic) \t curriculumSubtopicWeek =" + curriculumSubtopicWeek + ",\n"
-				+ "(Day of Subtopic) \t curriculumSubtopicDay =" + curriculumSubtopicDay 
-				+ "]";
+		return "CurrSubtopic [id=" + id + ", curriculum=" + curriculum + ", subtopicId=" + subtopicId + "]";
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((curriculum == null) ? 0 : curriculum.hashCode());
-		result = prime * result + curriculumSubtopicDay;
-		result = prime * result + ((curriculumSubtopicId == null) ? 0 : curriculumSubtopicId.hashCode());
-		result = prime * result + curriculumSubtopicNameId;
-		result = prime * result + curriculumSubtopicWeek;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CurriculumSubtopic other = (CurriculumSubtopic) obj;
-		if (curriculum == null) {
-			if (other.curriculum != null)
-				return false;
-		} else if (!curriculum.equals(other.curriculum))
-			return false;
-		if (curriculumSubtopicDay != other.curriculumSubtopicDay)
-			return false;
-		if (curriculumSubtopicId == null) {
-			if (other.curriculumSubtopicId != null)
-				return false;
-		} else if (!curriculumSubtopicId.equals(other.curriculumSubtopicId))
-			return false;
-		if (curriculumSubtopicNameId != other.curriculumSubtopicNameId)
-			return false;
-		if (curriculumSubtopicWeek != other.curriculumSubtopicWeek)
-			return false;
-		return true;
-	}
-	
 }

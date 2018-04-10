@@ -93,7 +93,12 @@
 		    <artifactId>ojdbc8</artifactId>
 		    <version>12.2.0.1</version>
 		</dependency>
-    <dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>ST4</artifactId>
+			<version>4.0.8</version>
+		</dependency>
+    	<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.197</version>

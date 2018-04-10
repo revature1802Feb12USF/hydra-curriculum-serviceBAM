@@ -1,5 +1,9 @@
 package com.revature.hydra.curriculum.services;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
+import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
+import com.revature.hydra.curriculum.exceptions.UnknownException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
 import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 
@@ -21,13 +27,14 @@ import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
 public class CurriculumService {
 
 	@Autowired
-	CurriculumRepository curriculumRepository;
+	private CurriculumRepository curriculumRepository;
 
 	@Autowired
-	CurriculumSubtopicRepository curriculumSubtopicRepository;
+	private CurriculumSubtopicRepository curriculumSubtopicRepository;
 	
 	@Autowired
-	CurriculumSubtopicService curriculumSubtopicService;
+	private RemoteTopicService remoteTopicService;
+	
 	
 	/**
 	 * Creates a curriculum service with default parameters.
@@ -112,58 +119,170 @@ public class CurriculumService {
 	 * 
 	 * @return List of curriculums found with the provided constraints.
 	 */
-	// Modify appropriately. Find Master version of curriculum by name.
-	public List<Curriculum> findAllCurriculumByNameAndIsMaster(String name, Integer isMaster) {
+	public List<Curriculum> findAllCurriculumsByNameAndIsMaster(String name, Integer isMaster) {
 		List<Curriculum> master = curriculumRepository.findCurriculumByNameAndIsMasterVersion(name, isMaster);
+		
 		return master;
-	}
-
-	/**
-	 * @author Carter Taylor
-	 * @author James Holzer (1712-Steve)
-	 * 
-	 * Delete a curriculum by version.
-	 * 
-	 * @param version The curriculum version to delete.
-	 */
-	@Transactional
-	public void deleteCurriculum(Curriculum version) {
-		deleteCurriculumSubtopics(version);
-		curriculumRepository.delete(version);
-	}
-
-	/**
-	 * @author Carter Taylor
-	 * @author James Holzer (1712-Steve)
-	 * 
-	 * Delete curriculum subtopics by version.
-	 * 
-	 * @param version The curriculum version of the subtopic to delete.
-	 */
-	@Transactional
-	public void deleteCurriculumSubtopics(Curriculum version) {
-		curriculumSubtopicRepository.deleteByCurriculum(version);
 	}
 	
 	/**
-	 * Gets all the schedules for the curriculum specified by the ID.
-	 * @param id The ID of the curriculum.
-	 * @return A list of subtopics for the specified curriculum.
-	 * @throws NoContentException No topics found.
-	 * @throws BadRequestException No curriculum found with given ID.
+	 * Acquire all subtopics from the topic service that belong to the given curriculum.
+	 * @param curriculumId The ID of the curriculum.
+	 * @return A list of all subtopics that belong to the service.
+	 * @throws NoContentException 
 	 */
-	public List<CurriculumSubtopic> getAllCurriculumSchedulesForCurriculum(int id) throws NoContentException, BadRequestException {
-		Curriculum c = getCurriculumById(id);
+	public List<Subtopic> getAllSubtopicsForCurriculum(int curriculumId) throws NoContentException {
+		List<CurriculumSubtopic> curriculumSubtopics = curriculumSubtopicRepository.findAllByCurriculumId(curriculumId);
 		
-		if(c == null) {
-			throw new BadRequestException("No curriculum found with ID: " + id + ".");
+		if(curriculumSubtopics == null || curriculumSubtopics.isEmpty()) {
+			throw new NoContentException("No subtopics found.");
 		}
 		
-		List<CurriculumSubtopic> result = curriculumSubtopicService.getCurriculumSubtopicForCurriculum(c);
+		List<Integer> subtopicIds = new ArrayList<>();
 		
-		if(result != null && !result.isEmpty()) 
-			return result; 
-		else 
-			throw new NoContentException("No schedules by curriculum id: " + id + " were found.");
+		curriculumSubtopics.forEach(currSubtopic -> {
+			subtopicIds.add(currSubtopic.getSubtopicId());
+		});
+		
+		List<Subtopic> subtopics = remoteTopicService.requestSubtopics(subtopicIds);
+		
+		if(subtopics == null || subtopics.isEmpty()) {
+			throw new NoContentException("No subtopics found.");
+		}
+		
+		return subtopics;
 	}
+	
+	
+	@Transactional
+	public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
+		Curriculum targetCurriculum = null;
+		
+		try {
+			targetCurriculum = getCurriculumById(id);
+		} catch(NoContentException ex) {}
+		
+		if(targetCurriculum == null) {
+			throw new BadRequestException("Curriculum with ID=" + id + " does not exist.");
+		}
+		
+		List<Curriculum> curriculumList = findAllCurriculumsByNameAndIsMaster(targetCurriculum.getName(), 1);
+		
+		if(curriculumList != null && !curriculumList.isEmpty()) {
+			curriculumList.forEach(masterCurriculum -> {
+				masterCurriculum.setMasterVersion(false);
+				save(masterCurriculum);
+			});
+		}
+		
+		targetCurriculum.setMasterVersion(true);
+		save(targetCurriculum);
+		
+		return targetCurriculum;
+	}
+	
+	
+	@Transactional
+	public Curriculum addCurriculum(Curriculum curriculum) throws BadRequestException {
+		curriculum.setId(null);
+		return save(curriculum);
+	}
+	
+	@Transactional
+	public void deleteSubtopics(Integer curriculumId, List<Integer> subtopicIds) {
+		curriculumSubtopicRepository.deleteSubtopicsByCurriculumIdAndSubtopicIdIn(curriculumId, subtopicIds);
+	}
+
+	@Transactional
+	public void deleteCurriculums(List<Integer> curriculumIds) {
+		curriculumRepository.deleteSubtopicsByIdIn(curriculumIds);
+	}
+	
+	
+	public List<Curriculum> getCurriculums(List<Integer> curriculumIds) {
+		return curriculumRepository.findCurriculumsByIdIn(curriculumIds);
+	}
+
+	@Transactional
+	public Curriculum updateCurriculum(Curriculum curriculum) throws NoContentException {
+		Curriculum existing = getCurriculumById(curriculum.getId());
+		
+		if(existing == null)
+			return null;
+		
+		Field[] fields = curriculum.getClass().getDeclaredFields();
+		
+		for(Field f : fields) {
+			String fieldName = f.getName();
+			fieldName = fieldName.replaceFirst(".", "" + Character.toUpperCase(fieldName.charAt(0)));
+			String getMethodName = "get" + fieldName;
+			String setMethodName = "set" + fieldName;
+			
+			
+			try {
+				Method getMethod = curriculum.getClass().getMethod(getMethodName);
+				Method setMethod = curriculum.getClass().getMethod(setMethodName, f.getType());
+				
+				Object getResult;
+				setMethod.invoke(existing, 
+					(getResult = getMethod.invoke(curriculum)) == null ? 
+						getMethod.invoke(existing) : getResult 
+				);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException 
+					| IllegalArgumentException | InvocationTargetException e) {
+				throw new UnknownException("Unknown error occurred.");
+			}
+		} // end for
+		
+		curriculum = curriculumRepository.save(existing);
+
+		return curriculum;
+		
+	}
+
+	@Transactional
+	public void insertSubtopicsToCurriculum(Integer id, List<Integer> subtopicIds) throws BadRequestException {
+		Curriculum curriculum;
+		try {
+			curriculum = getCurriculumById(id);
+		} catch(NoContentException ex) {
+			throw new BadRequestException("Curriculum (id=" + id + ") does not exist.");
+		}
+		
+		if(!remoteTopicService.allSubtopicsExist(subtopicIds))
+			throw new BadRequestException("Non-existent subtopic ids submitted.");
+		
+		List<CurriculumSubtopic> curriculumSubtopics = new ArrayList<>(subtopicIds.size());
+		Curriculum targetCurriculum = curriculum;
+		
+		subtopicIds.forEach(subtopicId -> 
+			curriculumSubtopics.add(new CurriculumSubtopic(null, targetCurriculum, subtopicId))
+		);
+		
+		curriculumSubtopicRepository.save(curriculumSubtopics);
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
