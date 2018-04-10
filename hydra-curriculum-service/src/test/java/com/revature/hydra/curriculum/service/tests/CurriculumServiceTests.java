@@ -7,10 +7,6 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-<<<<<<< HEAD
-=======
-import com.revature.hydra.curriculum.beans.Curriculum;
->>>>>>> 2c60966ecb65756f0fb7c10325bb7155b9fb1fd9
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
 import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
@@ -45,7 +41,6 @@ public class CurriculumServiceTests {
 	@Test
 	public void getCurriculumById_returnsCurriculumWithMatchingId() throws NoContentException {
 		// SETUP
-<<<<<<< HEAD
 //		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 //		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
 //		
@@ -54,16 +49,6 @@ public class CurriculumServiceTests {
 //		
 //		// TEST
 //		assertEquals(returnCurriculum.getId().intValue(), 1);
-=======
-		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
-		when(mockCurriculumRepository.findCurriculumById(1)).thenReturn(curriculum);
-		
-		// EXECUTE
-		Curriculum returnCurriculum = curriculumService.getCurriculumById(1);
-		
-		// TEST
-		assertEquals(returnCurriculum.getId().intValue(), 1);
->>>>>>> 2c60966ecb65756f0fb7c10325bb7155b9fb1fd9
 	}
 	
 	
@@ -74,7 +59,6 @@ public class CurriculumServiceTests {
 	@Test
 	public void save_callsRepositorySave() {
 		// SETUP
-<<<<<<< HEAD
 //		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
 //		
 //		// EXECUTE
@@ -82,15 +66,6 @@ public class CurriculumServiceTests {
 //		
 //		// TEST
 //		verify(mockCurriculumRepository, times(1)).save(curriculum);
-=======
-		Curriculum curriculum = new Curriculum(null, 1, null, null, null, 1, 1);	
-		
-		// EXECUTE
-		curriculumService.save(curriculum);
-		
-		// TEST
-		verify(mockCurriculumRepository, times(1)).save(curriculum);
->>>>>>> 2c60966ecb65756f0fb7c10325bb7155b9fb1fd9
 	}
 	
 	/*
