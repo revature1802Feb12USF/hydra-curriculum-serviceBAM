@@ -65,10 +65,5 @@ public class ScheduleController {
 	public void deleteScheduleById(int id) {
 		scheduleService.deleteById(id);
 	}
-	
-	@DeleteMapping("/{scheduleId}/scheduledSubtopics/{subtopicId}")
-	public void deleteScheduledSubtopicById(@PathVariable Integer scheduleId, @PathVariable Integer subtopicId) throws NoContentException {
-		scheduleService.deleteSubtopic(scheduleId, subtopicId);
-	}
 
 }

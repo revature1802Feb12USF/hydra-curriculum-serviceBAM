@@ -14,7 +14,7 @@ import com.revature.hydra.curriculum.repositories.ScheduledSubtopicRepository;
 public class ScheduledSubtopicService {
 
 	@Autowired
-	ScheduledSubtopicRepository scheduledSubtopicRepo;
+	ScheduledSubtopicRepository scheduledSubtopicRepoistory;
 	
 	/**
 	 * Retrieve all scheduled subtopics from the database
@@ -23,7 +23,7 @@ public class ScheduledSubtopicService {
 	 * @throws NoContentException 
 	 */
 	public List<ScheduledSubtopic> getAll() throws NoContentException {
-		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepo.findAll();
+		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepoistory.findAll();
 		
 		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
 			return (List<ScheduledSubtopic>) scheduledSubtopicList;
@@ -33,37 +33,27 @@ public class ScheduledSubtopicService {
 		}
 	}
 	
-	/**
-	 * Retrieve scheduled subtopic from database by the given id
-	 * 
-	 * @param id The id of the scheduled subtopic to retrieve
-	 * 
-	 * @return scheduled subtopic from database by the given id
-	 * @throws NoContentException 
-	 */
-	public ScheduledSubtopic getById(int id) throws NoContentException {
-		ScheduledSubtopic  scheduledSubtopic = scheduledSubtopicRepo.findScheduledSubtopicById(id);
+	
+	public List<ScheduledSubtopic> getScheduledSubtopicsById(List<Integer> ids) throws NoContentException{
+		List<ScheduledSubtopic> subtopics = scheduledSubtopicRepoistory.findAllByIdIn(ids);
 		
-		if(scheduledSubtopic != null) {
-			return scheduledSubtopicRepo.findScheduledSubtopicById(id);
+		if(subtopics != null && !subtopics.isEmpty()) {
+			return subtopics;
 		}
 		else {
-			throw new NoContentException("Scheduled subtopic by id: " + id + " was not found");
+			throw new NoContentException("Unable to find specified schedules");
 		}
 	}
 	
+	public void add(List<ScheduledSubtopic> subtopics) {
+		scheduledSubtopicRepoistory.save(subtopics);
+	}
 	
+	public void delete(List<Integer> ids) {
+		scheduledSubtopicRepoistory.deleteByIdIn(ids);
+	}
 	
-	public List<ScheduledSubtopic> getScheduledSubtopicsById(Integer scheduleId) throws NoContentException{
-		//TODO this
-		return null;
-//		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepo.findAllByScheduleId(scheduleId);
-//		
-//		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
-//			return (List<ScheduledSubtopic>) scheduledSubtopicList;
-//		}
-//		else {
-//			throw new NoContentException("No scheduled subtopics found.");
-//		}
+	public void update(List<ScheduledSubtopic> subtopics) {
+		scheduledSubtopicRepoistory.save(subtopics);
 	}
 }

@@ -111,23 +111,4 @@ public class ScheduleService {
 		scheduleRepository.delete(id);
 	}
 	
-	@Transactional
-	public void deleteSubtopic(int scheduleId, int subtopicId) throws NoContentException {
-		
-		ScheduledSubtopic subtopic =  scheduledSubtopicService.getById(subtopicId);
-		
-		//verify that we did not get a null value, and that the subtopic belongs to the subtopic id
-		if(subtopic != null && scheduleId == subtopic.getParentSchedule().getId()) {
-			scheduledSubtopicRepository.delete(subtopicId);
-		}
-		else {
-			throw new NoContentException("The subtopic does not belong to the specified schedule, or does not exist at all");
-		}
-	}
-	
-	@Transactional
-	public void updateSubtopic() {
-		
-	}
-	
 }
