@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.Schedule;
-import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.ScheduleRepository;
-import com.revature.hydra.curriculum.repositories.ScheduledSubtopicRepository;
 
 @Service
 public class ScheduleService {
@@ -22,16 +20,8 @@ public class ScheduleService {
 	private ScheduleRepository scheduleRepository;
 	
 	@Autowired
-	private RemoteTopicService remoteTopicService;
-	
-	@Autowired
 	private CurriculumService curriculumService;
 	
-	@Autowired
-	private ScheduledSubtopicService scheduledSubtopicService;
-	
-	@Autowired
-	private ScheduledSubtopicRepository scheduledSubtopicRepository;
 	
 	/**
 	 * Retrieve all schedules from the database
