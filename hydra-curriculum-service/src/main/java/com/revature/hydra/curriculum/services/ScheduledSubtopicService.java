@@ -55,13 +55,15 @@ public class ScheduledSubtopicService {
 	
 	
 	public List<ScheduledSubtopic> getScheduledSubtopicsById(Integer scheduleId) throws NoContentException{
-		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepo.findAllByParentScheduleIdOrderByScheduledDateStartTimeAsc(scheduleId);
-		
-		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
-			return (List<ScheduledSubtopic>) scheduledSubtopicList;
-		}
-		else {
-			throw new NoContentException("No scheduled subtopics found.");
-		}
+		//TODO this
+		return null;
+//		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepo.findAllByScheduleId(scheduleId);
+//		
+//		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
+//			return (List<ScheduledSubtopic>) scheduledSubtopicList;
+//		}
+//		else {
+//			throw new NoContentException("No scheduled subtopics found.");
+//		}
 	}
 }

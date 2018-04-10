@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.revature.hydra.curriculum.beans.Schedule;
 import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
 
 public interface ScheduledSubtopicRepository extends JpaRepository<ScheduledSubtopic, Integer>{
 
-	public List<ScheduledSubtopic> findAll();
 	public ScheduledSubtopic findScheduledSubtopicById(int id);
-	public List<ScheduledSubtopic> findAllByParentScheduleIdOrderByScheduledDateStartTimeAsc(int id);
+	//TODO find by nested object id
+	public List<ScheduledSubtopic> findByParentSchedule(Schedule schedule);//ParentScheduleIdOrderByScheduledDateStartTimeAsc(int id);
 	public void deleteByIdAndParentScheduleId(int subtopicId, int parentScheduleId);
 	
 }

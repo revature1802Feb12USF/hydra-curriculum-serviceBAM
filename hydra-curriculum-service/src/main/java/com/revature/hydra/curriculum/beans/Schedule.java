@@ -30,7 +30,6 @@ public class Schedule {
 	
 	@ManyToOne(optional=false,
 			   cascade=CascadeType.ALL)
-	@Column(name="CURRICULULM_ID")
 	@NotNull
 	private Curriculum curriculum;
 	
