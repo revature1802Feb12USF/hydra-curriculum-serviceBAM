@@ -1,6 +1,7 @@
 package com.revature.hydra.curriculum.beans;
 
-import java.time.ZonedDateTime;
+
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +50,7 @@ public class Curriculum {
 	
 	@Column(name="DATE_CREATED")
 	@NotNull
-	private ZonedDateTime dateCreated;
+	private Timestamp dateCreated;
 	
 	@Column(name="WEEK_DURATION")
 	@NotNull
@@ -74,7 +75,6 @@ public class Curriculum {
 	 * @param modifierId The user ID of the user who last modified the curriculum.
 	 * @param dateCreated The date the curriculum was created.
 	 * @param numberOfWeeks Number of weeks the curriculum lasts.
-	 * @param isMasterVersion 1 if the curriculum is the master version. Otherwise, should be 0.
 	 */
 	
 	
@@ -87,7 +87,7 @@ public class Curriculum {
 	}
 
 	public Curriculum(Integer id, String name, Integer version, Integer creatorId, Integer modifierId,
-			ZonedDateTime dateCreated, Integer duration, Boolean masterVersion) {
+			Timestamp dateCreated, Integer duration, Boolean masterVersion) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -131,11 +131,11 @@ public class Curriculum {
 		this.modifierId = modifierId;
 	}
 
-	public ZonedDateTime getDateCreated() {
+	public Timestamp getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(ZonedDateTime dateCreated) {
+	public void setDateCreated(Timestamp dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -145,14 +145,6 @@ public class Curriculum {
 
 	public void setWeekDuration(Integer weekDuration) {
 		this.weekDuration = weekDuration;
-	}
-
-	public Boolean isMasterVersion() {
-		return masterVersion;
-	}
-
-	public void setMasterVersion(Boolean masterVersion) {
-		this.masterVersion = masterVersion;
 	}
 
 	public void setId(Integer id) {

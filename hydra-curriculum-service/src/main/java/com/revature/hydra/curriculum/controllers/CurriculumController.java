@@ -51,7 +51,7 @@ public class CurriculumController {
 		return curriculumService.getAllCurriculums();
 	}
 	
-	@GetMapping
+	@GetMapping("/{ids}")
 	public List<Curriculum> getCurriculums(@RequestParam("ids") List<Integer> curriculumIds) {
 		return curriculumService.getCurriculums(curriculumIds);
 	}
@@ -107,25 +107,25 @@ public class CurriculumController {
 	}
 	
 	
-	/**
-	 * @author Jordan DeLong
-	 * @author Carter Taylor (1712-Steve)
-	 * @author Stephen Negron (1801-Trevin)
-	 * @author Rafael Sanchez (1801-Trevin)
-	 * 
-	 * Marks the curriculum with the given ID cId as the master version.
-	 * 	HttpStatus.BAD_REQUEST: Could not find a curriculum with the provided ID.
-	 * 
-	 * @param cId The ID of the curriculum to mark as the master version.
-	 * @return The updated master curriculum data.
-	 * 
-	 * @throws BadRequestException Could not find a curriculum with the provided ID.
-	 * @throws NoContentException Could not find the curriculum with the provided ID.
-	 */
-	@PatchMapping("/{id}/master")
-	public Curriculum markCurriculumAsMaster(@PathVariable int id) throws BadRequestException {
-		return curriculumService.markCurriculumAsMaster(id);
-	}
+//	/**
+//	 * @author Jordan DeLong
+//	 * @author Carter Taylor (1712-Steve)
+//	 * @author Stephen Negron (1801-Trevin)
+//	 * @author Rafael Sanchez (1801-Trevin)
+//	 * 
+//	 * Marks the curriculum with the given ID cId as the master version.
+//	 * 	HttpStatus.BAD_REQUEST: Could not find a curriculum with the provided ID.
+//	 * 
+//	 * @param cId The ID of the curriculum to mark as the master version.
+//	 * @return The updated master curriculum data.
+//	 * 
+//	 * @throws BadRequestException Could not find a curriculum with the provided ID.
+//	 * @throws NoContentException Could not find the curriculum with the provided ID.
+//	 */
+//	@PatchMapping("/{id}/master")
+//	public Curriculum markCurriculumAsMaster(@PathVariable int id) throws BadRequestException {
+//		return curriculumService.markCurriculumAsMaster(id);
+//	}
 
 	@PostMapping
 	public Curriculum addCurriculum(@RequestBody Curriculum newCurriculum) throws BadRequestException {

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -34,8 +35,7 @@ public class ScheduledSubtopic {
 	@NotNull
 	private Integer subtopicId;
 	
-	@Column(name="SCHEDULED_DATE")
-	@NotNull
+	 @OneToOne(optional=false)
 	private ScheduledDate date;
 	
 	@JoinColumn(name="SCHEDULE",nullable=false)

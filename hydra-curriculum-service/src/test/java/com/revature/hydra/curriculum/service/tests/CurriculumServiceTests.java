@@ -84,22 +84,22 @@ public class CurriculumServiceTests {
 		verify(mockCurriculumRepository, times(1)).findCurriculumByName(name);
 	}
 	
-	/*
-	 * Test and verify if findAllCurriculumByNameAndIsMaster will be invoked once and will search for master curriculum 
-	 * in the mockCurriculumRepository.
-	 */
-	@Test
-	public void findAllCurriculumByNameAndIsMaster_callsRepositoryFindByCurriculumNameAndIsMaster() {
-		// SETUP
-		String name = "name";
-		Integer isMaster = 1;
-		
-		// EXECUTE
-		curriculumService.findAllCurriculumsByNameAndIsMaster(name, isMaster);
-		
-		// TEST
-		verify(mockCurriculumRepository, times(1)).findCurriculumByNameAndIsMasterVersion(name, isMaster);
-	}
+//	/*
+//	 * Test and verify if findAllCurriculumByNameAndIsMaster will be invoked once and will search for master curriculum 
+//	 * in the mockCurriculumRepository.
+//	 */
+//	@Test
+//	public void findAllCurriculumByNameAndIsMaster_callsRepositoryFindByCurriculumNameAndIsMaster() {
+//		// SETUP
+//		String name = "name";
+//		Integer isMaster = 1;
+//		
+//		// EXECUTE
+//		curriculumService.findAllCurriculumsByNameAndIsMaster(name, isMaster);
+//		
+//		// TEST
+//		verify(mockCurriculumRepository, times(1)).findCurriculumByNameAndIsMasterVersion(name, isMaster);
+//	}
 	
 	/*
 	 * Test and verify if a curriculum will be invoked once and will delete the curriculum from mockCurriculumRepository. 
