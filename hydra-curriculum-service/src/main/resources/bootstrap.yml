@@ -1,3 +1,6 @@
 spring:
   application:
     name: hydra-curriculum-service
+  cloud:
+    config:
+      uri: http://localhost:8888

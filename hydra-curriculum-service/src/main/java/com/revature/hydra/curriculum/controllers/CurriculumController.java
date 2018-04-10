@@ -28,7 +28,7 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * This class establishes REST endpoints for retrieval and modification of curriculum data.
  */
 @RestController
-@RequestMapping("/api/v2/curriculums")
+@RequestMapping("/curriculums")
 public class CurriculumController {
 	@Autowired
 	CurriculumService curriculumService;
@@ -92,7 +92,7 @@ public class CurriculumController {
 	 * @param id The curriculum ID.
 	 * @return A list of curriculum subtopics belonging to the given curriculum.
 	 */
-	@HystrixCommand(fallbackMethod="unavailableService")
+	@HystrixCommand(fallbackMethod="serviceUnavailable")
 	@GetMapping("/{cid}/subtopics")
 	public List<Subtopic> getAllCurriculumSubtopics(@PathVariable int id) throws NoContentException {
 		return curriculumService.getAllSubtopicsForCurriculum(id);
@@ -102,7 +102,7 @@ public class CurriculumController {
 	/**
 	 * Hystrix fallback method for when an endpoint using a remote service can't access the service. 
 	 */
-	public void unavailableService() throws ServiceUnavailableException {
+	public void serviceUnavailable() throws ServiceUnavailableException {
 		throw new ServiceUnavailableException("Service is currently unavailable.");
 	}
 	
@@ -151,6 +151,7 @@ public class CurriculumController {
 		return curriculumService.updateCurriculum(curriculum);
 	}
 	
+	@HystrixCommand(fallbackMethod="serviceUnavailable")
 	@ResponseStatus(code=HttpStatus.OK)
 	@PutMapping("/{id}")
 	public void insertSubtopicsToCurriculum(@PathVariable Integer id,
