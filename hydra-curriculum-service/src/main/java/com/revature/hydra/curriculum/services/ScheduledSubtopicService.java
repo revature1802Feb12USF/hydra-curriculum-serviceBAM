@@ -29,8 +29,9 @@ public class ScheduledSubtopicService {
 	 * @throws NoContentException 
 	 */
 	public List<ScheduledSubtopic> getAll() throws NoContentException {
+
 		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepository.findAll();
-		
+
 		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
 			return (List<ScheduledSubtopic>) scheduledSubtopicList;
 		}

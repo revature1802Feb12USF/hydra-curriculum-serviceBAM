@@ -35,7 +35,8 @@ public class ScheduledSubtopic {
 	@NotNull
 	private Integer subtopicId;
 	
-	 @OneToOne(optional=false)
+	@JoinColumn(name="DATE")
+	@OneToOne(optional=false)
 	private ScheduledDate date;
 	
 	@JoinColumn(name="SCHEDULE",nullable=false)
