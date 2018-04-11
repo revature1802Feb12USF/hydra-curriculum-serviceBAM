@@ -115,7 +115,6 @@ public class CurriculumController {
 		return curriculumService.getAllSubtopicsForCurriculum(id);
 	}
 	
-	
 //	/**
 //	 * @author Jordan DeLong
 //	 * @author Carter Taylor (1712-Steve)

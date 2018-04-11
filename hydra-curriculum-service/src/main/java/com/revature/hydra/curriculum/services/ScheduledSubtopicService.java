@@ -82,7 +82,7 @@ public class ScheduledSubtopicService {
 	public void delete(List<Integer> ids) {
 		scheduledSubtopicRepository.deleteByIdIn(ids);
 	}
-	
+
 	/**
 	 * Update list of ScheduledSubtopics in the database, same functionality as add
 	 * but should only be used for updating

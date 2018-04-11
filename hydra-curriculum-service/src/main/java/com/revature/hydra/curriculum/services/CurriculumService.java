@@ -108,7 +108,6 @@ public class CurriculumService {
 	public List<Curriculum> findAllCurriculumByName(String name) {
 		return curriculumRepository.findCurriculumByName(name);
 	}
-
 	
 	/**
 	 * Acquire all subtopics from the topic service that belong to the given curriculum.
@@ -137,8 +136,6 @@ public class CurriculumService {
 		
 		return subtopics;
 	}
-	
-	
 
 //	@Transactional
 //	public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
