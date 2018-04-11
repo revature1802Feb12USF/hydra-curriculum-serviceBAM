@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
@@ -36,8 +37,8 @@ public class ScheduledSubtopicController {
 	 * 
 	 * @throws NoContentException
 	 */
-	@GetMapping("/{ids}")
-	public List<ScheduledSubtopic> getSubtopics(@PathVariable List<Integer> ids) throws NoContentException{
+	@GetMapping
+	public List<ScheduledSubtopic> getSubtopics(@RequestParam("ids") List<Integer> ids) throws NoContentException{
 		return scheduledSubtopicService.getScheduledSubtopicsById(ids);
 	}
 	
@@ -49,7 +50,7 @@ public class ScheduledSubtopicController {
 	 * @param subtopics The subtpic to add to the database
 	 */
 	@PostMapping
-	public void addSubtopics(List<ScheduledSubtopic> subtopics){
+	public void addSubtopics(@RequestBody List<ScheduledSubtopic> subtopics){
 		scheduledSubtopicService.add(subtopics);
 	}
 	
@@ -61,7 +62,7 @@ public class ScheduledSubtopicController {
 	 * @param subtopics A list of ScheduledSubtopics to update
 	 */
 	@PutMapping
-	public void updateSubtopics(List<ScheduledSubtopic> subtopics) {
+	public void updateSubtopics(@RequestBody List<ScheduledSubtopic> subtopics) {
 		scheduledSubtopicService.update(subtopics);
 	}
 	
@@ -73,7 +74,7 @@ public class ScheduledSubtopicController {
 	 * @param ids The id's of the ScheduledSubtopics to be deleted
 	 */
 	@DeleteMapping
-	public void deleteSubtopicsById(List<Integer> ids) {
+	public void deleteSubtopicsById(@RequestParam("ids") List<Integer> ids) {
 		scheduledSubtopicService.delete(ids);
 	}
 	

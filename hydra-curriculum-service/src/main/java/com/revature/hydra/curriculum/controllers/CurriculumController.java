@@ -76,9 +76,9 @@ public class CurriculumController {
 	 *
 	 * @author Ricky Baker (1802-Matt)
 	 */
-	@GetMapping
+	@GetMapping("/")
 	public ResponseEntity<List<Curriculum>> getCurriculums(@RequestParam("ids") Set<Integer> curriculumIds) {
-		// curriculums?ids=<csl>
+		// curriculums/?ids=<csl>
 		List<Curriculum> requestedCurriculums = curriculumService.getCurriculums(curriculumIds);
 		ResponseEntity<List<Curriculum>> response;
 		HttpStatus status;
