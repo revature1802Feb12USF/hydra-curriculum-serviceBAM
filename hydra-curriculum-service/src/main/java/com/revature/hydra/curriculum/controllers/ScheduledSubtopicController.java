@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
@@ -36,8 +36,8 @@ public class ScheduledSubtopicController {
 	 * 
 	 * @throws NoContentException
 	 */
-	@GetMapping("/{ids}")
-	public List<ScheduledSubtopic> getSubtopics(@PathVariable List<Integer> ids) throws NoContentException{
+	@GetMapping
+	public List<ScheduledSubtopic> getSubtopics(@RequestParam("ids") List<Integer> ids) throws NoContentException{
 		return scheduledSubtopicService.getScheduledSubtopicsById(ids);
 	}
 	
