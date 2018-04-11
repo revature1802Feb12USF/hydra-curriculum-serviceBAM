@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.transaction.Transactional;
 
@@ -36,9 +38,6 @@ public class CurriculumService {
 	private RemoteTopicService remoteTopicService;
 	
 	
-	/**
-	 * Creates a curriculum service with default parameters.
-	 */
 	public CurriculumService() {
 		super();
 	}
@@ -109,21 +108,6 @@ public class CurriculumService {
 	public List<Curriculum> findAllCurriculumByName(String name) {
 		return curriculumRepository.findCurriculumByName(name);
 	}
-
-	/**
-	 * Find all curriculums by name and whether or not it is the master version.
-	 * 
-	 * @param name The name of the curriculum to find.
-	 * @param isMaster 1 if the curriculum to find is the master version.
-	 * 				   0 if the curriculum(s) to find is the non-master version.
-	 * 
-	 * @return List of curriculums found with the provided constraints.
-	 */
-//	public List<Curriculum> findAllCurriculumsByNameAndIsMaster(String name, Integer isMaster) {
-//		List<Curriculum> master = curriculumRepository.findCurriculumByNameAndIsMasterVersion(name, isMaster);
-//		
-//		return master;
-//	}
 	
 	/**
 	 * Acquire all subtopics from the topic service that belong to the given curriculum.
@@ -138,7 +122,7 @@ public class CurriculumService {
 			throw new NoContentException("No subtopics found.");
 		}
 		
-		List<Integer> subtopicIds = new ArrayList<>();
+		Set<Integer> subtopicIds = new TreeSet<>();
 		
 		curriculumSubtopics.forEach(currSubtopic -> {
 			subtopicIds.add(currSubtopic.getSubtopicId());
@@ -152,8 +136,7 @@ public class CurriculumService {
 		
 		return subtopics;
 	}
-	
-	
+
 //	@Transactional
 //	public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
 //		Curriculum targetCurriculum = null;
@@ -199,7 +182,7 @@ public class CurriculumService {
 	}
 	
 	
-	public List<Curriculum> getCurriculums(List<Integer> curriculumIds) {
+	public List<Curriculum> getCurriculums(Set<Integer> curriculumIds) {
 		return curriculumRepository.findCurriculumsByIdIn(curriculumIds);
 	}
 
@@ -241,7 +224,7 @@ public class CurriculumService {
 	}
 
 	@Transactional
-	public void insertSubtopicsToCurriculum(Integer id, List<Integer> subtopicIds) throws BadRequestException {
+	public void insertSubtopicsToCurriculum(Integer id, Set<Integer> subtopicIds) throws BadRequestException {
 		Curriculum curriculum;
 		try {
 			curriculum = getCurriculumById(id);
@@ -249,7 +232,9 @@ public class CurriculumService {
 			throw new BadRequestException("Curriculum (id=" + id + ") does not exist.");
 		}
 		
-		if(!remoteTopicService.allSubtopicsExist(subtopicIds))
+		Boolean isValid = remoteTopicService.allSubtopicsExist(subtopicIds);
+		
+		if(isValid == null || !isValid)
 			throw new BadRequestException("Non-existent subtopic ids submitted.");
 		
 		List<CurriculumSubtopic> curriculumSubtopics = new ArrayList<>(subtopicIds.size());

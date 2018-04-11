@@ -1,13 +1,16 @@
 package com.revature.hydra.curriculum.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.stringtemplate.v4.ST;
@@ -18,8 +21,11 @@ import com.revature.hydra.curriculum.beans.remote.Subtopic;
 public class RemoteTopicService {
 	
 	// TODO annotate with @Value() from properties
-	private static String requestSubtopicsEndpoint = "";
-	private static String verifySubtopicsExistEndpoint = "";
+	@Value("")
+	private static String requestSubtopicsEndpoint;
+	
+	@Value("")
+	private static String verifySubtopicsExistEndpoint;
 	
 	@Autowired
 	private static RestTemplate restTemplate;
@@ -42,15 +48,12 @@ public class RemoteTopicService {
 	 * @param subtopicIds IDs of subtopics to get
 	 * @return A list of the requested subtopics.
 	 */
-	public List<Subtopic> requestSubtopics(List<Integer> subtopicIds) {
-		List<Subtopic> subtopics;
+	public List<Subtopic> requestSubtopics(Set<Integer> subtopicIds) {
 		ParameterizedTypeReference<List<Subtopic>> paramTypeRef = new ParameterizedTypeReference<List<Subtopic>>() {};
 		
-		subtopics = restTemplate.exchange(requestSubtopicsEndpoint
+		return restTemplate.exchange(requestSubtopicsEndpoint
 				+ "?ids=" + ST.format("<%1; separator=\",\"", subtopicIds),
 				HttpMethod.GET, null, paramTypeRef).getBody();
-		
-		return subtopics;
 	}
 	
 	/**
@@ -58,13 +61,20 @@ public class RemoteTopicService {
 	 * @param subtopicIds The list of subtopics to verify.
 	 * @return {@literal true} if all given subtopic IDs are valid; otherwise, {@literal false}.
 	 */
-	public boolean allSubtopicsExist(List<Integer> subtopicIds) {
-		Boolean isValid = false;
+	public Boolean allSubtopicsExist(Set<Integer> subtopicIds) {
 		
-		isValid = restTemplate.exchange(verifySubtopicsExistEndpoint 
+		ResponseEntity<Void> response 
+			= restTemplate.exchange(verifySubtopicsExistEndpoint 
 				+ "?ids=" + ST.format("<%1; separator=\",\"", subtopicIds), 
-				HttpMethod.GET, null, Boolean.class).getBody();
+				HttpMethod.GET, null, Void.class);
 		
-		return isValid;
+		switch(response.getStatusCode()) {
+		case OK:
+			return true;
+		case CONFLICT:
+			return false;
+		default:
+			return null;
+		}
 	}
 }
