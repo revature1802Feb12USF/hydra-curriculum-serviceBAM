@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.revature.hydra.curriculum.beans.Curriculum;
 import com.revature.hydra.curriculum.beans.Schedule;
-import com.revature.hydra.curriculum.beans.ScheduledSubtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
 import com.revature.hydra.curriculum.repositories.ScheduleRepository;
-import com.revature.hydra.curriculum.repositories.ScheduledSubtopicRepository;
 
+/**
+ * A Service class for retrieving and modifying Schedule data.
+ * 
+ *@author Seth Maize (Matt 1802)
+ *@author Ricky Baker (Matt 1802)
+ */
 @Service
 public class ScheduleService {
 	
@@ -22,20 +26,16 @@ public class ScheduleService {
 	private ScheduleRepository scheduleRepository;
 	
 	@Autowired
-	private RemoteTopicService remoteTopicService;
-	
-	@Autowired
 	private CurriculumService curriculumService;
 	
-	@Autowired
-	private ScheduledSubtopicService scheduledSubtopicService;
-	
-	@Autowired
-	private ScheduledSubtopicRepository scheduledSubtopicRepository;
 	
 	/**
 	 * Retrieve all schedules from the database
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * 
 	 * @return A list of all schedules in the database
+	 * 
 	 * @throws NoContentException 
 	 */
 	public List<Schedule> getAll() throws NoContentException{
@@ -51,8 +51,13 @@ public class ScheduleService {
 	
 	/**
 	 * Retrieves schedule by id from database
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 *  
 	 * @param id The id that identifies which schedule to grab
+	 * 
 	 * @return Schedule specified by the id given
+	 * 
 	 * @throws NoContentException 
 	 */
 	public Schedule getById(Integer id) throws NoContentException {
@@ -66,6 +71,18 @@ public class ScheduleService {
 		}
 	}
 	
+	/**
+	 * Get a schedule with an ordered list of ScheduledSubtopics based on start time in ascending order
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * @author Ricky Baker (Matt 1802)
+	 * 
+	 * @param id
+	 * 
+	 * @return
+	 * 
+	 * @throws NoContentException
+	 */
 	public Schedule getByIdOrdered(Integer id) throws NoContentException {
 		Schedule schedule = scheduleRepository.findById(id);
 		
@@ -83,9 +100,16 @@ public class ScheduleService {
 	
 	/**
 	 * Registers a new schedule into the system.
+	 * 
+	 * @author Seth Maize (Matt 1802)
+	 * @author Ricky Baker (Matt 1802)
+	 * 
 	 * @param schedule Adds schedule to the database
+	 * 
 	 * @return The added schedule.
+	 * 
 	 * @throws BadRequestException Non-existent subtopics exist within the schedule.
+	 * 
 	 * @throws NoContentException Non-existent curriculum specified.
 	 */
 	@Transactional
@@ -106,28 +130,16 @@ public class ScheduleService {
 		
 	}
 	
+	/**
+	 * Delete Schedule by id
+	 * 
+	 *@author Seth Maize (Matt 1802)
+	 *
+	 * @param id The id of the schedule to delete
+	 */
 	@Transactional
 	public void deleteById(Integer id) {
 		scheduleRepository.delete(id);
-	}
-	
-	@Transactional
-	public void deleteSubtopic(int scheduleId, int subtopicId) throws NoContentException {
-		
-		ScheduledSubtopic subtopic =  scheduledSubtopicService.getById(subtopicId);
-		
-		//verify that we did not get a null value, and that the subtopic belongs to the subtopic id
-		if(subtopic != null && scheduleId == subtopic.getParentSchedule().getId()) {
-			scheduledSubtopicRepository.delete(subtopicId);
-		}
-		else {
-			throw new NoContentException("The subtopic does not belong to the specified schedule, or does not exist at all");
-		}
-	}
-	
-	@Transactional
-	public void updateSubtopic() {
-		
 	}
 	
 }
