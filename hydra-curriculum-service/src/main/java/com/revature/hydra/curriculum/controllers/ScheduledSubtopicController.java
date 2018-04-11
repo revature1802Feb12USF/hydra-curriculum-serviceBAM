@@ -41,7 +41,6 @@ public class ScheduledSubtopicController {
 		return scheduledSubtopicService.getScheduledSubtopicsById(ids);
 	}
 	
-
 	/**
 	 * Add ScheduledSubtopic to the database
 	 * 
@@ -54,7 +53,6 @@ public class ScheduledSubtopicController {
 		scheduledSubtopicService.add(subtopics);
 	}
 	
-
 	/**
 	 * Update subtopics in the database
 	 * 
