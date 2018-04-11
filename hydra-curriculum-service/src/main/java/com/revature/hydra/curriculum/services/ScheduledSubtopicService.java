@@ -17,7 +17,7 @@ import com.revature.hydra.curriculum.repositories.ScheduledSubtopicRepository;
 public class ScheduledSubtopicService {
 
 	@Autowired
-	ScheduledSubtopicRepository scheduledSubtopicRepoistory;
+	ScheduledSubtopicRepository scheduledSubtopicRepository;
 	
 	/**
 	 * Retrieve all scheduled subtopics from the database, to be used by the ScheduledSubtopicController
@@ -29,7 +29,7 @@ public class ScheduledSubtopicService {
 	 * @throws NoContentException 
 	 */
 	public List<ScheduledSubtopic> getAll() throws NoContentException {
-		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepoistory.findAll();
+		List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepository.findAll();
 		
 		if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
 			return (List<ScheduledSubtopic>) scheduledSubtopicList;
@@ -51,7 +51,7 @@ public class ScheduledSubtopicService {
 	 * @throws NoContentException
 	 */
 	public List<ScheduledSubtopic> getScheduledSubtopicsById(List<Integer> ids) throws NoContentException{
-		List<ScheduledSubtopic> subtopics = scheduledSubtopicRepoistory.findAllByIdIn(ids);
+		List<ScheduledSubtopic> subtopics = scheduledSubtopicRepository.findAllByIdIn(ids);
 		
 		if(subtopics != null && !subtopics.isEmpty()) {
 			return subtopics;
@@ -69,7 +69,7 @@ public class ScheduledSubtopicService {
 	 * @param subtopics A list of ScheduledSubtopics to be added to the database
 	 */
 	public void add(List<ScheduledSubtopic> subtopics) {
-		scheduledSubtopicRepoistory.save(subtopics);
+		scheduledSubtopicRepository.save(subtopics);
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class ScheduledSubtopicService {
 	 * @param ids The id's of the ScheduledSubtopics to be deleted
 	 */
 	public void delete(List<Integer> ids) {
-		scheduledSubtopicRepoistory.deleteByIdIn(ids);
+		scheduledSubtopicRepository.deleteByIdIn(ids);
 	}
 	
 	/**
@@ -92,6 +92,8 @@ public class ScheduledSubtopicService {
 	 * @param subtopics A list of ScheduledSubtopics to be updated
 	 */
 	public void update(List<ScheduledSubtopic> subtopics) {
-		scheduledSubtopicRepoistory.save(subtopics);
+		scheduledSubtopicRepository.save(subtopics);
 	}
+	
+
 }
