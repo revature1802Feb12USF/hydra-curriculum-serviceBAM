@@ -1,7 +1,6 @@
 package com.revature.hydra.curriculum.beans;
 
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
