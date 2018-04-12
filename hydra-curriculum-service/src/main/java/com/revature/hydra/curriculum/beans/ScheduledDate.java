@@ -1,5 +1,6 @@
 package com.revature.hydra.curriculum.beans;
 
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
@@ -37,17 +38,17 @@ public class ScheduledDate {
 	
 	@Column(name="START_TIME")
 	@NotNull
-	private ZonedDateTime startTime;
+	private Timestamp startTime;
 	
 	@Column(name="END_TIME")
 	@NotNull
-	private ZonedDateTime endTime;
+	private Timestamp endTime;
 	
 	public ScheduledDate() {
 		super();
 	}
 
-	public ScheduledDate(Integer id, Integer week, Integer day, ZonedDateTime startTime, ZonedDateTime endTime) {
+	public ScheduledDate(Integer id, Integer week, Integer day, Timestamp startTime, Timestamp endTime) {
 		super();
 		this.id = id;
 		this.week = week;
@@ -80,19 +81,19 @@ public class ScheduledDate {
 		this.day = day;
 	}
 
-	public ZonedDateTime getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(ZonedDateTime startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 
-	public ZonedDateTime getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(ZonedDateTime endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 
