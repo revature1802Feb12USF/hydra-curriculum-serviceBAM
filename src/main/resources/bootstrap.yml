@@ -1,12 +1,8 @@
-server:
-  port: 5200
-
 spring:
+  profiles:
+    active: prod
   application:
     name: hydra-curriculum-service
-  cloud:
-    config:
-      uri: https://hydra-config-service.cfapps.io/
   datasource:
     url: jdbc:h2:mem:testCurriculum
     username: roll
@@ -22,8 +18,35 @@ spring:
     console:
       enabled: true
       path: /h2
-      
+
+---
+
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: https://hydra-config-service.cfapps.io/
+
 eureka:
   client:
     service-url:
-      defaultZone: https://hydra-discovery-service.cfapps.io
+      defaultZone: hydra-discovery-service.cfapps.io
+
+server:
+  port: 0
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761
+
+server:
+  port: 5200
