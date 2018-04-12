@@ -18,9 +18,10 @@ import com.revature.hydra.curriculum.services.ScheduledSubtopicService;
 
 /**
  * This class establishes REST endpoints for retrieval and modification of ScheduledSubtopic data.
+ * Endpoint: /api/v2/curricula/scheduled-subtopics
  */
 @RestController
-@RequestMapping("/ScheduledSubtopics")
+@RequestMapping("/scheduled-subtopics")
 public class ScheduledSubtopicController {
 	
 	@Autowired

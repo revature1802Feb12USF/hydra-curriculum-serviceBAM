@@ -1,7 +1,10 @@
 package com.revature.hydra.curriculum.beans;
 
 
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -169,16 +172,16 @@ public class Curriculum {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int PRIME = 31;
 		int result = 1;
-		result = prime * result + ((creatorId == null) ? 0 : creatorId.hashCode());
-		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((masterVersion == null) ? 0 : masterVersion.hashCode());
-		result = prime * result + ((modifierId == null) ? 0 : modifierId.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result + ((weekDuration == null) ? 0 : weekDuration.hashCode());
+		result = PRIME * result + ((creatorId == null) ? 0 : creatorId.hashCode());
+		result = PRIME * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+		result = PRIME * result + ((masterVersion == null) ? 0 : masterVersion.hashCode());
+		result = PRIME * result + ((modifierId == null) ? 0 : modifierId.hashCode());
+		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+		result = PRIME * result + ((version == null) ? 0 : version.hashCode());
+		result = PRIME * result + ((weekDuration == null) ? 0 : weekDuration.hashCode());
 		return result;
 	}
 
@@ -191,6 +194,8 @@ public class Curriculum {
 		if (getClass() != obj.getClass())
 			return false;
 		Curriculum other = (Curriculum) obj;
+		
+		
 		if (creatorId == null) {
 			if (other.creatorId != null)
 				return false;

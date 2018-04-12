@@ -18,6 +18,8 @@ import com.revature.hydra.curriculum.services.ScheduleService;
 
 /**
  * This class establishes REST endpoints for retrieval and modification of Schedule data.
+ * 
+ * Endpoint: /api/v2/curricula/schedules
  */
 @RestController
 @RequestMapping("/schedules")

@@ -28,6 +28,8 @@ import com.revature.hydra.curriculum.services.CurriculumService;
 
 /**
  * This class establishes REST endpoints for retrieval and modification of curriculum data.
+ * 
+ * Endpoint: /api/v2/curricula/curriculums
  */
 @RestController
 @RequestMapping("/curriculums")
