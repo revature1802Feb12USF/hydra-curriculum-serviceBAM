@@ -131,6 +131,29 @@ public class ScheduleService {
 	}
 	
 	/**
+	 * Update schedule that already exists in the database
+	 * 
+	 * @author Ricky Baker
+	 * @author Seth Maize
+	 * 
+	 * @param schedule The schedule to update.
+	 * 
+	 * @throws NoContentException
+	 */
+	@Transactional
+	public void update(Schedule schedule) throws NoContentException {
+		Schedule scheduleCopy = getById(schedule.getId());
+		
+		//before updating we are making sure that the schedule exists
+		if(scheduleCopy == null) {
+			throw new NoContentException("This curriculum does not exist.");
+		}
+		else {
+			scheduleRepository.save(schedule);
+		}
+	}
+	
+	/**
 	 * Delete Schedule by id
 	 * 
 	 *@author Seth Maize (Matt 1802)

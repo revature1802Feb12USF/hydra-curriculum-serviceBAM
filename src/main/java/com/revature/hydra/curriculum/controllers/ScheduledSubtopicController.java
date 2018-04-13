@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +18,21 @@ import com.revature.hydra.curriculum.services.ScheduledSubtopicService;
 
 /**
  * This class establishes REST endpoints for retrieval and modification of ScheduledSubtopic data.
- * Endpoint: /api/v2/curricula/scheduled-subtopics
+ * 
+ * Handles Zuul Endpoint: curricula/scheduled-subtopics <br>
+ * <pre style="margin:0;border:0;padding:0;font-size:14">
+ *     - GET    - {@link #getSubtopics(List)}
+ *     - POST   - {@link #addSubtopics(List)}
+ *     - PATCH  - {@link #updateSubtopics(List)}
+ *     - DELETE - {@link #deleteSubtopicsById(List)}
+ * 
+
+ * </pre>
+ * 
+ * @author Ricky Baker (1802-Matt)
+ * @author Seth Maize (1802-Matt)
+ * 
+ * @version 2.0
  */
 @RestController
 @RequestMapping("/scheduled-subtopics")
@@ -62,7 +76,7 @@ public class ScheduledSubtopicController {
 	 * 
 	 * @param subtopics A list of ScheduledSubtopics to update
 	 */
-	@PutMapping
+	@PatchMapping
 	public void updateSubtopics(@RequestBody List<ScheduledSubtopic> subtopics) {
 		scheduledSubtopicService.update(subtopics);
 	}
