@@ -10,19 +10,13 @@ These instructions will get you a copy of the project up and running on your loc
 1. Java JDK 1.8
 2. Spring Tool Suite (STS)
 3. Add ojdbc8 dependency to pom.xml 
-<dependency>
-    <groupId>com.oracle</groupId>
-    <artifactId>ojdbc8</artifactId>
-    <version>12.2.0.1</version>
-</dependency>
-
-Link to download OJDBC8.jar if you don't have it. 
-http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html 
-
-Run maven install goal Change Z:\Program Files\OJDBC\ojdbc8.jar to location of your jar. 
-
-Maven install command below (Make sure you replace the filepath that is in between the quotes with the location of your ojdbc8.jar, remove the quotes, and then run the command):
-mvn install:install-file -Dfile="Z:\Program Files\OJDBC\ojdbc8.jar" -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=12.2.0.1 -Dpackaging=jar
+   - Link to Maven Dependency for ojdbc8:
+      - https://mvnrepository.com/artifact/com.github.noraui/ojdbc8/12.2.0.1
+   - Link to download ojdbc8.jar if you don't have it. 
+      - http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html 
+   - Run maven install goal Change Z:\Program Files\OJDBC\ojdbc8.jar to location of your jar. 
+   - Maven install command listed below (Make sure you replace the filepath in between the quotes with the location of your ojdbc8.jar, remove the quotes, and then run the command):
+       - mvn install:install-file -Dfile="Z:\Program Files\OJDBC\ojdbc8.jar" -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=12.2.0.1 -Dpackaging=jar
 
 
 ### Installing
