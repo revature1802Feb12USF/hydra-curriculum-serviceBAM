@@ -140,7 +140,7 @@ public class ScheduleService {
      * @throws NoContentException
      */
     @Transactional
-    public void update(Schedule schedule) throws NoContentException {
+    public Schedule update(Schedule schedule) throws NoContentException {
         Schedule scheduleCopy = getById(schedule.getId());
         
         //before updating we are making sure that the schedule exists
@@ -149,6 +149,7 @@ public class ScheduleService {
         }
         else {
             scheduleRepository.save(schedule);
+            return schedule;
         }
     }
     

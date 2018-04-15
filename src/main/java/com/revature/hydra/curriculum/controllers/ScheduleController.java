@@ -123,9 +123,9 @@ public class ScheduleController {
      * @throws NoContentException
      * @throws BadRequestException
      */
-    @PatchMapping
-    public void updateScehdule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-        scheduleService.update(schedule);
+    @PatchMapping(produces = "application/json")
+    public Schedule updateScehdule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+        return scheduleService.update(schedule);
     }
     
     /**
