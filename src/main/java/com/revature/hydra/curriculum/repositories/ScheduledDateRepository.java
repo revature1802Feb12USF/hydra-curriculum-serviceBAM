@@ -7,5 +7,5 @@ import com.revature.hydra.curriculum.beans.ScheduledDate;
 
 public interface ScheduledDateRepository extends JpaRepository<ScheduledDate, Integer>{
 
-	public ScheduledDate findSechduledDateById(Integer id);
+    public ScheduledDate findSechduledDateById(Integer id);
 }

@@ -47,98 +47,98 @@ import com.revature.hydra.curriculum.services.ScheduleService;
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
-	
-	@Autowired
-	ScheduleService scheduleService;
-	
-	/**
-	 * Returns all schedules in a JSON array 
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
-	 * 
-	 * @return all schedules in a JSON array
-	 * @throws NoContentException
-	 */
-	
-	@GetMapping
-	public List<Schedule> getAllSchedules() throws NoContentException {
-		return scheduleService.getAll();
-	}
-	
-	/**
-	 * Retrieves schedule of the given id as a JSON
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
-	 * 
-	 * @param id The id of the schedule to be retrieved
-	 * @return schedule of the given id
-	 * @throws NoContentException
-	 */
-	@GetMapping("/{sid}")
-	public Schedule getScheduleById(@PathVariable Integer sid) throws NoContentException {
-		return scheduleService.getById(sid);
-	}
-	
-	/**
-	 * Retrieves a schedule specified by the given id, with an ordered list of subtopics based on start time as a JSON
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
-	 * 
-	 * @param id The id of the schedule to be retrieved
-	 * @return a schedule specified by the given id, with an ordered list of subtopics based on start time
-	 * @throws NoContentException
-	 */
-	@GetMapping("/ordered/{sid}")
-	public Schedule getOrderedSchedule(@PathVariable Integer id) throws NoContentException {
-		return scheduleService.getByIdOrdered(id);
-	}
-	
+    
+    @Autowired
+    ScheduleService scheduleService;
+    
+    /**
+     * Returns all schedules in a JSON array 
+     * 
+     * @author Seth Maize (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
+     * 
+     * @return all schedules in a JSON array
+     * @throws NoContentException
+     */
+    
+    @GetMapping
+    public List<Schedule> getAllSchedules() throws NoContentException {
+        return scheduleService.getAll();
+    }
+    
+    /**
+     * Retrieves schedule of the given id as a JSON
+     * 
+     * @author Seth Maize (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
+     * 
+     * @param id The id of the schedule to be retrieved
+     * @return schedule of the given id
+     * @throws NoContentException
+     */
+    @GetMapping("/{sid}")
+    public Schedule getScheduleById(@PathVariable Integer sid) throws NoContentException {
+        return scheduleService.getById(sid);
+    }
+    
+    /**
+     * Retrieves a schedule specified by the given id, with an ordered list of subtopics based on start time as a JSON
+     * 
+     * @author Seth Maize (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
+     * 
+     * @param id The id of the schedule to be retrieved
+     * @return a schedule specified by the given id, with an ordered list of subtopics based on start time
+     * @throws NoContentException
+     */
+    @GetMapping("/ordered/{sid}")
+    public Schedule getOrderedSchedule(@PathVariable Integer id) throws NoContentException {
+        return scheduleService.getByIdOrdered(id);
+    }
+    
     /**
      * Adds schedule to database
      * 
      * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
      * 
      * @param schedule Schedule to add to the database
      * 
      * @throws NoContentException
      * @throws BadRequestException
      */
-	@PostMapping
-	public void addSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-		scheduleService.add(schedule);
-	}
-	
-	/**
-	 * Updates schedule if it exists in the database
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
-	 * 
-	 * @param schedule The Schedule to update
-	 *  
-	 * @throws NoContentException
-	 * @throws BadRequestException
-	 */
-	@PatchMapping
-	public void updateScehdule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-		scheduleService.update(schedule);
-	}
-	
-	/**
-	 * Delete schedule, specified by id, from the database
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * @author Ricky Baker (Matt 1802)
-	 * 
-	 * @param id The id of the schedule to delete
-	 */
-	@DeleteMapping("/{sid}")
-	public void deleteScheduleById(@PathVariable int sid) {
-		scheduleService.deleteById(sid);
-	}
+    @PostMapping
+    public void addSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+        scheduleService.add(schedule);
+    }
+    
+    /**
+     * Updates schedule if it exists in the database
+     * 
+     * @author Seth Maize (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
+     * 
+     * @param schedule The Schedule to update
+     *  
+     * @throws NoContentException
+     * @throws BadRequestException
+     */
+    @PatchMapping
+    public void updateScehdule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+        scheduleService.update(schedule);
+    }
+    
+    /**
+     * Delete schedule, specified by id, from the database
+     * 
+     * @author Seth Maize (Matt 1802)
+     * @author Ricky Baker (Matt 1802)
+     * 
+     * @param id The id of the schedule to delete
+     */
+    @DeleteMapping("/{sid}")
+    public void deleteScheduleById(@PathVariable int sid) {
+        scheduleService.deleteById(sid);
+    }
 
 }

@@ -9,7 +9,7 @@ import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
 
 @Repository
 public interface CurriculumSubtopicRepository extends JpaRepository<CurriculumSubtopic, Integer> {
-	public List<CurriculumSubtopic> findAllByCurriculumId(Integer id);
-	public void deleteBySubtopicIdAndCurriculumId(Integer subtopicId, Integer curriculumId);
-	public void deleteSubtopicsByCurriculumIdAndSubtopicIdIn(Integer curriculumId, Iterable<Integer> subtopicIds);
+    public List<CurriculumSubtopic> findAllByCurriculumId(Integer id);
+    public void deleteBySubtopicIdAndCurriculumId(Integer subtopicId, Integer curriculumId);
+    public void deleteSubtopicsByCurriculumIdAndSubtopicIdIn(Integer curriculumId, Iterable<Integer> subtopicIds);
 }
