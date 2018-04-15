@@ -134,32 +134,32 @@ public class CurriculumService {
         return subtopics;
     }
 
-//    @Transactional
-//    public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
-//        Curriculum targetCurriculum = null;
-//        
-//        try {
-//            targetCurriculum = getCurriculumById(id);
-//        } catch(NoContentException ex) {}
-//        
-//        if(targetCurriculum == null) {
-//            throw new BadRequestException("Curriculum with ID=" + id + " does not exist.");
-//        }
-//        
-//        List<Curriculum> curriculumList = findAllCurriculumsByNameAndIsMaster(targetCurriculum.getName(), 1);
-//        
-//        if(curriculumList != null && !curriculumList.isEmpty()) {
-//            curriculumList.forEach(masterCurriculum -> {
-//                masterCurriculum.setMasterVersion(false);
-//                save(masterCurriculum);
-//            });
-//        }
-//        
-//        targetCurriculum.setMasterVersion(true);
-//        save(targetCurriculum);
-//        
-//        return targetCurriculum;
-//    }
+    @Transactional
+    public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
+        Curriculum targetCurriculum = null;
+        
+        try {
+            targetCurriculum = getCurriculumById(id);
+        } catch(NoContentException ex) {}
+        
+        if(targetCurriculum == null) {
+            throw new BadRequestException("Curriculum with ID=" + id + " does not exist.");
+        }
+        
+        List<Curriculum> curriculumList = curriculumRepository.findAllCurriculumsByNameAndMasterVersion(targetCurriculum.getName(), true);
+        
+        if(curriculumList != null && !curriculumList.isEmpty()) {
+            curriculumList.forEach(masterCurriculum -> {
+                masterCurriculum.setIsMasterVersion(false);
+            });
+            curriculumRepository.save(curriculumList);
+        }
+        
+        targetCurriculum.setIsMasterVersion(true);
+        curriculumRepository.save(targetCurriculum);
+        
+        return targetCurriculum;
+    }
     
     
     @Transactional

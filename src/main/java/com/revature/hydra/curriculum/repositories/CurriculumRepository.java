@@ -12,4 +12,6 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Integer>
 //    public List<Curriculum> findCurriculumByNameAndIsMasterVersion(String name, Integer isMasterVersion);
     public void deleteSubtopicsByIdIn(Iterable<Integer> curriculumIds);
     public List<Curriculum> findCurriculumsByIdIn(Iterable<Integer> curriculumIds);
+    public List<Curriculum> findAllCurriculumsByNameAndMasterVersion(
+                    String name, boolean i);
 }
