@@ -31,13 +31,14 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * Handles Zuul Endpoint: /curricula <br>
  * 
  * <pre style="margin:0;border:0;padding:0;font-size:14">
- * ""  - GET    - {@link #getAllCurriculums()}
+ * "/all"  - GET    - {@link #getAllCurriculums()}
+ *     
+ *     
+ * "/" - GET - {@link #getCurriculums(Set)}
  *     - POST   - {@link #addCurriculum(Curriculum)}
  *     - PUT    - {@link #replaceCurriculum(Curriculum)}
  *     - PATCH  - {@link #updateCurriculum(Curriculum)}
  *     - DELETE - {@link #deleteCurriculums(Set)}
- *     
- * "/" - GET - {@link #getCurriculums(Set)}
  * 
  * "/{cid}" - PUT - {@link #insertSubtopicsToCurriculum(Integer, Set)}
  * 
@@ -81,14 +82,15 @@ public class CurriculumController {
      *  <li>HttpStatus.NO_CONTENT: No curriculums found.</li>
      * </ul>
      * @return The list of all curriculums.
-     * @throws NoContentException Thrown when given list is empty or null. ({@link HttpStatus#NO_CONTENT})
+     * @throws NoContentException Thrown when given list is empty or null. 
+     *          ({@link HttpStatus#NO_CONTENT})
      * 
      * @author Carter Taylor (1712-Steve)
      * @author Olayinka Ewumi (1712-Steve)
      * @author Stephen Negron (1801-Trevin)
      * @author Rafael Sanchez (1801-Trevin)
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<Curriculum> getAllCurriculums() throws NoContentException {
         return curriculumService.getAllCurriculums();
     }
@@ -178,7 +180,7 @@ public class CurriculumController {
 //    }
 
     
-    @PostMapping
+    @PostMapping("/")
     public Curriculum addCurriculum(@RequestBody Curriculum newCurriculum) throws BadRequestException {
         return curriculumService.addCurriculum(newCurriculum);
     }
@@ -191,17 +193,17 @@ public class CurriculumController {
     }
     
     @ResponseStatus(code=HttpStatus.OK)
-    @DeleteMapping
+    @DeleteMapping("/")
     public void deleteCurriculums(@RequestParam("ids") Set<Integer> curriculumIds) {
         curriculumService.deleteCurriculums(curriculumIds);
     }
     
-    @PatchMapping
+    @PatchMapping("/")
     public Curriculum updateCurriculum(@RequestBody Curriculum curriculum) throws NoContentException {
         return curriculumService.updateCurriculum(curriculum);
     }
     
-    @PutMapping
+    @PutMapping("/")
     public Curriculum replaceCurriculum(@RequestBody Curriculum curriculum) throws NoContentException {
         return curriculumService.replaceCurriculum(curriculum);
     }
