@@ -33,6 +33,10 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * <pre style="margin:0;border:0;padding:0;font-size:14">
  * "/all"  - GET    - {@link #getAllCurriculums()}
  *     
+<<<<<<< HEAD
+=======
+ *     
+>>>>>>> master
  * "/" - GET - {@link #getCurriculums(Set)}
  *     - POST   - {@link #addCurriculum(Curriculum)}
  *     - PUT    - {@link #replaceCurriculum(Curriculum)}
@@ -93,9 +97,6 @@ public class CurriculumController {
      */
     @GetMapping("/all")
     public List<Curriculum> getAllCurriculums() throws NoContentException {
-        
-        
-        
         return curriculumService.getAllCurriculums();
     }
     

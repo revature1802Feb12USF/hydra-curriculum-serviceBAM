@@ -9,9 +9,8 @@ import com.revature.hydra.curriculum.beans.Curriculum;
 public interface CurriculumRepository extends JpaRepository<Curriculum, Integer> {
     public Curriculum findCurriculumById(Integer id);
     public List<Curriculum> findCurriculumByName(String curriculumName);
-//    public List<Curriculum> findCurriculumByNameAndIsMasterVersion(String name, Integer isMasterVersion);
     public void deleteSubtopicsByIdIn(Iterable<Integer> curriculumIds);
     public List<Curriculum> findCurriculumsByIdIn(Iterable<Integer> curriculumIds);
     public List<Curriculum> findAllCurriculumsByNameAndMasterVersion(
-                    String name, boolean i);
+                    String name, Boolean i);
 }
