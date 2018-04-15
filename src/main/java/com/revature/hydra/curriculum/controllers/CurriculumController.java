@@ -45,7 +45,7 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * 
  * "/{cid}" - PUT - {@link #insertSubtopicsToCurriculum(Integer, Set)}
  * 
- * "/{id}/master" - PATCH - {@link #markCurriculumAsMaster(Integer)}
+ * "/{cid}/master" - PATCH - {@link #markCurriculumAsMaster(Integer)}
  * 
  * "/{cid}/subtopics" - GET    - {@link #getAllCurriculumSubtopics(int)}
  *                    - DELETE - {@link #deleteSubtopics(Integer, Set)}
@@ -179,9 +179,9 @@ public class CurriculumController {
      * @throws BadRequestException Could not find a curriculum with the provided ID.
      * @throws NoContentException Could not find the curriculum with the provided ID.
      */
-    @PatchMapping("/{id}/master")
-    public Curriculum markCurriculumAsMaster(@PathVariable Integer id) throws BadRequestException {
-        return curriculumService.markCurriculumAsMaster(id);
+    @PatchMapping("/{cid}/master")
+    public Curriculum markCurriculumAsMaster(@PathVariable Integer cid) throws BadRequestException {
+        return curriculumService.markCurriculumAsMaster(cid);
     }
 
     
