@@ -82,7 +82,7 @@ public class CurriculumController {
 	 * @author Stephen Negron (1801-Trevin)
 	 * @author Rafael Sanchez (1801-Trevin)
 	 */
-	@GetMapping
+	@GetMapping("/all")
 	public List<Curriculum> getAllCurriculums() throws NoContentException {
 		return curriculumService.getAllCurriculums();
 	}
