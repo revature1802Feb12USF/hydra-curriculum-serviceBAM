@@ -33,9 +33,10 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * <pre style="margin:0;border:0;padding:0;font-size:14">
  * ""  - GET    - {@link #getAllCurriculums()}
  *     - POST   - {@link #addCurriculum(Curriculum)}
+ *     - PUT    - {@link #replaceCurriculum(Curriculum)}
  *     - PATCH  - {@link #updateCurriculum(Curriculum)}
  *     - DELETE - {@link #deleteCurriculums(Set)}
- * 
+ *     
  * "/" - GET - {@link #getCurriculums(Set)}
  * 
  * "/{cid}" - PUT - {@link #insertSubtopicsToCurriculum(Integer, Set)}
@@ -198,6 +199,11 @@ public class CurriculumController {
     @PatchMapping
     public Curriculum updateCurriculum(@RequestBody Curriculum curriculum) throws NoContentException {
         return curriculumService.updateCurriculum(curriculum);
+    }
+    
+    @PutMapping
+    public Curriculum replaceCurriculum(@RequestBody Curriculum curriculum) throws NoContentException {
+        return curriculumService.replaceCurriculum(curriculum);
     }
     
     @HystrixCommand(fallbackMethod="serviceUnavailable")

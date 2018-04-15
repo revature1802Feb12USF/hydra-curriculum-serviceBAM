@@ -1,8 +1,5 @@
 package com.revature.hydra.curriculum.services;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,9 +15,9 @@ import com.revature.hydra.curriculum.beans.CurriculumSubtopic;
 import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
-import com.revature.hydra.curriculum.exceptions.UnknownException;
 import com.revature.hydra.curriculum.repositories.CurriculumRepository;
 import com.revature.hydra.curriculum.repositories.CurriculumSubtopicRepository;
+import com.revature.hydra.util.ReflectionUtils;
 
 /**
  * A Service class for retrieving and modifying curriculum data.
@@ -193,36 +190,26 @@ public class CurriculumService {
         if(existing == null)
             return null;
         
-        Field[] fields = curriculum.getClass().getDeclaredFields();
-        
-        for(Field f : fields) {
-            String fieldName = f.getName();
-            fieldName = fieldName.replaceFirst(".", "" + Character.toUpperCase(fieldName.charAt(0)));
-            String getMethodName = "get" + fieldName;
-            String setMethodName = "set" + fieldName;
-            
-            
-            try {
-                Method getMethod = curriculum.getClass().getMethod(getMethodName);
-                Method setMethod = curriculum.getClass().getMethod(setMethodName, f.getType());
-                
-                Object getResult;
-                setMethod.invoke(existing, 
-                    (getResult = getMethod.invoke(curriculum)) == null ? 
-                        getMethod.invoke(existing) : getResult 
-                );
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException 
-                    | IllegalArgumentException | InvocationTargetException e) {
-                throw new UnknownException("Unknown error occurred.");
-            }
-        } // end for
+        ReflectionUtils.deepCopyNonNull(existing, curriculum);
         
         curriculum = curriculumRepository.save(existing);
 
         return curriculum;
-        
     }
 
+    @Transactional
+    public Curriculum replaceCurriculum(Curriculum curriculum) throws NoContentException {
+        Curriculum existing = getCurriculumById(curriculum.getId());
+        
+        if(existing == null)
+            return null;
+        
+        curriculum = curriculumRepository.save(curriculum);
+
+        return curriculum;
+    }
+    
+    
     @Transactional
     public void insertSubtopicsToCurriculum(Integer id, Set<Integer> subtopicIds) throws BadRequestException {
         Curriculum curriculum;
@@ -246,7 +233,6 @@ public class CurriculumService {
         
         curriculumSubtopicRepository.save(curriculumSubtopics);
     }
-    
 }
 
 
