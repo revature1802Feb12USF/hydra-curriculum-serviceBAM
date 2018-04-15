@@ -37,60 +37,60 @@ import com.revature.hydra.curriculum.services.ScheduledSubtopicService;
 @RestController
 @RequestMapping("/scheduled-subtopics")
 public class ScheduledSubtopicController {
-	
-	@Autowired
-	ScheduledSubtopicService scheduledSubtopicService;
+    
+    @Autowired
+    ScheduledSubtopicService scheduledSubtopicService;
 
-	/**
-	 * Returns a JSON array containing the specified Subtopics
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * 
-	 * @param ids The id's of the ScheduledSubtopics to return
-	 * 
-	 * @return A JSON array containing the specified Subtopics
-	 * 
-	 * @throws NoContentException
-	 */
-	@GetMapping
-	public List<ScheduledSubtopic> getSubtopics(@RequestParam("ids") List<Integer> ids) throws NoContentException{
-		return scheduledSubtopicService.getScheduledSubtopicsById(ids);
-	}
-	
-	/**
-	 * Add ScheduledSubtopic to the database
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * 
-	 * @param subtopics The subtpic to add to the database
-	 */
-	@PostMapping
-	public void addSubtopics(@RequestBody List<ScheduledSubtopic> subtopics){
-		scheduledSubtopicService.add(subtopics);
-	}
-	
-	/**
-	 * Update subtopics in the database
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * 
-	 * @param subtopics A list of ScheduledSubtopics to update
-	 */
-	@PatchMapping
-	public void updateSubtopics(@RequestBody List<ScheduledSubtopic> subtopics) {
-		scheduledSubtopicService.update(subtopics);
-	}
-	
-	/**
-	 * Delete ScheduledSubtopics from the database based on the given id's
-	 * 
-	 * @author Seth Maize (Matt 1802)
-	 * 
-	 * @param ids The id's of the ScheduledSubtopics to be deleted
-	 */
-	@DeleteMapping
-	public void deleteSubtopicsById(@RequestParam("ids") List<Integer> ids) {
-		scheduledSubtopicService.delete(ids);
-	}
-	
+    /**
+     * Returns a JSON array containing the specified Subtopics
+     * 
+     * @author Seth Maize (Matt 1802)
+     * 
+     * @param ids The id's of the ScheduledSubtopics to return
+     * 
+     * @return A JSON array containing the specified Subtopics
+     * 
+     * @throws NoContentException
+     */
+    @GetMapping
+    public List<ScheduledSubtopic> getSubtopics(@RequestParam("ids") List<Integer> ids) throws NoContentException{
+        return scheduledSubtopicService.getScheduledSubtopicsById(ids);
+    }
+    
+    /**
+     * Add ScheduledSubtopic to the database
+     * 
+     * @author Seth Maize (Matt 1802)
+     * 
+     * @param subtopics The subtpic to add to the database
+     */
+    @PostMapping
+    public void addSubtopics(@RequestBody List<ScheduledSubtopic> subtopics){
+        scheduledSubtopicService.add(subtopics);
+    }
+    
+    /**
+     * Update subtopics in the database
+     * 
+     * @author Seth Maize (Matt 1802)
+     * 
+     * @param subtopics A list of ScheduledSubtopics to update
+     */
+    @PatchMapping
+    public void updateSubtopics(@RequestBody List<ScheduledSubtopic> subtopics) {
+        scheduledSubtopicService.update(subtopics);
+    }
+    
+    /**
+     * Delete ScheduledSubtopics from the database based on the given id's
+     * 
+     * @author Seth Maize (Matt 1802)
+     * 
+     * @param ids The id's of the ScheduledSubtopics to be deleted
+     */
+    @DeleteMapping
+    public void deleteSubtopicsById(@RequestParam("ids") List<Integer> ids) {
+        scheduledSubtopicService.delete(ids);
+    }
+    
 }

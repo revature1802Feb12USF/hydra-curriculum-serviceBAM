@@ -18,18 +18,26 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 public class HydraCurriculumServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HydraCurriculumServiceApplication.class, args);
-	}
-	
-	/**
-	 * Swagger bean
-	 * @author Jennifer Fox (1802-Matt)
-	 * @return
-	 */
-	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HydraCurriculumServiceApplication.class, args);
+    }
+
+    /**
+     * Produces a bean used by the Springfox framework to produce Swagger 2
+     * documentation.
+     * 
+     * <br>
+     * <br>
+     * <b>Last Modified:</b>
+     * <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
+     * 
+     * @return A bean to be used to build Swagger 2 documentation.
+     * 
+     * @author Jennifer Fox (1802-Matt)
+     */
+    @Bean
+    public Docket generateSwaggerBuilder() {
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any()).build();
+    }
 }
