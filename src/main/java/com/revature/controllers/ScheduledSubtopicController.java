@@ -67,8 +67,8 @@ public class ScheduledSubtopicController {
      * @param subtopics The subtpic to add to the database
      */
     @PostMapping
-    public void addSubtopics(@RequestBody List<ScheduledSubtopic> subtopics){
-        scheduledSubtopicService.add(subtopics);
+    public void addSubtopics(@RequestParam("schedule") Integer scheduleId, @RequestBody List<ScheduledSubtopic> subtopics) throws NoContentException{
+        scheduledSubtopicService.add(scheduleId, subtopics);
     }
     
     /**

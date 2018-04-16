@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.revature.beans.Schedule;
 import com.revature.beans.ScheduledSubtopic;
 import com.revature.exceptions.NoContentException;
 import com.revature.repositories.ScheduledSubtopicRepository;
@@ -17,7 +19,10 @@ import com.revature.repositories.ScheduledSubtopicRepository;
 public class ScheduledSubtopicService {
 
     @Autowired
-    ScheduledSubtopicRepository scheduledSubtopicRepository;
+    private ScheduledSubtopicRepository scheduledSubtopicRepository;
+    
+    @Autowired
+    private ScheduleService scheduleService;
     
     /**
      * Retrieve all scheduled subtopics from the database, to be used by the ScheduledSubtopicController
@@ -69,7 +74,12 @@ public class ScheduledSubtopicService {
      * 
      * @param subtopics A list of ScheduledSubtopics to be added to the database
      */
-    public void add(List<ScheduledSubtopic> subtopics) {
+    @Transactional
+    public void add(Integer scheduleId, List<ScheduledSubtopic> subtopics) throws NoContentException {
+        Schedule schedule = scheduleService.getById(scheduleId);
+        
+        subtopics.forEach(subtopic -> subtopic.setParentSchedule(schedule));
+        
         scheduledSubtopicRepository.save(subtopics);
     }
     
