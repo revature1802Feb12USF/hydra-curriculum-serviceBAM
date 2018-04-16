@@ -28,8 +28,8 @@ eureka:
 
 remote-api:
   topic:
-    request-bulk: http://hydra-topic-service/subtopics
-    verify: http://hydra-topic-service/subtopics/verify
+    request-bulk: http://hydra-topic-service/api/v2/topics/subtopics
+    verify: http://hydra-topic-service/api/v2/topics/subtopics/verify
     
 ---
 

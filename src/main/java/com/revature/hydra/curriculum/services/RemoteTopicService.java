@@ -45,13 +45,20 @@ public class RemoteTopicService {
      */
     public List<Subtopic> requestSubtopics(Set<Integer> subtopicIds) {
         ParameterizedTypeReference<List<Subtopic>> paramTypeRef = new ParameterizedTypeReference<List<Subtopic>>() {};
-        ResponseEntity<List<Subtopic>> subtopics = restTemplate.exchange(requestSubtopicsEndpoint
-                + "?ids=" + ST.format("<%1; separator=\",\">", subtopicIds),
+//    	ParameterizedTypeReference<String> paramTypeRef = new ParameterizedTypeReference<String>() {};
+        
+        String endpoint = requestSubtopicsEndpoint
+                + "?ids=" + ST.format("<%1; separator=\",\">", subtopicIds);
+      ResponseEntity<List<Subtopic>> subtopics
+//    	ResponseEntity<String> subtopics
+        	= restTemplate.exchange(endpoint,
                 HttpMethod.GET, null, paramTypeRef);
+//        String body = subtopics.getBody();
         
         switch(subtopics.getStatusCode()) {
         case OK:
-            return subtopics.getBody();
+//            return subtopics.getBody();
+        	return null;
         default:
             return null;
         }

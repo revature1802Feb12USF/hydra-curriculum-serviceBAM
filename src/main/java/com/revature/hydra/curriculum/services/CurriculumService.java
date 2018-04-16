@@ -134,6 +134,30 @@ public class CurriculumService {
         return subtopics;
     }
 
+    public List<Integer> getAllSubtopicIdsForCurriculum(int curriculumId) throws NoContentException {
+        List<CurriculumSubtopic> curriculumSubtopics = curriculumSubtopicRepository.findAllByCurriculumId(curriculumId);
+        
+        if(curriculumSubtopics == null || curriculumSubtopics.isEmpty()) {
+            throw new NoContentException("No subtopics found.");
+        }
+        
+        Set<Integer> subtopicIds = new TreeSet<>();
+        
+        curriculumSubtopics.forEach(currSubtopic -> {
+            subtopicIds.add(currSubtopic.getSubtopicId());
+        });
+        
+        List<Integer> subtopicIdList = new ArrayList<>(subtopicIds);
+        
+        if(subtopicIdList.isEmpty()) {
+            throw new NoContentException("No subtopics found.");
+        }
+        
+        return subtopicIdList;
+    }
+    
+    
+    
     @Transactional
     public Curriculum markCurriculumAsMaster(int id) throws BadRequestException {
         Curriculum targetCurriculum = null;
