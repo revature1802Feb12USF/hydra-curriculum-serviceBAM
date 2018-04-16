@@ -10,14 +10,11 @@ import java.lang.annotation.Target;
 /**
  * Used to specify fields which should be ignored.
  * 
-<<<<<<< HEAD
-=======
  * <br>
  * <br>
  * <b>Last Modified:</b>
  * <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
  * 
->>>>>>> 32ed02ded26393edc86b82b913d10586a4a39a81
  * @author Ricky Baker (1802-Matt)
  * @see ReflectionUtils
  */
