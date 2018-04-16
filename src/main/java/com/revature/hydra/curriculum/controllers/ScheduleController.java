@@ -81,6 +81,13 @@ public class ScheduleController {
         return scheduleService.getById(sid);
     }
     
+    @GetMapping("/curriculum/{cid}")
+    public List<Schedule> getScheduleByCurriculumId(@PathVariable Integer cid) throws NoContentException {
+        return scheduleService.getAllSchedulesByCurriculumId(cid);
+    }
+    
+    
+    
     /**
      * Retrieves a schedule specified by the given id, with an ordered list of subtopics based on start time as a JSON
      * 

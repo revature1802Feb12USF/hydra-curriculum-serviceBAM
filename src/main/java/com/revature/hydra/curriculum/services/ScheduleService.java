@@ -71,6 +71,7 @@ public class ScheduleService {
         }
     }
     
+    
     /**
      * Get a schedule with an ordered list of ScheduledSubtopics based on start time in ascending order
      * 
@@ -164,5 +165,10 @@ public class ScheduleService {
     public void deleteById(Integer id) {
         scheduleRepository.delete(id);
     }
+
+    @Transactional
+	public List<Schedule> getAllSchedulesByCurriculumId(Integer id) {
+		return scheduleRepository.findAllSchedulesByCurriculumId(id);
+	}
     
 }

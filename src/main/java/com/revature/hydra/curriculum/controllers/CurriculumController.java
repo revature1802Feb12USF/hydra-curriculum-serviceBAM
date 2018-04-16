@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.hydra.curriculum.beans.Curriculum;
+import com.revature.hydra.curriculum.beans.Schedule;
 import com.revature.hydra.curriculum.beans.remote.Subtopic;
 import com.revature.hydra.curriculum.exceptions.BadRequestException;
 import com.revature.hydra.curriculum.exceptions.NoContentException;
@@ -45,6 +46,8 @@ import com.revature.hydra.curriculum.services.CurriculumService;
  * 
  * "/{cid}/subtopics" - GET    - {@link #getAllCurriculumSubtopics(int)}
  *                    - DELETE - {@link #deleteSubtopics(Integer, Set)}
+ *                    
+ * "/{cid}/schedules" - GET - {@link #getAllCurriculumSchedules(Integer)}
  * </pre>
  * 
  * <br>
@@ -74,6 +77,15 @@ public class CurriculumController {
      */
     public void serviceUnavailable() throws ServiceUnavailableException {
         throw new ServiceUnavailableException("Service is currently unavailable.");
+    }
+    
+    /**
+     * Gets all schedules belonging to a particular curriculum version.
+     * @return
+     */
+    @GetMapping("/{cid}/schedules")
+    public List<Schedule> getAllCurriculumSchedules(@PathVariable Integer cid) {
+    	return curriculumService.getAllSchedulesByCurriculumId(cid);
     }
     
     /**
