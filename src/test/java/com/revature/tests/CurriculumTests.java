@@ -107,17 +107,21 @@ public class CurriculumTests {
 		.statusCode(200);
 		
 	}
-//
-//	@Test
-//	public void testDeleteSubtopics() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testDeleteCurriculums() {
-//		fail("Not yet implemented");
-//	}
-//
+
+	@Test
+	public void testDeleteSubtopics() {
+		RestAssured.delete("http://localhost:9001/api/v2/curricula/100/subtopics/?ids=1000")
+		.then()
+		.statusCode(200);
+	}
+
+	@Test
+	public void testDeleteCurriculums() {
+		RestAssured.delete("http://localhost:9001/api/v2/curricula/?ids=120&ids=121")
+		.then()
+		.statusCode(200);
+	}
+
 	@Test
 	public void testUpdateCurriculum() throws JsonParseException, JsonMappingException, IOException {
 

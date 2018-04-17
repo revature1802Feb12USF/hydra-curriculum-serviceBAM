@@ -9,4 +9,5 @@ import com.revature.beans.Schedule;
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
     public Schedule findById(Integer id);
 	public List<Schedule> findAllSchedulesByCurriculumId(Integer id);
+	public void deleteSchedulesByCurriculumIdIn(Iterable<Integer> id);
 }
