@@ -25,12 +25,13 @@ import com.revature.util.ReflectionUtils;
  * <br>
  * <b>Last Modified:</b>
  *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
- *  
- * @author Ricky Baker (1802-Matt)
- * @author Seth Maize (1802-Matt)
- *  
+ * 
  * @see Schedule
  * @see ScheduledDate
+ * 
+ * @author Ricky Baker (1802-Matt)
+ * @author Seth Maize (1802-Matt)
+ * 
  * 
  * @version 2.0
  */

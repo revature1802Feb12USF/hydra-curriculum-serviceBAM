@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.revature.beans.Curriculum;
 import com.revature.beans.Schedule;
+import com.revature.beans.remote.Subtopic;
 import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.services.CurriculumService;
+import com.revature.services.RemoteTopicService;
 
 /**
  * This class establishes REST endpoints for retrieval and modification of curriculum data. <br>
@@ -60,6 +63,7 @@ import com.revature.services.CurriculumService;
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
  * 
+ * @since 2.0
  * @version 2.0
  */
 @RestController
@@ -74,64 +78,110 @@ public class CurriculumController {
     
     /**
      * Get all schedules belonging to a particular curriculum.
+     *  <ul>
+     *      <li>{@link HttpStatus#OK}: At least 1 schedule was found.</li>
+     *      <li>{@link HttpStatus#NO_CONTENT}: No schedules were found.</li>
+     *  </ul>
      * 
      * <br>
      * <br>
      * <b>Last Modified:</b>
      *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
      * 
+     * @author Ricky Baker (1802-Matt)
+     * 
      * @param cid The curriculum ID of the schedules.
      * @return A list of schedules which belong to the specified curriculum.
      * 
-     * @author Ricky Baker (1802-Matt)
+     * @since 2.0
      */
     @GetMapping("/{cid}/schedules")
-    public List<Schedule> getAllCurriculumSchedules(@PathVariable Integer cid) {
-    	return curriculumService.getAllSchedulesByCurriculumId(cid);
+    public ResponseEntity<List<Schedule>> getAllCurriculumSchedules(
+            @PathVariable Integer cid) {
+        List<Schedule> schedules = curriculumService.getAllSchedulesByCurriculumId(cid);
+        
+        if(schedules == null) {
+            schedules = new ArrayList<>();
+        }
+        
+        HttpStatus status = schedules.isEmpty() ?
+                        HttpStatus.NO_CONTENT : HttpStatus.OK;
+        
+        ResponseEntity<List<Schedule>> response = new ResponseEntity<>(schedules, status);
+        
+    	return response;
     }
     
     /**
      * Retrieves all curriculums.
-     *  <ul>
+     * <ul>
      *      <li>HttpStatus.OK: At least 1 curriculum found.</li>
      *      <li>HttpStatus.NO_CONTENT: No curriculums found.</li>
      *  </ul>
+     * 
+     * <br>
+     * <br>
+     * <b>Last Modified:</b>
+     *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
      * 
      * @author Carter Taylor (1712-Steve)
      * @author Olayinka Ewumi (1712-Steve)
      * @author Stephen Negron (1801-Trevin)
      * @author Rafael Sanchez (1801-Trevin)
+     * @author Ricky Baker (1802-Matt)
      * 
      * @return The list of all curriculums.
-     * @throws NoContentException Thrown when given list is empty or null. 
-     *          ({@link HttpStatus#NO_CONTENT})
+     * 
+     * @since 2.0
      */
     @GetMapping("/all")
-    public List<Curriculum> getAllCurriculums() throws NoContentException {
-        return curriculumService.getAllCurriculums();
+    public ResponseEntity<List<Curriculum>> getAllCurriculums() {
+        List<Curriculum> curriculumList;
+        HttpStatus status = HttpStatus.OK;
+        
+        try {
+            curriculumList = curriculumService.getAllCurriculums();
+            
+            if(curriculumList == null) {
+                curriculumList = new ArrayList<>();
+            }
+            
+            if(curriculumList.isEmpty()) {
+                status = HttpStatus.NO_CONTENT;
+            }
+        } catch(NoContentException ex) {
+            curriculumList = new ArrayList<>();
+            status = HttpStatus.NO_CONTENT;
+        }
+        
+        ResponseEntity<List<Curriculum>> response = 
+            new ResponseEntity<>(curriculumList, status);
+        
+        return response;
     }
     
     /**
-     * Gets all requested curriculums by the given set of ids.<br>
-     *     Request endpoint: {@code <host>/<path>?ids=<id csl>}<br>
+     * Gets all requested curriculums by the given set of ids.
+     *  <ul>
+     *      <li>{@link HttpStatus#OK}: All IDs were found.</li>
+     *      <li>{@link HttpStatus#PARTIAL_CONTENT}: Only some IDs were found.</li>
+     *      <li>{@link HttpStatus#NO_CONTENT}: No IDs found or no IDs specified.</li>
+     *  </ul>
      * 
      * @author Ricky Baker (1802-Matt)
      * 
      * @param curriculumIds A set of curriculum IDs specified in the query string
      *                      in a comma-separated list format.
      * @return A response body containing a list of curriculums and one of the 
-     *          following status codes:
-     *                 <ul>
-     *                 <li>OK: all IDs found</li>
-     *                 <li>PARTIAL_CONTENT: only some IDs were found</li>
-     *                <li>NO_CONTENT: no IDs found or no IDs specified</li>
-     *                </ul>
-     *
+     *          following status codes.
+     * 
+     * @since 2.0
      */
     @GetMapping("/")
-    public ResponseEntity<List<Curriculum>> getCurriculums(@RequestParam("ids") Set<Integer> curriculumIds) {
-        // curriculums/?ids=<csl>
-        List<Curriculum> requestedCurriculums = curriculumService.getCurriculums(curriculumIds);
+    public ResponseEntity<List<Curriculum>> getCurriculums(
+                    @RequestParam("ids") Set<Integer> curriculumIds) {
+        List<Curriculum> requestedCurriculums = 
+            curriculumService.getCurriculums(curriculumIds);
         ResponseEntity<List<Curriculum>> response;
         HttpStatus status;
         
@@ -149,15 +199,17 @@ public class CurriculumController {
     }
 
     /**
-     * Retrieves a list of subtopics in the specified curriculum.<br>
-     * <ul>
-     *     <li>HttpStatus.OK: Found at least 1 subtopic for the specified curriculum.</li>
-     *  <li>HttpStatus.NO_CONTENT: No subtopics found for the specified curriculum.</li>
-     * </ul>
+     * Retrieves a list of subtopics in the specified curriculum.
+     *  <ul>
+     *      <li>{@link HttpStatus#OK}: Found at least 1 subtopic for the specified curriculum.</li>
+     *      <li>{@link HttpStatus#NO_CONTENT}: No subtopics found for the specified curriculum.</li>
+     *  </ul>
      * 
      * <b>LastModified:</b>
-     * <pre style="margin:0;border:0;padding:0;font-size:15">    13 April 2018</pre>
-     *  
+     * <pre style="margin:0;border:0;padding:0;font-size:15">    17 April 2018</pre>
+     * 
+     * @see RemoteTopicService
+     * 
      * @author Carter Taylor (1712-Steve)
      * @author Olayinka Ewumi (1712-Steve)
      * @author Stephen Negron (1801-Trevin)
@@ -167,19 +219,100 @@ public class CurriculumController {
      * @param cid The curriculum ID.
      * @return A list of curriculum subtopics belonging to the given curriculum.
      * 
-     * @throws NoContentException Thrown when there is no subtopics found.
-     * 
+     * @since 2.0
      */
-     
-//    @HystrixCommand(fallbackMethod="serviceUnavailable")
+    @HystrixCommand(fallbackMethod="getAllCurriculumSubtopicsFallback")
 //    @GetMapping("/{cid}/subtopics")
-//    public List<Subtopic> getAllCurriculumSubtopics(@PathVariable int cid) throws NoContentException {
-//        return curriculumService.getAllSubtopicsForCurriculum(cid);
-//    }
+    public ResponseEntity<List<Subtopic>> getAllCurriculumSubtopics(@PathVariable Integer cid) {
+        ResponseEntity<List<Subtopic>> response;
+        HttpStatus status = HttpStatus.OK;
+        List<Subtopic> subtopics;
+        
+        try {
+            subtopics = curriculumService.getAllSubtopicsForCurriculum(cid);
+            
+            if(subtopics == null) {
+                subtopics = new ArrayList<>();
+            }
+            
+            if(subtopics.isEmpty()) {
+                status = HttpStatus.NO_CONTENT;
+            }
+        } catch(NoContentException ex) {
+            subtopics = new ArrayList<>();
+            status = HttpStatus.NO_CONTENT;
+        }
+        
+        response = new ResponseEntity<>(subtopics, status);
+        
+        return response;
+    }
     
+    /**
+     * Hystrix fallback method for {@link #getAllCurriculumSubtopics(Integer)}.
+     * 
+     * <br>
+     * <br>
+     * <b>LastModified:</b>
+     * <pre style="margin:0;border:0;padding:0;font-size:15">    17 April 2018</pre>
+     * 
+     * @see #getAllCurriculumSubtopics(Integer)
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param cid The curriculum ID.
+     * @return A response entity containing {@link HttpStatus#SERVICE_UNAVAILABLE}.
+     * 
+     * @since 2.0
+     */
+    public ResponseEntity<List<Subtopic>> getAllCurriculumSubtopicsFallback(Integer cid) {
+        ResponseEntity<List<Subtopic>> response 
+            = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        
+        return response;
+    }
+    
+    /**
+     * Retrieves a list of subtopic IDs in the specified curriculum.
+     *  <ul>
+     *      <li>{@link HttpStatus#OK}: Curriculum has at least 1 subtopics.</li>
+     *      <li>{@link HttpStatus#NO_CONTENT}: Curriculum has no subtopics.</li>
+     *  </ul>
+     * 
+     * <b>LastModified:</b>
+     * <pre style="margin:0;border:0;padding:0;font-size:15">    17 April 2018</pre>
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param cid The curriculum ID.
+     * @return The list of subtopics the specified curriculum covers.
+     * 
+     * @since 2.0
+     */
     @GetMapping("/{cid}/subtopics")
-    public List<Integer> getAllCurriculumSubtopicIds(@PathVariable Integer cid) throws NoContentException {
-    	return curriculumService.getAllSubtopicIdsForCurriculum(cid);
+    public ResponseEntity<List<Integer>> getAllCurriculumSubtopicIds(@PathVariable Integer cid) {
+        ResponseEntity<List<Integer>> response;
+        List<Integer> subtopicIds;
+        HttpStatus status = HttpStatus.OK;
+        
+        try {
+            subtopicIds = curriculumService.getAllSubtopicIdsForCurriculum(cid);
+            
+            if(subtopicIds == null) {
+                subtopicIds = new ArrayList<>();
+            }
+            
+            if(subtopicIds.isEmpty()) {
+                status = HttpStatus.NO_CONTENT;
+            }
+        } catch(NoContentException ex) {
+            subtopicIds = new ArrayList<>();
+            status = HttpStatus.NO_CONTENT;
+        }
+        
+        response = new ResponseEntity<>(subtopicIds, status);
+        
+    	return response;
     }
     
     /**

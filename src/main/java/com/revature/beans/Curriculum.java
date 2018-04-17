@@ -17,9 +17,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
 import com.revature.util.Getter;
 import com.revature.util.ReflectionUtils;
 import com.revature.util.Setter;
+
 
 /**
  * Represents a general curriculum.
