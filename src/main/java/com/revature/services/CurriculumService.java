@@ -90,17 +90,6 @@ public class CurriculumService {
     }
 
     /**
-     * Saves a curriculum to the database
-     *    
-     * @param c The curriculum to save to the database.
-     *    
-     * @return The new state of the curriculum that was saved to the database.
-     */
-    public Curriculum save(Curriculum c) {
-        return curriculumRepository.save(c);
-    }
-
-    /**
      * Finds all curriculums by name.
      * 
      * @param name The curriculum's name.
@@ -195,9 +184,19 @@ public class CurriculumService {
     
     
     @Transactional
-    public Curriculum addCurriculum(Curriculum curriculum) throws BadRequestException {
+    public Curriculum addCurriculum(Curriculum curriculum) {
         curriculum.setId(null);
-        return save(curriculum);
+        
+        if(curriculum.isMasterVersion()) {
+            List<Curriculum> masterCurriculums = curriculumRepository.findAllCurriculumsByNameAndMasterVersion(curriculum.getName(), true);
+            
+            masterCurriculums.forEach(masterCurriculum ->
+                masterCurriculum.setIsMasterVersion(false));
+            
+            curriculumRepository.save(masterCurriculums);
+        }
+        
+        return curriculumRepository.save(curriculum);
     }
     
     @Transactional
