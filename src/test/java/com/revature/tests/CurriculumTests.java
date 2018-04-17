@@ -1,8 +1,19 @@
 package com.revature.tests;
 
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
+
+import java.io.IOException;
+import java.util.Date;
+
+import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.revature.beans.Curriculum;
 
 import io.restassured.RestAssured;
 
@@ -78,10 +89,24 @@ public class CurriculumTests {
 //		
 //	}
 
-//	@Test
-//	public void testAddCurriculum() {
-//		
-//	}
+	@Test
+	public void testAddCurriculum() {
+		
+		
+		Curriculum curriculum = new Curriculum(null, "CustomCurriculum", 1, 1, 1, 
+				new Date(), 10, true);
+		
+		JsonNode jsonNode = JsonNodeFactory.instance.pojoNode(curriculum);
+		
+		RestAssured.given()
+		.contentType("application/json")
+		.body(jsonNode)
+		.when()
+		.post("http://localhost:9001/api/v2/curricula/")
+		.then()
+		.statusCode(200);
+		
+	}
 //
 //	@Test
 //	public void testDeleteSubtopics() {
@@ -93,10 +118,27 @@ public class CurriculumTests {
 //		fail("Not yet implemented");
 //	}
 //
-//	@Test
-//	public void testUpdateCurriculum() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testUpdateCurriculum() throws JsonParseException, JsonMappingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String curriculumJsonStr = RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=101").body().asString();
+		Curriculum[] curriculums = mapper.readValue(curriculumJsonStr, Curriculum[].class);
+		
+		curriculums[0].setName("Updated Name");
+		
+		JsonNode jsonNode = JsonNodeFactory.instance.pojoNode(curriculums[0]);
+		
+		RestAssured.given()
+		.contentType("application/json")
+		.body(jsonNode)
+		.when()
+		.patch("http://localhost:9001/api/v2/curricula/")
+		.then()
+		.statusCode(200);
+
+	}
 //
 //	@Test
 //	public void testReplaceCurriculum() {
