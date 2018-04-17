@@ -1,4 +1,4 @@
-package com.revature.service;
+package com.revature.tests;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
