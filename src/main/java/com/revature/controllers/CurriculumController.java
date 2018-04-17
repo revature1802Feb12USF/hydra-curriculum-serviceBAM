@@ -273,14 +273,46 @@ public class CurriculumController {
     }
     
     /**
+     * Retrieves a list of subtopic IDs in the specified curriculum.
+     *  <ul>
+     *      <li>{@link HttpStatus#OK}: Curriculum has at least 1 subtopics.</li>
+     *      <li>{@link HttpStatus#NO_CONTENT}: Curriculum has no subtopics.</li>
+     *  </ul>
      * 
-     * @param cid
-     * @return
-     * @throws NoContentException
+     * <b>LastModified:</b>
+     * <pre style="margin:0;border:0;padding:0;font-size:15">    17 April 2018</pre>
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param cid The curriculum ID.
+     * @return The list of subtopics the specified curriculum covers.
+     * 
+     * @since 2.0
      */
     @GetMapping("/{cid}/subtopics")
-    public List<Integer> getAllCurriculumSubtopicIds(@PathVariable Integer cid) throws NoContentException {
-    	return curriculumService.getAllSubtopicIdsForCurriculum(cid);
+    public ResponseEntity<List<Integer>> getAllCurriculumSubtopicIds(@PathVariable Integer cid) {
+        ResponseEntity<List<Integer>> response;
+        List<Integer> subtopicIds;
+        HttpStatus status = HttpStatus.OK;
+        
+        try {
+            subtopicIds = curriculumService.getAllSubtopicIdsForCurriculum(cid);
+            
+            if(subtopicIds == null) {
+                subtopicIds = new ArrayList<>();
+            }
+            
+            if(subtopicIds.isEmpty()) {
+                status = HttpStatus.NO_CONTENT;
+            }
+        } catch(NoContentException ex) {
+            subtopicIds = new ArrayList<>();
+            status = HttpStatus.NO_CONTENT;
+        }
+        
+        response = new ResponseEntity<>(subtopicIds, status);
+        
+    	return response;
     }
     
     /**
