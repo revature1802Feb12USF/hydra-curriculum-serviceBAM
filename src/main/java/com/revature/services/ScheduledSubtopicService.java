@@ -75,12 +75,14 @@ public class ScheduledSubtopicService {
      * @param subtopics A list of ScheduledSubtopics to be added to the database
      */
     @Transactional
-    public void add(Integer scheduleId, List<ScheduledSubtopic> subtopics) throws NoContentException {
+    public Integer add(Integer scheduleId, ScheduledSubtopic subtopic) throws NoContentException {
         Schedule schedule = scheduleService.getById(scheduleId);
         
-        subtopics.forEach(subtopic -> subtopic.setParentSchedule(schedule));
+        subtopic.setParentSchedule(schedule);
         
-        scheduledSubtopicRepository.save(subtopics);
+        scheduledSubtopicRepository.save(subtopic);
+        
+        return scheduleId;
     }
     
     /**

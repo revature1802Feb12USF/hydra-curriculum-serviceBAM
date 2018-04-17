@@ -65,10 +65,12 @@ public class ScheduledSubtopicController {
      * @author Seth Maize (Matt 1802)
      * 
      * @param subtopics The subtpic to add to the database
+     * 
+     * @return the schedule id (for angular to not fail JSON.parse)
      */
     @PostMapping
-    public void addSubtopics(@RequestParam("schedule") Integer scheduleId, @RequestBody List<ScheduledSubtopic> subtopics) throws NoContentException{
-        scheduledSubtopicService.add(scheduleId, subtopics);
+    public Integer addSubtopics(@RequestParam("schedule") Integer scheduleId, @RequestBody ScheduledSubtopic subtopic) throws NoContentException{
+        return scheduledSubtopicService.add(scheduleId, subtopic);
     }
     
     /**
