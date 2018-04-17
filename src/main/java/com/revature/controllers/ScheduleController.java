@@ -17,6 +17,7 @@ import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.services.ScheduleService;
 
+
 /**
  * This class establishes REST endpoints for retrieval and modification of Schedule data.
  * 
@@ -29,7 +30,7 @@ import com.revature.services.ScheduleService;
  * <pre style="margin:0;border:0;padding:0;font-size:14">
  * ""  - GET    - {@link #getAllSchedules()}
  *     - POST   - {@link #addSchedule(Schedule)}
- *     - PATCH  - {@link #updateScehdule(Schedule)}
+ *     - PATCH  - {@link #updateSchedule(Schedule)}
  *     
  * "/{sid}  - DELETE - {@link #deleteScheduleById(int)}
  * 
@@ -116,7 +117,7 @@ public class ScheduleController {
      */
     @PostMapping
     public void addSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-        scheduleService.add(schedule);
+    	scheduleService.add(schedule);
     }
     
     /**
@@ -130,9 +131,9 @@ public class ScheduleController {
      * @throws NoContentException
      * @throws BadRequestException
      */
-    @PatchMapping(produces = "application/json")
-    public Schedule updateScehdule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-        return scheduleService.update(schedule);
+    @PatchMapping
+    public void updateSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+        scheduleService.update(schedule);
     }
     
     /**

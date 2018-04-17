@@ -9,14 +9,14 @@ import java.lang.annotation.Target;
 
 /**
  * Used to specify fields which should be ignored.
- * 
+ *
  * <br>
  * <br>
  * <b>Last Modified:</b>
  * <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
  * 
- * @author Ricky Baker (1802-Matt)
  * @see ReflectionUtils
+ * @author Ricky Baker (1802-Matt)
  */
 @Documented
 @Retention(RUNTIME)
