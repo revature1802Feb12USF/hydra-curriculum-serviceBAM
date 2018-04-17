@@ -24,12 +24,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
----
-
 remote-api:
   topic:
-    request-bulk: http://hydra-topic-service/subtopics
-    verify: http://hydra-topic-service/subtopics/verify
+    request-bulk: https://hydra-topic-service.cfapps.io/api/v2/topics/subtopics
+    verify: https://hydra-topic-service.cfapps.io/api/v2/topics/subtopics/verify
     
 ---
 
@@ -45,7 +43,7 @@ eureka:
       defaultZone: https://hydra-discovery-service.cfapps.io/eureka/
 
 server:
-  port: 0
+  port: 80
 
 ---
 
