@@ -5,6 +5,6 @@ applications:
   random-route: false
   path: target/hydra-curriculum-service-0.0.1-SNAPSHOT.jar
   health-check-type: http
-  health-check-http-endpoint: /
+  health-check-http-endpoint: /health
   env:
     SPRING_PROFILES_ACTIVE: prod
