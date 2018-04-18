@@ -19,7 +19,7 @@ public interface CurriculumRepository
 
     public List<Curriculum> findCurriculumByName(String curriculumName);
 
-    public void deleteSubtopicsByIdIn(Iterable<Integer> curriculumIds);
+    public void deleteCurriculumsByIdIn(Iterable<Integer> curriculumIds);
 
     public List<Curriculum> findCurriculumsByIdIn(
                     Iterable<Integer> curriculumIds);

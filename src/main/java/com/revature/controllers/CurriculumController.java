@@ -140,7 +140,7 @@ public class CurriculumController {
 
         ResponseEntity<List<Curriculum>> response = new ResponseEntity<>(
                         curriculumList, status);
-
+        
         return response;
     }
 
@@ -293,6 +293,7 @@ public class CurriculumController {
 
         return response;
     }
+    
 
     /**
      * Marks the curriculum with the given ID cId as the master version.

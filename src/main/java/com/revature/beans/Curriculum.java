@@ -21,6 +21,7 @@ import com.revature.util.Getter;
 import com.revature.util.ReflectionUtils;
 import com.revature.util.Setter;
 
+
 /**
  * Represents a general curriculum.
  * 

@@ -18,6 +18,7 @@ import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.repositories.CurriculumRepository;
 import com.revature.repositories.CurriculumSubtopicRepository;
+import com.revature.repositories.ScheduleRepository;
 import com.revature.util.ReflectionUtils;
 
 /**
@@ -29,12 +30,14 @@ import com.revature.util.ReflectionUtils;
 public class CurriculumService {
     private CurriculumRepository curriculumRepository;
     private CurriculumSubtopicRepository curriculumSubtopicRepository;
+    private ScheduleRepository scheduleRepository;
     private RemoteTopicService remoteTopicService;
     private ScheduleService scheduleService;
 
     @Autowired
     public CurriculumService(CurriculumRepository curriculumRepository,
                     CurriculumSubtopicRepository curriculumSubtopicRepository,
+                    ScheduleRepository scheduleRepository,
                     RemoteTopicService remoteTopicService,
                     ScheduleService scheduleService) {
         super();
@@ -70,8 +73,8 @@ public class CurriculumService {
      * 
      * @param id
      *            The id of the curriculum to find.
-     * @return The curriculum with the given ID if it exists; otherwise, {@literal null} is
-     *         returned.
+     * @return The curriculum with the given ID if it exists; otherwise,
+     *         {@literal null} is returned.
      */
     public Curriculum getCurriculumById(Integer id) throws NoContentException {
         Curriculum curriculum = curriculumRepository.findCurriculumById(id);
@@ -111,7 +114,8 @@ public class CurriculumService {
      * 
      * @return A list of all subtopics that belong to the service.
      * 
-     * @throws NoContentException No subtopics found.
+     * @throws NoContentException
+     *             No subtopics found.
      */
     public List<Subtopic> getAllSubtopicsForCurriculum(int curriculumId)
                     throws NoContentException {
@@ -222,7 +226,10 @@ public class CurriculumService {
 
     @Transactional
     public void deleteCurriculums(Iterable<Integer> curriculumIds) {
-        curriculumRepository.deleteSubtopicsByIdIn(curriculumIds);
+        curriculumSubtopicRepository
+                        .deleteSubtopicsByCurriculumIdIn(curriculumIds);
+        scheduleRepository.deleteSchedulesByCurriculumIdIn(curriculumIds);
+        curriculumRepository.deleteCurriculumsByIdIn(curriculumIds);
     }
 
     public List<Curriculum> getCurriculums(Set<Integer> curriculumIds) {

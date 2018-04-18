@@ -3,7 +3,6 @@ package com.revature.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.revature.beans.CurriculumSubtopic;
 
@@ -23,4 +22,7 @@ public interface CurriculumSubtopicRepository
 
     public void deleteSubtopicsByCurriculumIdAndSubtopicIdIn(
                     Integer curriculumId, Iterable<Integer> subtopicIds);
+
+    public void deleteSubtopicsByCurriculumIdIn(
+                    Iterable<Integer> curriculumIds);
 }
