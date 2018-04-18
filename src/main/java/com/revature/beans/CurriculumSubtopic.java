@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.util.ReflectionUtils;
 
-
 /**
  * Pseudo-join table to represent a many-to-many relationship between Subtopic
  * (remote) and Curriculum.

@@ -24,6 +24,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+
+# Custom values injected into RemoteTopicService
 remote-api:
   topic:
     request-bulk: /api/v2/topics/subtopics

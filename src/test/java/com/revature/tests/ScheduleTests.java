@@ -21,13 +21,19 @@ import com.revature.exceptions.NoContentException;
 
 import io.restassured.RestAssured;
 
+/**
+ * Tests for the ScheduleController-related endpoints.
+ * 
+ * 
+ * @author Seth Maize (1802-Matt)
+ */
 public class ScheduleTests {
 
 	/**
-	 * RESTAssured test to get all schedules
+	 * RESTAssured test to get all schedules.
+	 * 
 	 * 
 	 * @author Seth Maize (1802-Matt)
-	 * 
 	 */
 	@Test
 	public void testGetAllSchedule() {
@@ -37,10 +43,10 @@ public class ScheduleTests {
 	}
 	
 	/**
-	 * RESTAssured test to get all schedules
+	 * RESTAssured test to get all schedules.
+	 * 
 	 * 
 	 * @author Seth Maize (1802-Matt)
-	 * 
 	 */
 	@Test
 	public void testGetScheduleById() {
@@ -50,10 +56,10 @@ public class ScheduleTests {
 	}
 	
 	/**
-	 * RESTAssured test adding a schedule
+	 * RESTAssured test adding a schedule.
 	 * 
-	 * @author Seth Maize
-	 * @author RickyBaker 
+	 * 
+	 * @author Seth Maize (1802-Matt)
 	 * 
 	 * @throws NoContentException
 	 * @throws JsonParseException
@@ -82,9 +88,10 @@ public class ScheduleTests {
 	}
 	
 	/**
-	 * RESTAssured test updating schedule through endpoint
+	 * RESTAssured test updating schedule through endpoint.
 	 * 
-	 * @author Seth Maize
+	 * 
+	 * @author Seth Maize (1802-Matt)
 	 * 
 	 * @throws NoContentException
 	 * @throws JsonParseException
@@ -119,17 +126,4 @@ public class ScheduleTests {
 		.then()
 		.statusCode(200);
 	}
-	
-	/*
-	 * @author Seth Maize (1802-Matt)
-	 * 
-	 * RESTAssured test to get all schedules
-	 */
-//	@Test
-//	public void testDeleteSchedule() {
-//		RestAssured.delete("http://localhost:9001/api/v2/curricula/schedules/306")
-//		.then()
-//		.statusCode(200);
-//	}
-	
 }

@@ -13,6 +13,8 @@ import com.revature.repositories.ScheduledSubtopicRepository;
 
 /**
  * A Service class for retrieving and modifying ScheduledSubtopic data.
+ * 
+ * @author Seth Maize (1802-Matt)
  */
 @Service
 public class ScheduledSubtopicService {
@@ -24,14 +26,14 @@ public class ScheduledSubtopicService {
     private ScheduleService scheduleService;
 
     /**
-     * Retrieve all scheduled subtopics from the database, to be used by the
-     * ScheduledSubtopicController
+     * Retrieve all scheduled subtopics from the database.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @return List of all Subtopics in database
+     * @author Seth Maize (1802-Matt)
      * 
+     * @return All scheduled subtopics.
      * @throws NoContentException
+     *             No scheduled subtopics exist.
      */
     public List<ScheduledSubtopic> getAll() throws NoContentException {
 
@@ -46,16 +48,18 @@ public class ScheduledSubtopicService {
     }
 
     /**
-     * Retrieve ScheduledSubtopics based off of the list of ids given
+     * Retrieve the specified scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
+     * 
+     * @author Seth Maize (1802-Matt)
      * 
      * @param ids
-     *            A list of id's of the ScheduledSubtopics to be returned
+     *            A list of IDs of the scheduled subtopics to retrieve.
      * 
-     * @return A list of ScheduledSubtopics of the given id's
+     * @return The scheduled subtopics with the provided IDs.
      * 
      * @throws NoContentException
+     *             None of the requested scheduled subtopics were found.
      */
     public List<ScheduledSubtopic> getScheduledSubtopicsById(List<Integer> ids)
                     throws NoContentException {
@@ -70,12 +74,13 @@ public class ScheduledSubtopicService {
     }
 
     /**
-     * Add list of ScheduledSubtopics to the database
+     * Add multiple scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
+     * 
+     * @author Seth Maize (1802-Matt)
      * 
      * @param subtopics
-     *            A list of ScheduledSubtopics to be added to the database
+     *            The scheduled subtopics to be added.
      */
     @Transactional
     public Integer add(Integer scheduleId, ScheduledSubtopic subtopic)
@@ -90,25 +95,26 @@ public class ScheduledSubtopicService {
     }
 
     /**
-     * Delete list of ScheduledSubtopics from the database
+     * Deletes scheduled subtopics from the database.
      * 
-     * @author Seth Maize (Matt 1802)
+     * 
+     * @author Seth Maize (1802-Matt)
      * 
      * @param ids
-     *            The id's of the ScheduledSubtopics to be deleted
+     *            The IDs of the scheduled subtopics to be deleted.
      */
     public void delete(List<Integer> ids) {
         scheduledSubtopicRepository.deleteByIdIn(ids);
     }
 
     /**
-     * Update list of ScheduledSubtopics in the database, same functionality as
-     * add but should only be used for updating
+     * Update scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
+     * 
+     * @author Seth Maize (1802-Matt)
      * 
      * @param subtopics
-     *            A list of ScheduledSubtopics to be updated
+     *            The new scheduled subtopic data to use for the update.
      */
     public void update(List<ScheduledSubtopic> subtopics) {
         scheduledSubtopicRepository.save(subtopics);

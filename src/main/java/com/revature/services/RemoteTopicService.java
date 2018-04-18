@@ -22,6 +22,7 @@ import com.revature.beans.remote.Subtopic;
  * A service class which acts as the interface for performing requests to the
  * topic service.
  * 
+ * 
  * @author Ricky Baker (1802-Matt)
  */
 @Service
@@ -50,6 +51,7 @@ public class RemoteTopicService {
 
     /**
      * Requests the list of given subtopics from the remote topic service.
+     * 
      * 
      * @author Ricky Baker (1802-Matt)
      * 
@@ -86,6 +88,7 @@ public class RemoteTopicService {
 
     /**
      * Verifies the existence of the subtopic IDs.
+     * 
      * 
      * @author Ricky Baker (1802-Matt)
      * 
