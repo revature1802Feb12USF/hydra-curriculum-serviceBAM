@@ -31,15 +31,7 @@ public class CurriculumService {
     private CurriculumSubtopicRepository curriculumSubtopicRepository;
     private RemoteTopicService remoteTopicService;
     private ScheduleService scheduleService;
-    
-    /**
-     * Creates a curriculum service utilizing the provided repositories.
-     * 
-     * @param curriculumRepository
-     *            DAO for retrieving and modifying curriculum data.
-     * @param curriculumSubtopicRepository
-     *            DAO for retrieving and modifying curriculum subtopic data.
-     */
+
     @Autowired
     public CurriculumService(CurriculumRepository curriculumRepository,
                     CurriculumSubtopicRepository curriculumSubtopicRepository,
@@ -54,6 +46,9 @@ public class CurriculumService {
 
     /**
      * Returns all curriculums.
+     * 
+     * 
+     * @author Ricky Baker (1802-Matt)
      * 
      * @return A list of all the curriculums in the database.
      */
@@ -70,10 +65,12 @@ public class CurriculumService {
     /**
      * Find a curriculum by id.
      * 
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * 
      * @param id
      *            The id of the curriculum to find.
-     * 
-     * @return The curriculum with the given id if it exists; otherwise, null is
+     * @return The curriculum with the given ID if it exists; otherwise, {@literal null} is
      *         returned.
      */
     public Curriculum getCurriculumById(Integer id) throws NoContentException {
@@ -88,12 +85,15 @@ public class CurriculumService {
     }
 
     /**
-     * Finds all curriculums by name.
+     * Finds all curriculums with the same name.
+     * 
+     * 
+     * @author Ricky Baker (1802-Matt)
      * 
      * @param name
-     *            The curriculum's name.
+     *            The curriculums' name.
      * 
-     * @return List of Curriculum objects of the given name.
+     * @return A list of curriculums with the given name.
      */
     public List<Curriculum> findAllCurriculumByName(String name) {
         return curriculumRepository.findCurriculumByName(name);
@@ -103,12 +103,15 @@ public class CurriculumService {
      * Acquire all subtopics from the topic service that belong to the given
      * curriculum.
      * 
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * 
      * @param curriculumId
      *            The ID of the curriculum.
      * 
      * @return A list of all subtopics that belong to the service.
      * 
-     * @throws NoContentException
+     * @throws NoContentException No subtopics found.
      */
     public List<Subtopic> getAllSubtopicsForCurriculum(int curriculumId)
                     throws NoContentException {
