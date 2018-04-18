@@ -26,10 +26,6 @@ public class CurriculumServiceApplication {
      * Produces a bean used by the Springfox framework to produce Swagger 2
      * documentation.
      * 
-     * <br>
-     * <br>
-     * <b>Last Modified:</b>
-     * <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
      * 
      * @return A bean to be used to build Swagger 2 documentation.
      * 
@@ -37,7 +33,8 @@ public class CurriculumServiceApplication {
      */
     @Bean
     public Docket generateSwaggerBuilder() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any()).build();
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                        .apis(RequestHandlerSelectors.any())
+                        .paths(PathSelectors.any()).build();
     }
 }

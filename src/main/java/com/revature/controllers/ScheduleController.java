@@ -17,16 +17,12 @@ import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.services.ScheduleService;
 
-
 /**
- * This class establishes REST endpoints for retrieval and modification of Schedule data.
- * 
- * Endpoint: /api/v2/curricula/schedules
- */
-/**
- * This class establishes REST endpoints for retrieval and modification of Schedule data.
+ * This class establishes REST endpoints for retrieval and modification of
+ * Schedule data.<br>
  * 
  * Handles Zuul Endpoint: /curricula/schedules <br>
+ * 
  * <pre style="margin:0;border:0;padding:0;font-size:14">
  * ""  - GET    - {@link #getAllSchedules()}
  *     - POST   - {@link #addSchedule(Schedule)}
@@ -37,112 +33,135 @@ import com.revature.services.ScheduleService;
  * "/{sid}" - GET - {@link #getScheduleById(Integer)}
  * 
  * "/ordered/{sid}" - GET - {@link #getOrderedSchedule(Integer)}
- * 
  * </pre>
+ * 
  * 
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
- * 
- * @version 2.0
  */
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
-    
+
     @Autowired
-    ScheduleService scheduleService;
-    
+    private ScheduleService scheduleService;
+
     /**
-     * Returns all schedules in a JSON array 
+     * Retrieves all schedules.
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @return all schedules in a JSON array
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @return All schedules.
      * @throws NoContentException
      */
-    
     @GetMapping
     public List<Schedule> getAllSchedules() throws NoContentException {
         return scheduleService.getAll();
     }
-    
+
     /**
-     * Retrieves schedule of the given id as a JSON
+     * Retrieves the schedule with the given ID.
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @param id The id of the schedule to be retrieved
-     * @return schedule of the given id
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param id
+     *            The ID of the schedule to be retrieved.
+     * @return Schedule with the given ID.
      * @throws NoContentException
      */
     @GetMapping("/{sid}")
-    public Schedule getScheduleById(@PathVariable Integer sid) throws NoContentException {
+    public Schedule getScheduleById(@PathVariable Integer sid)
+                    throws NoContentException {
         return scheduleService.getById(sid);
     }
-    
+
+    /**
+     * Retrieves all schedules belonging to the specified curriculum.
+     * 
+     * 
+     * @author Seth Maize (1802-Matt)
+     * @param cid
+     *            The associated curriculum's ID.
+     * @return The schedules belonging to the specified curriculum.
+     * @throws NoContentException
+     */
     @GetMapping("/curriculum/{cid}")
-    public List<Schedule> getScheduleByCurriculumId(@PathVariable Integer cid) throws NoContentException {
+    public List<Schedule> getScheduleByCurriculumId(@PathVariable Integer cid)
+                    throws NoContentException {
         return scheduleService.getAllSchedulesByCurriculumId(cid);
     }
-    
-    
-    
+
     /**
-     * Retrieves a schedule specified by the given id, with an ordered list of subtopics based on start time as a JSON
+     * Retrieves a schedule specified by the givenID, with an ordered list of
+     * subtopics based on start time.
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @param id The id of the schedule to be retrieved
-     * @return a schedule specified by the given id, with an ordered list of subtopics based on start time
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param id
+     *            TheID of the schedule to be retrieved.
+     * @return A schedule specified by the givenID, with an ordered list of
+     *         subtopics based on start time
      * @throws NoContentException
      */
     @GetMapping("/ordered/{sid}")
-    public Schedule getOrderedSchedule(@PathVariable Integer id) throws NoContentException {
+    public Schedule getOrderedSchedule(@PathVariable Integer id)
+                    throws NoContentException {
         return scheduleService.getByIdOrdered(id);
     }
-    
+
     /**
-     * Adds schedule to database
+     * Adds a schedule.
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @param schedule Schedule to add to the database
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param schedule
+     *            Schedule to add to the database
      * 
      * @throws NoContentException
      * @throws BadRequestException
      */
     @PostMapping
-    public void addSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-    	scheduleService.add(schedule);
+    public void addSchedule(@RequestBody Schedule schedule)
+                    throws NoContentException, BadRequestException {
+        scheduleService.add(schedule);
     }
-    
+
     /**
      * Updates schedule if it exists in the database
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @param schedule The Schedule to update
-     *  
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param schedule
+     *            The schedule to update.
+     * 
      * @throws NoContentException
      * @throws BadRequestException
      */
     @PatchMapping
-    public void updateSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+    public void updateSchedule(@RequestBody Schedule schedule)
+                    throws NoContentException, BadRequestException {
         scheduleService.update(schedule);
     }
-    
+
     /**
-     * Delete schedule, specified by id, from the database
+     * Delete a schedule by ID.
      * 
-     * @author Seth Maize (Matt 1802)
-     * @author Ricky Baker (Matt 1802)
      * 
-     * @param id The id of the schedule to delete
+     * @author Seth Maize (1802-Matt)
+     * @author Ricky Baker (1802-Matt)
+     * 
+     * @param id
+     *            The ID of the schedule to delete
      */
     @DeleteMapping("/{sid}")
     public void deleteScheduleById(@PathVariable int sid) {

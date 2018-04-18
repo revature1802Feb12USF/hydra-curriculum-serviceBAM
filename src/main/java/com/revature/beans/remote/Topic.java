@@ -5,23 +5,17 @@ import com.revature.util.ReflectionUtils;
 /**
  * A remote bean mirroring the Topic bean in hydra-topic-service.
  * 
- * <br>
- * <br>
- * <b>Last Modified:</b>
- *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
  * 
  * @see Subtopic
  * 
- * @author [see same bean in hydra-topic-service (1802-Matt)]  
+ * @author Trevor Fortner (Batch Matt 1802)
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
- * 
- * @version 2.0
  */
 public class Topic {
     private Integer topicID;
     private String topicName;
-    
+
     public Topic() {
         super();
     }
@@ -35,26 +29,22 @@ public class Topic {
         return topicID;
     }
 
-
     public void setTopicID(Integer topicID) {
         this.topicID = topicID;
     }
-
 
     public String getTopicName() {
         return topicName;
     }
 
-
     public void setTopicName(String topicName) {
         this.topicName = topicName;
     }
 
-
     @Override
     public String toString() {
-        return "TopicName [\n" +"(Topic ID) \t topicID = " + topicID + ",\n "
-                + "(Topic name) \t topicName = " + topicName + "]";
+        return "TopicName [\n" + "(Topic ID) \t topicID = " + topicID + ",\n "
+                        + "(Topic name) \t topicName = " + topicName + "]";
     }
 
     @Override
@@ -62,7 +52,8 @@ public class Topic {
         final int PRIME = 31;
         int result = 1;
         result = PRIME * result + topicID;
-        result = PRIME * result + ((topicName == null) ? 0 : topicName.hashCode());
+        result = PRIME * result
+                        + ((topicName == null) ? 0 : topicName.hashCode());
         return result;
     }
 
@@ -70,6 +61,5 @@ public class Topic {
     public boolean equals(Object obj) {
         return ReflectionUtils.testEquality(this, obj);
     }
-    
-    
+
 }

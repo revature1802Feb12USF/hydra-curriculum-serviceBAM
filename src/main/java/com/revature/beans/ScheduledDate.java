@@ -17,54 +17,45 @@ import com.revature.util.ReflectionUtils;
 /**
  * Contains scheduling information for a scheduled subtopic item.
  * 
- * <br>
- * <br>
- * <b>Last Modified:</b>
- *  <pre style="margin:0;border:0;padding:0;">    13 April 2018</pre>
  * 
  * @see Schedule
  * @see ScheduledSubtopic
  * 
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
- * 
- * @version 2.0
  */
 @Entity
-@Table(name="SCHEDULED_DATE")
-@JsonIgnoreProperties(ignoreUnknown=true)
+@Table(name = "SCHEDULED_DATE")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScheduledDate {
     @Id
-    @SequenceGenerator(initialValue=0,
-                       allocationSize=1,
-                       name="SCHEDULED_DATE_ID_SEQ_GEN",
-                       sequenceName="SCHEDULED_DATE_ID_SEQ")
-    @GeneratedValue(generator="SCHEDULED_DATE_ID_SEQ_GEN", 
-                    strategy=GenerationType.SEQUENCE)
-    @Column(name="ID")
+    @SequenceGenerator(initialValue = 0, allocationSize = 1, name = "SCHEDULED_DATE_ID_SEQ_GEN", sequenceName = "SCHEDULED_DATE_ID_SEQ")
+    @GeneratedValue(generator = "SCHEDULED_DATE_ID_SEQ_GEN", strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID")
     private Integer id;
-    
-    @Column(name="WEEK")
+
+    @Column(name = "WEEK")
     @NotNull
     private Integer week;
-    
-    @Column(name="DAY")
+
+    @Column(name = "DAY")
     @NotNull
     private Integer day;
-    
-    @Column(name="START_TIME")
+
+    @Column(name = "START_TIME")
     @NotNull
     private Date startTime;
-    
-    @Column(name="END_TIME")
+
+    @Column(name = "END_TIME")
     @NotNull
     private Date endTime;
-    
+
     public ScheduledDate() {
         super();
     }
 
-    public ScheduledDate(Integer week, Integer day, Date startTime, Date endTime) {
+    public ScheduledDate(Integer week, Integer day, Date startTime,
+                    Date endTime) {
         super();
         this.week = week;
         this.day = day;
@@ -115,10 +106,9 @@ public class ScheduledDate {
     @Override
     public String toString() {
         return "ScheduledDate [(Schedule Date Id) \t id=" + id + ",\n"
-                + "(Week) \t week=" + week + ",\n"
-                + "(Day) \t day=" + day + ",\n"
-                + "(Start Time) \t startTime=" + startTime + ",\n"
-                + "(End Time) \t endTime=" + endTime + "\n]";
+                        + "(Week) \t week=" + week + ",\n" + "(Day) \t day="
+                        + day + ",\n" + "(Start Time) \t startTime=" + startTime
+                        + ",\n" + "(End Time) \t endTime=" + endTime + "\n]";
     }
 
     @Override
@@ -128,7 +118,8 @@ public class ScheduledDate {
         result = PRIME * result + ((day == null) ? 0 : day.hashCode());
         result = PRIME * result + ((endTime == null) ? 0 : endTime.hashCode());
         result = PRIME * result + ((id == null) ? 0 : id.hashCode());
-        result = PRIME * result + ((startTime == null) ? 0 : startTime.hashCode());
+        result = PRIME * result
+                        + ((startTime == null) ? 0 : startTime.hashCode());
         result = PRIME * result + ((week == null) ? 0 : week.hashCode());
         return result;
     }
@@ -137,5 +128,5 @@ public class ScheduledDate {
     public boolean equals(Object obj) {
         return ReflectionUtils.testEquality(this, obj);
     }
-    
+
 }

@@ -10,21 +10,24 @@ import java.lang.annotation.Target;
 /**
  * Used to specify the name of a field's getter method.
  * 
- * @author Ricky Baker (1802-Matt)
+ * 
  * @see ReflectionUtils
+ * 
+ * @author Ricky Baker (1802-Matt)
  */
 @Documented
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface Getter {
     /**
-     * Specifies the getter method's name. An empty String specifies a default getter
-     * method name using Java naming conventions.
+     * Specifies the getter method's name. An empty String specifies a default
+     * getter method name using Java naming conventions.
+     * 
      * 
      * @author Ricky Baker (1802-Matt)
      * 
-     * @return The name of the specified getter method. Default value is an 
-     *          empty string.
+     * @return The name of the specified getter method. Default value is an
+     *         empty string.
      */
     String value() default "";
 }
