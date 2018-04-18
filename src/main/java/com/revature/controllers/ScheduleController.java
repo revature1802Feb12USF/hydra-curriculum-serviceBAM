@@ -132,8 +132,9 @@ public class ScheduleController {
      * @throws BadRequestException
      */
     @PatchMapping
-    public void updateSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+    public Schedule updateSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
         scheduleService.update(schedule);
+        return schedule;
     }
     
     /**

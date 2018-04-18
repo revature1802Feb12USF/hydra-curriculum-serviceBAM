@@ -200,12 +200,5 @@ public class CurriculumTests {
 		.statusCode(200);
 	}
 
-//	@Test
-//	public void testInsertSubtopicsToCurriculum() {
-//		RestAssured.delete("http://localhost:9001/api/v2/curricula/115/subtopics/?ids=1000");
-//		
-//		RestAssured.put("http://localhost:9001/api/v2/curricula/111/?ids=1000")
-//		.then()
-//		.statusCode(200);
-//	}
+
 }
