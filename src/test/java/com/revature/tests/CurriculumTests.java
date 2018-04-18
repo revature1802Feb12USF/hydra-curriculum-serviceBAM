@@ -1,8 +1,19 @@
 package com.revature.tests;
 
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
+
+import java.io.IOException;
+import java.util.Date;
+
+import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.revature.beans.Curriculum;
 
 import io.restassured.RestAssured;
 
@@ -72,39 +83,122 @@ public class CurriculumTests {
 		.body("", hasItems(1000,1001,1002,1003));
 		
 	}
-//
-//	@Test
-//	public void testMarkCurriculumAsMaster() {
-//		
-//	}
 
-//	@Test
-//	public void testAddCurriculum() {
-//		
-//	}
-//
-//	@Test
-//	public void testDeleteSubtopics() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testDeleteCurriculums() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testUpdateCurriculum() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testReplaceCurriculum() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testInsertSubtopicsToCurriculum() {
-//		fail("Not yet implemented");
-//	}
+	/**
+	 * Rest Assured Test to make sure that a curriculum can be marked as master
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testMarkCurriculumAsMaster() {
+		
+		RestAssured.patch("http://localhost:9001/api/v2/curricula/119/master");
+		
+		RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=119")
+		.then()
+		.body("[0].masterVersion", equalTo(true));
+		
+	}
+
+	/**
+	 * Rest Assured Test for adding a curriculum to the database
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testAddCurriculum() {
+		
+		
+		Curriculum curriculum = new Curriculum(null, "CustomCurriculum", 1, 1, 1, 
+				new Date(), 10, true);
+		
+		JsonNode jsonNode = JsonNodeFactory.instance.pojoNode(curriculum);
+		
+		RestAssured.given()
+		.contentType("application/json")
+		.body(jsonNode)
+		.when()
+		.post("http://localhost:9001/api/v2/curricula/")
+		.then()
+		.statusCode(200);
+		
+	}
+
+	/**
+	 * Rest Assured Test for deleteing subtopics beloning to a curriculum
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testDeleteSubtopics() {
+		RestAssured.delete("http://localhost:9001/api/v2/curricula/100/subtopics/?ids=1000")
+		.then()
+		.statusCode(200);
+	}
+
+	/**
+	 * Rest Assured Test to delete a curriculum
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testDeleteCurriculums() {
+		RestAssured.delete("http://localhost:9001/api/v2/curricula/?ids=120&ids=121")
+		.then()
+		.statusCode(200);
+	}
+
+	/**
+	 * Rest Assured Test to update a curriculum
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testUpdateCurriculum() throws JsonParseException, JsonMappingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String curriculumJsonStr = RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=101").body().asString();
+		Curriculum[] curriculums = mapper.readValue(curriculumJsonStr, Curriculum[].class);
+		
+		curriculums[0].setName("Updated Name");
+		
+		JsonNode jsonNode = JsonNodeFactory.instance.pojoNode(curriculums[0]);
+		
+		RestAssured.given()
+		.contentType("application/json")
+		.body(jsonNode)
+		.when()
+		.patch("http://localhost:9001/api/v2/curricula/")
+		.then()
+		.statusCode(200);
+
+	}
+
+	/**
+	 * Rest Assured Test to replace a curriculum (another way to update a curriculum)
+	 * 
+	 * @author Seth Maize (1802-Matt)
+	 */
+	@Test
+	public void testReplaceCurriculum() throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String curriculumJsonStr = RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=111").body().asString();
+		Curriculum[] curriculums = mapper.readValue(curriculumJsonStr, Curriculum[].class);
+		
+		curriculums[0].setName("Another Custom Name");
+		
+		JsonNode jsonNode = JsonNodeFactory.instance.pojoNode(curriculums[0]);
+		
+		RestAssured.given()
+		.contentType("application/json")
+		.body(jsonNode)
+		.when()
+		.patch("http://localhost:9001/api/v2/curricula/")
+		.then()
+		.statusCode(200);
+	}
+
+
 }

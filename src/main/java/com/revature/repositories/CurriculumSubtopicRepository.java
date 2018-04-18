@@ -12,4 +12,5 @@ public interface CurriculumSubtopicRepository extends JpaRepository<CurriculumSu
     public List<CurriculumSubtopic> findAllByCurriculumId(Integer id);
     public void deleteBySubtopicIdAndCurriculumId(Integer subtopicId, Integer curriculumId);
     public void deleteSubtopicsByCurriculumIdAndSubtopicIdIn(Integer curriculumId, Iterable<Integer> subtopicIds);
+	public void deleteSubtopicsByCurriculumIdIn(Iterable<Integer> curriculumIds);
 }

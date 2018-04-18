@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,7 +11,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.revature.beans.Curriculum;
 import com.revature.beans.CurriculumSubtopic;
 import com.revature.beans.Schedule;
@@ -19,6 +19,7 @@ import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.repositories.CurriculumRepository;
 import com.revature.repositories.CurriculumSubtopicRepository;
+import com.revature.repositories.ScheduleRepository;
 import com.revature.util.ReflectionUtils;
 
 
@@ -33,6 +34,9 @@ public class CurriculumService {
 
     @Autowired
     private CurriculumSubtopicRepository curriculumSubtopicRepository;
+    
+    @Autowired
+    private ScheduleRepository scheduleRepository;
     
     @Autowired
     private RemoteTopicService remoteTopicService;
@@ -207,7 +211,9 @@ public class CurriculumService {
 
     @Transactional
     public void deleteCurriculums(Iterable<Integer> curriculumIds) {
-        curriculumRepository.deleteSubtopicsByIdIn(curriculumIds);
+    	curriculumSubtopicRepository.deleteSubtopicsByCurriculumIdIn(curriculumIds);
+    	scheduleRepository.deleteSchedulesByCurriculumIdIn(curriculumIds);
+        curriculumRepository.deleteCurriculumsByIdIn(curriculumIds);
     }
     
     

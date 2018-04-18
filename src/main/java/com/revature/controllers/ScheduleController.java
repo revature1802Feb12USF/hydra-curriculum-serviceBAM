@@ -117,8 +117,7 @@ public class ScheduleController {
      */
     @PostMapping
     public Schedule addSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
-    	scheduleService.add(schedule);
-    	return schedule;
+    	return scheduleService.add(schedule);
     }
     
     /**
