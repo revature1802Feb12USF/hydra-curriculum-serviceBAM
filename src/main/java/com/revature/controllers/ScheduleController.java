@@ -148,9 +148,8 @@ public class ScheduleController {
      * @throws BadRequestException
      */
     @PatchMapping
-    public void updateSchedule(@RequestBody Schedule schedule)
-                    throws NoContentException, BadRequestException {
-        scheduleService.update(schedule);
+    public Schedule updateSchedule(@RequestBody Schedule schedule) throws NoContentException, BadRequestException {
+        return scheduleService.update(schedule);
     }
 
     /**
@@ -167,5 +166,4 @@ public class ScheduleController {
     public void deleteScheduleById(@PathVariable int sid) {
         scheduleService.deleteById(sid);
     }
-
 }

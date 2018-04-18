@@ -20,7 +20,7 @@ import io.restassured.RestAssured;
 public class CurriculumTests {
 	
 	/**
-	 * Rest Assured test to retrieve all curriculums
+	 * Rest Assured test to retrieve all curriculums.
 	 * 
 	 * @author Johne Vang (1802-Matt)
 	 */
@@ -48,7 +48,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured test for retrieving a list of curriculums by id's
+	 * Rest Assured test for retrieving a list of curriculums by IDs.
 	 * 
 	 * @author Johne Vang (1802-Matt)
 	 */
@@ -71,7 +71,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test JSON root to retrieve all subtopics for a curriculum
+	 * Rest Assured Test JSON root to retrieve all subtopics for a curriculum.
 	 * 
 	 * @author Johne Vang (1802-Matt)
 	 */
@@ -85,7 +85,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test to make sure that a curriculum can be marked as master
+	 * Rest Assured Test to make sure that a curriculum can be marked as master.
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -101,7 +101,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test for adding a curriculum to the database
+	 * Rest Assured Test for adding a curriculum to the database.
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -125,7 +125,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test for deleteing subtopics beloning to a curriculum
+	 * Rest Assured Test for deleteing subtopics beloning to a curriculum.
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -137,7 +137,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test to delete a curriculum
+	 * Rest Assured Test to delete a curriculum.
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -149,7 +149,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test to update a curriculum
+	 * Rest Assured Test to update a curriculum.
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -176,7 +176,7 @@ public class CurriculumTests {
 	}
 
 	/**
-	 * Rest Assured Test to replace a curriculum (another way to update a curriculum)
+	 * Rest Assured Test to replace a curriculum (another way to update a curriculum).
 	 * 
 	 * @author Seth Maize (1802-Matt)
 	 */
@@ -199,13 +199,4 @@ public class CurriculumTests {
 		.then()
 		.statusCode(200);
 	}
-
-//	@Test
-//	public void testInsertSubtopicsToCurriculum() {
-//		RestAssured.delete("http://localhost:9001/api/v2/curricula/115/subtopics/?ids=1000");
-//		
-//		RestAssured.put("http://localhost:9001/api/v2/curricula/111/?ids=1000")
-//		.then()
-//		.statusCode(200);
-//	}
 }
