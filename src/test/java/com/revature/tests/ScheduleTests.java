@@ -66,9 +66,7 @@ public class ScheduleTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void testAddSchedule() throws NoContentException, JsonParseException, IOException {		
-		//CurriculumService curriculumService = new CurriculumService();
-		//Curriculum curriculum = curriculumService.getCurriculumById(301);
+	public void testAddSchedule() throws NoContentException, JsonParseException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String curriculumJsonStr = RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=101").body().asString();
@@ -98,9 +96,7 @@ public class ScheduleTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void testUpdateSchedule() throws NoContentException, JsonParseException, IOException {		
-		//CurriculumService curriculumService = new CurriculumService();
-		//Curriculum curriculum = curriculumService.getCurriculumById(301);
+	public void testUpdateSchedule() throws NoContentException, JsonParseException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String curriculumJsonStr = RestAssured.get("http://localhost:9001/api/v2/curricula/?ids=101").body().asString();
