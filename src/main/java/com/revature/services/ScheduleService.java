@@ -15,176 +15,195 @@ import com.revature.exceptions.BadRequestException;
 import com.revature.exceptions.NoContentException;
 import com.revature.repositories.ScheduleRepository;
 
-
 /**
  * A Service class for retrieving and modifying Schedule data.
  * 
- *@author Seth Maize (Matt 1802)
- *@author Ricky Baker (Matt 1802)
+ * @author Seth Maize (Matt 1802)
+ * @author Ricky Baker (Matt 1802)
  */
 @Service
 public class ScheduleService {
-    
+
     @Autowired
     private ScheduleRepository scheduleRepository;
-    
+
     @Autowired
     private CurriculumService curriculumService;
-    
-    
+
     /**
-     * Retrieve all schedules from the database
+     * Retrieve all schedules.
      * 
      * @author Seth Maize (Matt 1802)
      * 
-     * @return A list of all schedules in the database
-     * 
-     * @throws NoContentException 
+     * @return A list of all schedules.
+     * @throws NoContentException
+     *             No schedules exist.
      */
-    public List<Schedule> getAll() throws NoContentException{
-        List<Schedule> scheduleList = (List<Schedule>) scheduleRepository.findAll();
-        
-        if(scheduleList != null && !scheduleList.isEmpty()) {
+    public List<Schedule> getAll() throws NoContentException {
+        List<Schedule> scheduleList = (List<Schedule>) scheduleRepository
+                        .findAll();
+
+        if (scheduleList != null && !scheduleList.isEmpty()) {
             return scheduleList;
-        }
-        else {
+        } else {
             throw new NoContentException("No schedules found");
         }
     }
-    
+
     /**
-     * Retrieves schedule by id from database
+     * Retrieves a schedule by ID.
+     * 
      * 
      * @author Seth Maize (Matt 1802)
-     *  
-     * @param id The id that identifies which schedule to grab
      * 
-     * @return Schedule specified by the id given
-     * 
-     * @throws NoContentException 
+     * @param id
+     *            The ID of the schedule to retrieve.
+     * @return The schedule specified by the ID given.
+     * @throws NoContentException
+     *             Schedule was not found.
      */
     public Schedule getById(Integer id) throws NoContentException {
         Schedule schedule = scheduleRepository.findById(id);
-        
-        if(schedule != null) {
+
+        if (schedule != null) {
             return schedule;
-        }
-        else {
-            throw new NoContentException("Schedule by id: " + id + " was not found");
+        } else {
+            throw new NoContentException(
+                            "Schedule by id: " + id + " was not found");
         }
     }
-    
-    
+
     /**
-     * Get a schedule with an ordered list of ScheduledSubtopics based on start time in ascending order
+     * Get a schedule with an ordered list of scheduled subtopics based on start
+     * time in ascending order.
+     * 
      * 
      * @author Seth Maize (Matt 1802)
      * @author Ricky Baker (Matt 1802)
      * 
      * @param id
-     * 
-     * @return
+     *            The ID of the schedule to retrieve.
+     * @return The requested schedule.
      * 
      * @throws NoContentException
+     *             Schedule not found.
      */
     public Schedule getByIdOrdered(Integer id) throws NoContentException {
         Schedule schedule = scheduleRepository.findById(id);
-        
-        if(schedule != null) {
-            schedule.getSubtopics().sort((a, b) ->
-                a.getDate().getStartTime().compareTo(b.getDate().getStartTime())
-            );
+
+        if (schedule != null) {
+            schedule.getSubtopics().sort((a, b) -> a.getDate().getStartTime()
+                            .compareTo(b.getDate().getStartTime()));
             return schedule;
-        }
-        else {
-            throw new NoContentException("Schedule by id: " + id + " was not found");
+        } else {
+            throw new NoContentException(
+                            "Schedule by id: " + id + " was not found");
         }
     }
-    
-    
+
     /**
      * Registers a new schedule into the system.
+     * 
      * 
      * @author Seth Maize (Matt 1802)
      * @author Ricky Baker (Matt 1802)
      * 
-     * @param schedule Adds schedule to the database
-     * 
+     * @param schedule
+     *            The schedule to add.
      * @return The added schedule.
-     * 
-     * @throws BadRequestException Non-existent subtopics exist within the schedule.
-     * 
-     * @throws NoContentException Non-existent curriculum specified.
+     * @throws BadRequestException
+     *             Non-existent subtopics exist within the schedule.
+     * @throws NoContentException
+     *             Non-existent curriculum specified.
      */
     @Transactional
-    public Schedule add(Schedule schedule) throws NoContentException, BadRequestException {
+    public Schedule add(Schedule schedule)
+                    throws NoContentException, BadRequestException {
         schedule.setId(null);
-    	
-        Curriculum curriculum = curriculumService.getCurriculumById(schedule.getCurriculum().getId());
-        
-        //make sure that curriculum is valid
-        if(curriculum == null) {
-            throw new BadRequestException("Non-existent curriculum is associated with the schedule.");
+
+        Curriculum curriculum = curriculumService
+                        .getCurriculumById(schedule.getCurriculum().getId());
+
+        // make sure that curriculum is valid
+        if (curriculum == null) {
+            throw new BadRequestException(
+                            "Non-existent curriculum is associated with the schedule.");
         }
-        
+
         schedule.setCurriculum(curriculum);
-        
+
         List<ScheduledSubtopic> subtopics = schedule.getSubtopics();
-        if(subtopics != null && !subtopics.isEmpty()) {
-    		schedule.setSubtopics(new ArrayList<ScheduledSubtopic>());
-		}
-        
-        schedule = scheduleRepository.save(schedule);
-        
-        if(subtopics != null && !subtopics.isEmpty()) {
-        	final Schedule parentSchedule = schedule;
-        	subtopics.forEach(subtopic -> subtopic.setParentSchedule(parentSchedule));
-        	schedule.setSubtopics(subtopics);
-        	schedule = scheduleRepository.save(schedule);
+        if (subtopics != null && !subtopics.isEmpty()) {
+            schedule.setSubtopics(new ArrayList<ScheduledSubtopic>());
         }
-        
+
+        schedule = scheduleRepository.save(schedule);
+
+        if (subtopics != null && !subtopics.isEmpty()) {
+            final Schedule parentSchedule = schedule;
+            subtopics.forEach(subtopic -> subtopic
+                            .setParentSchedule(parentSchedule));
+            schedule.setSubtopics(subtopics);
+            schedule = scheduleRepository.save(schedule);
+        }
+
         return schedule;
     }
-    
+
     /**
-     * Update schedule that already exists in the database
+     * Update an existing schedule.
+     * 
      * 
      * @author Ricky Baker
      * @author Seth Maize
      * 
-     * @param schedule The schedule to update.
-     * 
+     * @param schedule
+     *            The data to update the schedule with a matching ID with.
      * @throws NoContentException
+     *             Schedule does not exist.
      */
     @Transactional
     public Schedule update(Schedule schedule) throws NoContentException {
         Schedule scheduleCopy = getById(schedule.getId());
-        
-        //before updating we are making sure that the schedule exists
-        if(scheduleCopy == null) {
+
+        // before updating we are making sure that the schedule exists
+        if (scheduleCopy == null) {
             throw new NoContentException("This curriculum does not exist.");
-        }
-        else {
+        } else {
             scheduleRepository.save(schedule);
             return schedule;
         }
     }
-    
+
     /**
-     * Delete Schedule by id
+     * Delete a schedulue.
      * 
-     *@author Seth Maize (Matt 1802)
+     * 
+     * @author Seth Maize (Matt 1802)
      *
-     * @param id The id of the schedule to delete
+     * @param id
+     *            The ID of the schedule to delete.
      */
     @Transactional
     public void deleteById(Integer id) {
         scheduleRepository.delete(id);
     }
 
-    @Transactional
-	public List<Schedule> getAllSchedulesByCurriculumId(Integer id) {
-		return scheduleRepository.findAllSchedulesByCurriculumId(id);
-	}
-    
+    /**
+     * Get all schedules belonging to a curriculum.
+     * 
+     * 
+     * @see CurriculumService#getAllSchedulesByCurriculumId(Integer)
+     * 
+     * @author Ricky Baker (1802-Matt)
+     * @author Seth Maize (1802-Matt)
+     * 
+     * @param id
+     *            The curriculum's ID.
+     * @return The schedules belonging to the curriculum.
+     */
+    public List<Schedule> getAllSchedulesByCurriculumId(Integer id) {
+        return scheduleRepository.findAllSchedulesByCurriculumId(id);
+    }
+
 }

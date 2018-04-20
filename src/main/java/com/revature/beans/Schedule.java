@@ -23,54 +23,40 @@ import com.revature.util.ReflectionUtils;
 /**
  * Represents a collection of scheduled subtopic items.
  * 
- * <br>
- * <br>
- * <b>Last Modified:</b>
- *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
  * 
  * @see ScheduledSubtopic
  * @see ScheduledDate
  * 
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
- * 
- * @version 2.0
  */
 @Entity
-@Table(name="SCHEDULE")
-@JsonIdentityInfo(property="id",
-                  generator=ObjectIdGenerators.PropertyGenerator.class)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@Table(name = "SCHEDULE")
+@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Schedule {
-    
+
     @Id
-    @SequenceGenerator(name="SCHEDULE_ID_GEN",
-                       sequenceName="SCHEDULE_ID_SEQ",
-                       allocationSize=1,
-                       initialValue=0)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE,
-                    generator="SCHEDULE_ID_GEN")
+    @SequenceGenerator(name = "SCHEDULE_ID_GEN", sequenceName = "SCHEDULE_ID_SEQ", allocationSize = 1, initialValue = 0)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SCHEDULE_ID_GEN")
     private Integer id;
-    
-    @ManyToOne(optional=false)
-    @NotNull(message="Schedule's referenced curriculum cannot be null.")
+
+    @ManyToOne(optional = false)
+    @NotNull(message = "Schedule's referenced curriculum cannot be null.")
     private Curriculum curriculum;
-    
-    @OneToMany(mappedBy="parentSchedule",
-               fetch=FetchType.LAZY,
-               orphanRemoval=true,
-               cascade= CascadeType.ALL)
+
+    @OneToMany(mappedBy = "parentSchedule", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ScheduledSubtopic> subtopics;
-    
-    public Schedule() {}
-    
+
+    public Schedule() {
+    }
 
     public Schedule(Curriculum curriculum) {
         super();
         this.curriculum = curriculum;
         subtopics = new ArrayList<>();
     }
-    
+
     public Schedule(Curriculum curriculum, List<ScheduledSubtopic> subtopics) {
         super();
         this.curriculum = curriculum;
@@ -92,7 +78,7 @@ public class Schedule {
     public void setCurriculum(Curriculum curriculum) {
         this.curriculum = curriculum;
     }
-    
+
     public List<ScheduledSubtopic> getSubtopics() {
         return subtopics;
     }
@@ -105,7 +91,8 @@ public class Schedule {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((curriculum == null) ? 0 : curriculum.hashCode());
+        result = PRIME * result
+                        + ((curriculum == null) ? 0 : curriculum.hashCode());
         result = PRIME * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
@@ -115,6 +102,4 @@ public class Schedule {
         return ReflectionUtils.testEquality(this, obj);
     }
 
-    
-    
 }

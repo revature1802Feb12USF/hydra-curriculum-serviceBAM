@@ -6,11 +6,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.beans.Curriculum;
 
-public interface CurriculumRepository extends JpaRepository<Curriculum, Integer> {
+/**
+ * Repository class for getting Curriculum info.
+ * 
+ * @author Unknown
+ * @author Ricky Baker (1802-Matt)
+ * @author Seth Maize (1802-Matt)
+ */
+public interface CurriculumRepository
+                extends JpaRepository<Curriculum, Integer> {
     public Curriculum findCurriculumById(Integer id);
+
     public List<Curriculum> findCurriculumByName(String curriculumName);
-    public void deleteSubtopicsByIdIn(Iterable<Integer> curriculumIds);
-    public List<Curriculum> findCurriculumsByIdIn(Iterable<Integer> curriculumIds);
+
+    public void deleteCurriculumsByIdIn(Iterable<Integer> curriculumIds);
+
+    public List<Curriculum> findCurriculumsByIdIn(
+                    Iterable<Integer> curriculumIds);
+
     public List<Curriculum> findAllCurriculumsByNameAndMasterVersion(
                     String name, Boolean i);
 }

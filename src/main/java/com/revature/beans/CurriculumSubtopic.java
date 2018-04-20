@@ -15,51 +15,40 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.util.ReflectionUtils;
 
-
 /**
- * Pseudo-join table to represent a many-to-many relationship between 
- * Subtopic (remote) and Curriculum.
- * 
- * <br>
- * <br>
- * <b>Last Modified:</b>
- *  <pre style="margin:0;border:0;padding:0;">    15 April 2018</pre>
+ * Pseudo-join table to represent a many-to-many relationship between Subtopic
+ * (remote) and Curriculum.
  * 
  * @see Curriculum
  * 
  * @author Ricky Baker (1802-Matt)
  * @author Seth Maize (1802-Matt)
- * 
- * @version 2.0
  */
 @Entity
-@Table(name="CURRICULUM_SUBTOPIC")
-@JsonIgnoreProperties(ignoreUnknown=true)
+@Table(name = "CURRICULUM_SUBTOPIC")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CurriculumSubtopic {
-    
+
     @Id
-    @Column(name="ID")
-    @SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN", 
-                       sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ",
-                       allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, 
-                    generator = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN")
+    @Column(name = "ID")
+    @SequenceGenerator(name = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN", sequenceName = "CURRICULUM_SUBTOPIC_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CURRICULUM_SUBTOPIC_ID_SEQ_GEN")
     private Integer id;
-    
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="CURRICULUM_ID",
-                referencedColumnName="Id")
-    @NotNull(message="Curriculum ID cannot be null.")
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CURRICULUM_ID", referencedColumnName = "Id")
+    @NotNull(message = "Curriculum ID cannot be null.")
     private Curriculum curriculum;
-    
-    @Column(name="SUBTOPIC_ID")
-    @NotNull(message="Subtopic ID cannot be null.")
+
+    @Column(name = "SUBTOPIC_ID")
+    @NotNull(message = "Subtopic ID cannot be null.")
     private Integer subtopicId;
 
     public CurriculumSubtopic() {
     }
-    
-    public CurriculumSubtopic(Integer currSubtopicId, Curriculum curriculum, Integer subtopicId) {
+
+    public CurriculumSubtopic(Integer currSubtopicId, Curriculum curriculum,
+                    Integer subtopicId) {
         super();
         id = currSubtopicId;
         this.curriculum = curriculum;
@@ -73,15 +62,15 @@ public class CurriculumSubtopic {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     public Curriculum getCurriculum() {
         return curriculum;
     }
-    
+
     public void setCurriculum(Curriculum curriculum) {
         this.curriculum = curriculum;
     }
-    
+
     public Integer getSubtopicId() {
         return subtopicId;
     }
@@ -92,16 +81,19 @@ public class CurriculumSubtopic {
 
     @Override
     public String toString() {
-        return "CurrSubtopic [id=" + id + ", curriculum=" + curriculum + ", subtopicId=" + subtopicId + "]";
+        return "CurrSubtopic [id=" + id + ", curriculum=" + curriculum
+                        + ", subtopicId=" + subtopicId + "]";
     }
 
     @Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((curriculum == null) ? 0 : curriculum.hashCode());
+        result = PRIME * result
+                        + ((curriculum == null) ? 0 : curriculum.hashCode());
         result = PRIME * result + ((id == null) ? 0 : id.hashCode());
-        result = PRIME * result + ((subtopicId == null) ? 0 : subtopicId.hashCode());
+        result = PRIME * result
+                        + ((subtopicId == null) ? 0 : subtopicId.hashCode());
         return result;
     }
 
@@ -109,6 +101,5 @@ public class CurriculumSubtopic {
     public boolean equals(Object obj) {
         return ReflectionUtils.testEquality(this, obj);
     }
-    
-    
+
 }

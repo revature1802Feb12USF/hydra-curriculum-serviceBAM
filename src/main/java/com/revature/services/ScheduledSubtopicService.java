@@ -1,6 +1,5 @@
 package com.revature.services;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,99 +13,111 @@ import com.revature.repositories.ScheduledSubtopicRepository;
 
 /**
  * A Service class for retrieving and modifying ScheduledSubtopic data.
+ * 
+ * @author Seth Maize (1802-Matt)
  */
 @Service
 public class ScheduledSubtopicService {
 
     @Autowired
     private ScheduledSubtopicRepository scheduledSubtopicRepository;
-    
+
     @Autowired
     private ScheduleService scheduleService;
-    
+
     /**
-     * Retrieve all scheduled subtopics from the database, to be used by the ScheduledSubtopicController
+     * Retrieve all scheduled subtopics from the database.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @return List of all Subtopics in database
+     * @author Seth Maize (1802-Matt)
      * 
-     * @throws NoContentException 
+     * @return All scheduled subtopics.
+     * @throws NoContentException
+     *             No scheduled subtopics exist.
      */
     public List<ScheduledSubtopic> getAll() throws NoContentException {
 
-        List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepository.findAll();
+        List<ScheduledSubtopic> scheduledSubtopicList = scheduledSubtopicRepository
+                        .findAll();
 
-        if(scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
+        if (scheduledSubtopicList != null && !scheduledSubtopicList.isEmpty()) {
             return (List<ScheduledSubtopic>) scheduledSubtopicList;
-        }
-        else {
+        } else {
             throw new NoContentException("No scheduled subtopics found.");
         }
     }
-    
+
     /**
-     * Retrieve ScheduledSubtopics based off of the list of ids given
+     * Retrieve the specified scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @param ids A list of id's of the ScheduledSubtopics to be returned
+     * @author Seth Maize (1802-Matt)
      * 
-     * @return A list of ScheduledSubtopics of the given id's
+     * @param ids
+     *            A list of IDs of the scheduled subtopics to retrieve.
+     * 
+     * @return The scheduled subtopics with the provided IDs.
      * 
      * @throws NoContentException
+     *             None of the requested scheduled subtopics were found.
      */
-    public List<ScheduledSubtopic> getScheduledSubtopicsById(List<Integer> ids) throws NoContentException{
-        List<ScheduledSubtopic> subtopics = scheduledSubtopicRepository.findAllByIdIn(ids);
-        
-        if(subtopics != null && !subtopics.isEmpty()) {
+    public List<ScheduledSubtopic> getScheduledSubtopicsById(List<Integer> ids)
+                    throws NoContentException {
+        List<ScheduledSubtopic> subtopics = scheduledSubtopicRepository
+                        .findAllByIdIn(ids);
+
+        if (subtopics != null && !subtopics.isEmpty()) {
             return subtopics;
-        }
-        else {
+        } else {
             throw new NoContentException("Unable to find specified schedules");
         }
     }
-    
+
     /**
-     * Add list of ScheduledSubtopics to the database
+     * Add multiple scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @param subtopics A list of ScheduledSubtopics to be added to the database
+     * @author Seth Maize (1802-Matt)
+     * 
+     * @param subtopics
+     *            The scheduled subtopics to be added.
      */
     @Transactional
-    public Integer add(Integer scheduleId, ScheduledSubtopic subtopic) throws NoContentException {
+    public Integer add(Integer scheduleId, ScheduledSubtopic subtopic)
+                    throws NoContentException {
         Schedule schedule = scheduleService.getById(scheduleId);
-        
+
         subtopic.setParentSchedule(schedule);
-        
+
         scheduledSubtopicRepository.save(subtopic);
-        
+
         return scheduleId;
     }
-    
+
     /**
-     * Delete list of ScheduledSubtopics from the database
+     * Deletes scheduled subtopics from the database.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @param ids The id's of the ScheduledSubtopics to be deleted
+     * @author Seth Maize (1802-Matt)
+     * 
+     * @param ids
+     *            The IDs of the scheduled subtopics to be deleted.
      */
     public void delete(List<Integer> ids) {
         scheduledSubtopicRepository.deleteByIdIn(ids);
     }
 
     /**
-     * Update list of ScheduledSubtopics in the database, same functionality as add
-     * but should only be used for updating
+     * Update scheduled subtopics.
      * 
-     * @author Seth Maize (Matt 1802)
      * 
-     * @param subtopics A list of ScheduledSubtopics to be updated
+     * @author Seth Maize (1802-Matt)
+     * 
+     * @param subtopics
+     *            The new scheduled subtopic data to use for the update.
      */
     public void update(List<ScheduledSubtopic> subtopics) {
         scheduledSubtopicRepository.save(subtopics);
     }
-    
 
 }

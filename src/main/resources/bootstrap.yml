@@ -24,11 +24,14 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+
+# Custom values injected into RemoteTopicService
 remote-api:
   topic:
-    request-bulk: https://hydra-topic-service.cfapps.io/api/v2/topics/subtopics
-    verify: https://hydra-topic-service.cfapps.io/api/v2/topics/subtopics/verify
-    
+    request-bulk: /api/v2/topics/subtopics
+    verify: /api/v2/topics/subtopics/verify
+  gateway:
+    name: HYDRA-GATEWAY-SERVICE
 ---
 
 spring:
